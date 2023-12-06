@@ -1,5 +1,12 @@
 import styled from "styled-components";
-import { COLOR_GREY_LIGHT, COLOR_WHITE } from "utils/colors";
+import {
+  COLOR_BLACK,
+  COLOR_BUTTON_SECONDARY,
+  COLOR_RED,
+  COLOR_WHITE,
+} from "utils/colors";
+
+export type buttonColor = "light" | "dark" | "red";
 
 interface ButtonProps {
   label: string;
@@ -8,10 +15,33 @@ interface ButtonProps {
   style?: React.CSSProperties;
   link?: string;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
-  secondary?: boolean;
+  color: buttonColor;
 }
 
 type StyledButtonProps = Omit<ButtonProps, "label" | "icon">;
+
+const handleTypeStyle = (color: buttonColor) => {
+  switch (color) {
+    case "light":
+      return {
+        backgroundColor: COLOR_WHITE,
+        color: COLOR_BLACK,
+        backgroundHover: "#dedddc",
+      };
+    case "dark":
+      return {
+        backgroundColor: COLOR_BUTTON_SECONDARY,
+        color: COLOR_WHITE,
+        backgroundHover: "rgba(109, 109, 110, 0.9)",
+      };
+    case "red":
+      return {
+        backgroundColor: COLOR_RED,
+        color: COLOR_WHITE,
+        backgroundHover: COLOR_RED + "e6",
+      };
+  }
+};
 
 const StyledButton = styled.button<StyledButtonProps>`
   display: flex;
@@ -26,11 +56,9 @@ const StyledButton = styled.button<StyledButtonProps>`
   width: min-content;
   border: 0;
   border-radius: 4px;
-  background-color: ${(props) =>
-    props.secondary ? "rgba(109, 109, 110, 0.7)" : COLOR_WHITE};
-  color: ${(props) => (props.secondary ? COLOR_WHITE : "#141414")};
+  background-color: ${(props) => handleTypeStyle(props.color)?.backgroundColor};
+  color: ${(props) => handleTypeStyle(props.color)?.color};
   font-weight: 700;
-  cursor: pointer;
   width: auto;
   svg {
     height: 100%;
@@ -39,7 +67,8 @@ const StyledButton = styled.button<StyledButtonProps>`
   }
   :hover {
     background-color: ${(props) =>
-      props.secondary ? "rgba(109, 109, 110, 0.9)" : "#dedddc"};
+      handleTypeStyle(props.color)?.backgroundHover};
+    cursor: pointer;
   }
 
   :disabled {
@@ -55,12 +84,12 @@ function Button({
   onClick,
   style,
   link,
-  secondary = false,
+  color = "light",
 }: ButtonProps) {
   return (
     <StyledButton
       disabled={disabled}
-      secondary={secondary}
+      color={color}
       style={style}
       link={link}
       onClick={link ? () => (window.location.href = link) : onClick}

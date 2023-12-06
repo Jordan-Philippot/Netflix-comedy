@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import type { PropsWithChildren } from "react";
+import { COLOR_WHITE } from "utils/colors";
 
 type titleSize = "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 export type titleWeight = "200" | "400" | "600" | "800";
@@ -36,7 +37,8 @@ const StyledTitle = styled.h1<TitleProps>`
   margin: 0;
   line-height: ${(props) => handleSizeStyle(props.size)?.lineHeight};
   font-weight: ${(props) => props.weight};
-  color: white;
+  color: ${COLOR_WHITE};
+  position: relative;
 `;
 
 function Title({

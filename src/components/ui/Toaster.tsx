@@ -110,7 +110,7 @@ function Toaster({
   message,
   status = 'default',
   position = 'left',
-  duration = 2000,
+  duration = 5000,
   style,
 }: ToasterProps) {
   const [opened, setOpened] = useState(true)
@@ -150,12 +150,12 @@ function Toaster({
       style={style}
     >
       <Alert status={status} hasTitle>
-        <Text inverted style={{ paddingTop: 5 }}>
+        <Text style={{ paddingTop: 5 }}>
           {message}
         </Text>
 
         <StyledCrossContainer>
-          <SvgButton onClick={closeToaster}>
+          <SvgButton onClick={closeToaster} style={{width: "30px", height: "30px"}}>
             <Cross />
           </SvgButton>
         </StyledCrossContainer>

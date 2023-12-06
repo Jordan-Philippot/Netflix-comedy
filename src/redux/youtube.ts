@@ -1,59 +1,39 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { ChannelResponseType, VideoDataType } from "api/youtube.type";
+import { ChannelData } from "api/channel.type";
+import { VideoYoutubeType } from "api/video.type";
 
 interface YoutubeStateProps {
-  homepageVideo: VideoDataType;
-  channelPanamArt: ChannelResponseType;
-  channelRomanFrayssinet: ChannelResponseType;
+  homepageVideo: VideoYoutubeType;
+  channels: ChannelData[];
+  channelById: ChannelData;
 }
 
 const initialState = {
   homepageVideo: {
-    publishedAt: "",
     channelId: "",
     title: "",
-    description: "",
-    thumbnails: {},
-    channelTitle: "",
-    tags: [],
-    categoryId: "",
-    liveBroadcastContent: "",
-    localized: {
-      title: "",
-      description: "",
-    },
   },
-  channelPanamArt: {
-    items: [],
-  },
-  channelRomanFrayssinet: {
-    items: [],
-  },
+  channels: [],
+  channelById: { id: 0, title: "", channelId: "", videos: [] },
 } as YoutubeStateProps;
 
 const youtubeSlice = createSlice({
   name: "youtube",
   initialState,
   reducers: {
-    provideHomeVideo(state, action: PayloadAction<VideoDataType>) {
+    provideHomeVideo(state, action: PayloadAction<VideoYoutubeType>) {
       state.homepageVideo = action.payload;
     },
-    provideChannelPanamArt(state, action: PayloadAction<ChannelResponseType>) {
-      state.channelPanamArt = action.payload;
+    provideChannels(state, action: PayloadAction<ChannelData[]>) {
+      state.channels = action.payload;
     },
-    provideChannelRomanFrayssinet(
-      state,
-      action: PayloadAction<ChannelResponseType>
-    ) {
-      state.channelRomanFrayssinet = action.payload;
+    provideChannelById(state, action: PayloadAction<ChannelData>) {
+      state.channelById = action.payload;
     },
   },
 });
 
-export const {
-  provideHomeVideo,
-  provideChannelPanamArt,
-  provideChannelRomanFrayssinet,
-} = youtubeSlice.actions;
+export const { provideHomeVideo, provideChannels, provideChannelById } =
+  youtubeSlice.actions;
 export default youtubeSlice.reducer;

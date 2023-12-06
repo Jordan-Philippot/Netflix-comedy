@@ -35,7 +35,7 @@ const StyledHeader = styled.header<StyledNavProps>`
 `;
 
 const StyledContainer = styled.div`
-  padding: 40px 60px;
+  padding: 0px 60px;
 `;
 
 function MainLayout() {

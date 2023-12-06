@@ -1,86 +1,75 @@
-import ReactDOM from 'react-dom'
-import styled from 'styled-components'
-import type { PropsWithChildren } from 'react'
-import Overlay from 'components/ui/Overlay'
-//import { COLOR_FONT_DARK, COLOR_FONT_LIGHT, COLOR_WHITE, COLOR_PRIMARY_5 } from 'utils/colors'
-
-type size = 's' | 'm' | 'l'
+import ReactDOM from "react-dom";
+import styled from "styled-components";
+import type { PropsWithChildren } from "react";
+import Overlay from "components/ui/Overlay";
+import Cross from "components/icon/Cross";
+import { COLOR_BLACK, COLOR_BLACK_LIGHT } from "utils/colors";
 
 interface ModalProps {
-  opened: boolean
-  onClose: () => void
-  size?: size
+  opened: boolean;
+  onClose: () => void;
 }
 
-type StyledModalProps = Pick<ModalProps, 'size'>
-
-const handleSize = (size: size) => {
-  switch (size) {
-    case 's':
-      return '300px'
-    case 'm':
-      return '550px'
-    case 'l':
-      return 'auto'
-  }
-}
-
-const StyledModal = styled.div<StyledModalProps>`
+const StyledModal = styled.div`
   font-size: 10px;
-  font-size: 1em;
-  padding: 1em;
   position: absolute;
-  top: 0;
+  top: 5vh;
   bottom: 0;
   left: 0;
   right: 0;
   margin: auto;
-  background-color: "#fff";
-  border: 2px solid #000;
-  width: ${({ size = 'l' }) => handleSize(size)};
+  background: ${COLOR_BLACK};
+  border-radius: 6px;
+  width: 50vw;
   max-width: 80%;
-  max-height: 80vh;
   height: fit-content;
-  border-radius: 0.5em;
+  height: 95vh;
   overflow: auto;
   cursor: default;
-`
+  box-shadow: rgb(0 0 0 / 75%) 0px 3px 10px;
+  transition: opacity 0.2s linear;
+`;
 
 const StyledModalCross = styled.div`
-  position: sticky;
-  top: 0;
-  float: right;
-  background-color: #fff;
-  color: #000;
   font-size: 1.5em;
   font-weight: bold;
-  line-height: 0.7em;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  right: 0;
+  margin: 1em;
+  z-index: 2;
+  cursor: pointer;
+  background-color: ${COLOR_BLACK_LIGHT};
+  color: white;
+  border-radius: 50%;
+  height: 24px;
+  padding: 12px;
+  width: 24px;
+  border: 0;
+`;
 
-  :hover {
-    cursor: pointer;
-  }
-`
-
-function Modal({ children, opened, size = 'm', onClose }: PropsWithChildren<ModalProps>) {
-  if (!opened) return null
+function Modal({ children, opened, onClose }: PropsWithChildren<ModalProps>) {
+  if (!opened) return null;
 
   return ReactDOM.createPortal(
     <Overlay onClick={onClose}>
       <StyledModal
         role="dialog"
         onMouseDown={(e) => {
-          e.stopPropagation()
+          e.stopPropagation();
         }}
-        size={size}
       >
         <StyledModalCross className="close" onClick={onClose}>
-          ×
+          <Cross/>
         </StyledModalCross>
         {children}
       </StyledModal>
     </Overlay>,
-    document.body,
-  )
+    document.body
+  );
 }
 
-export default Modal
+export default Modal;

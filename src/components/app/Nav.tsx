@@ -1,19 +1,22 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { useAuth } from "hooks/useAuth";
 
 // ----------
 // Component
 // ----------
-import Logo from "components/icon/Logo";
 import NavItem from "components/ui/NavItem";
+import Text from "components/ui/Text";
+import Logo from "components/icon/Logo";
 import Arrow from "components/icon/Arrow";
+import Notification from "components/icon/Notification";
+import Search from "components/icon/Search";
 
 // ----------
 // Assets
 // ----------
 import Avatar from "assets/avatar.png";
-import Notifications from "assets/Notification.svg";
-import Search from "assets/Search.svg";
+import Tooltip from "components/ui/Tooltip";
 
 const StyledNav = styled.nav`
   position: relative;
@@ -45,40 +48,68 @@ const StyledAvatarContainer = styled.div`
 `;
 
 const StyledAvatarImg = styled.img`
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   margin-left: 25px;
+`;
+const StyledSearchContainer = styled.div`
+  margin: auto 15px;
+  cursor: pointer;
 `;
 
 function Nav() {
+  let navigate = useNavigate();
+
+  const { logout, user } = useAuth();
+
   return (
-    <StyledNav>
-      <Link to="">
-        <Logo />
-      </Link>
+    <>
+      <StyledNav>
+        <Link to="/">
+          <Logo />
+        </Link>
 
-      <StyledLinkNav>
-        <NavItem labelKey="Accueil" path="" />
-        <NavItem labelKey="Vidéos" path="/videos" />
-        <NavItem labelKey="Podcasts" path="/podcasts" />
-      </StyledLinkNav>
+        <StyledLinkNav>
+          <NavItem labelKey="Vidéos" path="/videos" />
+          <NavItem labelKey="Podcasts" path="/podcasts" />
+        </StyledLinkNav>
 
-      <StyledRightNav>
-        <NavItem labelKey={<img src={Search} alt="search" />} path="search" />
+        <StyledRightNav>
+          <StyledSearchContainer onClick={() => navigate("/search")}>
+            <Search />
+          </StyledSearchContainer>
 
-        <NavItem
-          labelKey={<img src={Notifications} alt="notifications" />}
-          path="notifications"
-        />
-        <NavItem labelKey="Ma liste" path="list" />
+          {user ? (
+            <>
+              <NavItem labelKey={<Notification />} path="notifications" />
+              <NavItem labelKey="Ma liste" path="user/list" />
 
-        <StyledAvatarContainer>
-          <StyledAvatarImg src={Avatar} alt="avatar logged" />
-          <Arrow rotation={"bottom"} />
-        </StyledAvatarContainer>
-      </StyledRightNav>
-    </StyledNav>
+              <Tooltip
+                isClickable
+                label={
+                  <StyledAvatarContainer>
+                    <StyledAvatarImg src={Avatar} alt="avatar logged" />
+                    <Arrow rotation={"bottom"} />
+                  </StyledAvatarContainer>
+                }
+                position="bottom"
+              >
+                <Text color="dark">{user?.firstname}</Text>
+                <Link to="user/profile">Mon profil</Link>
+                <Text color="dark" onClick={() => logout()}>
+                  Se déconnecter
+                </Text>
+              </Tooltip>
+            </>
+          ) : (
+            <NavItem labelKey="Connexion" path="/login" />
+          )}
+        </StyledRightNav>
+      </StyledNav>
+    </>
   );
 }
 
 export default Nav;
+
+

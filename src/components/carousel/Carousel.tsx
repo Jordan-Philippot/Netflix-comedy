@@ -1,14 +1,25 @@
+import { Link } from "react-router-dom";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import styled from "styled-components";
-import { ItemType } from "api/youtube.type";
-import CarouselItem from "./CarouselItem";
+import { COLOR_BLACK, COLOR_BOX_SHADOW, COLOR_GREY_LIGHT } from "utils/colors";
+
+// --------------
+// Components
+// --------------
 import Arrow from "components/icon/Arrow";
 import Title from "components/ui/Title";
+import CardItem from "../CardItem";
 
-interface CarouselItems {
-  items: ItemType[];
+// --------------
+// Api / Redux
+// --------------
+import { VideoDataType } from "api/video.type";
+import { ChannelData } from "api/channel.type";
+
+interface CardItems {
+  channel: ChannelData;
 }
 
 const StyledCarouselContainer = styled.div`
@@ -20,16 +31,33 @@ const StyledArrow = styled.div`
   justify-content: center;
   align-items: center;
   height: 100%;
-  width: auto;
-  background-color: black;
+  width: 35px;
+  background-color: ${COLOR_BLACK};
+  box-shadow: 0 0 10px 1px ${COLOR_BOX_SHADOW};
   opacity: 0.7;
   color: white;
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+
   :hover {
-    opacity: 1;
-    background-color: black;
+    opacity: 0.9;
+    background-color: ${COLOR_BLACK};
+    box-shadow: 0 0 10px 2px ${COLOR_BOX_SHADOW};
+    z-index: 3;
   }
   :before {
     content: "";
+  }
+`;
+
+const StyledTitleLink = styled(Link)`
+  text-decoration: none;
+  cursor: pointer;
+  &:hover,
+  &:focus {
+    h2 {
+      color: ${COLOR_GREY_LIGHT};
+    }
   }
 `;
 
@@ -58,6 +86,7 @@ const settings = {
   slidesToScroll: 5,
   nextArrow: <NextArrow />,
   prevArrow: <PrevArrow />,
+  swipe: false,
   responsive: [
     {
       breakpoint: 1799,
@@ -90,17 +119,27 @@ const settings = {
   ],
 };
 
-export default function Carousel({ items }: CarouselItems) {
+export default function Carousel({ channel }: CardItems) {
   return (
     <StyledCarouselContainer>
-      <Title size="h2" weight="600" style={{ marginBottom: "15px" }}>
-        {items[0]?.snippet && items[0].snippet.channelTitle}
-      </Title>
+      <StyledTitleLink to={"/channel/" + channel.customUrl}>
+        <Title
+          size="h2"
+          weight="600"
+          style={{ marginBottom: "15px", zIndex: 2, cursor: "pointer" }}
+        >
+          {channel && channel.title}
+        </Title>
+      </StyledTitleLink>
 
       <Slider {...settings}>
-        {items &&
-          items.map((item: ItemType, key) => (
-            <CarouselItem item={item} key={key} />
+        {channel.videos &&
+          channel.videos.map((item: VideoDataType, key) => (
+            <CardItem
+              item={item}
+              key={key}
+              channel={(({ videos, ...channel }) => channel)(channel)}
+            />
           ))}
       </Slider>
     </StyledCarouselContainer>
