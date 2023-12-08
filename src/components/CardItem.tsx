@@ -4,7 +4,7 @@ import { COLOR_BLACK } from "utils/colors";
 import { useModal } from "components/context/ModalContext";
 
 // --------------
-// Api / Redux
+// Api 
 // --------------
 import { VideoDataType } from "api/video.type";
 import { ChannelType } from "api/channel.type";

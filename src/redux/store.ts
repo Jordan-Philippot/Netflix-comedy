@@ -3,13 +3,9 @@ import { combineReducers } from "redux";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import appReducer from "./app";
-import youtubeReducer from "./youtube";
-import userReducer from "./user";
 
 const rootReducer = combineReducers({
   app: appReducer,
-  youtube: youtubeReducer,
-  user: userReducer
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

@@ -1,3 +1,5 @@
+import { ChannelData } from "./channel.type";
+
 export interface ThumbnailType {
   url: string;
   width: number;
@@ -33,7 +35,7 @@ export interface VideoYoutubeType {
 export type VideoDataType = {
   id: number;
   publishedAt?: string;
-  channel: number;
+  channel: ChannelData;
   title: string;
   thumbnails?: {
     high?: ThumbnailType;

@@ -1,12 +1,12 @@
-import { useSelector } from "react-redux";
-import { RootState } from "redux/store";
 import styled from "styled-components";
+import { useQuery } from "@tanstack/react-query";
 
 // --------------
 // Components
 // --------------
 import Carousel from "./Carousel";
-import CarouselModal from "../VideoModal";
+import CarouselModal from "components/videoModal/VideoModal";
+import { getChannelsVideos } from "api/channel";
 
 const StyledCarouselsContainer = styled.main`
   margin-top: -140px;
@@ -15,11 +15,18 @@ const StyledCarouselsContainer = styled.main`
 `;
 
 export default function CarouselsContainer() {
-  const { channels } = useSelector((state: RootState) => state.youtube);
+
+  const { data: channels } = useQuery({
+    queryKey: ["channels"],
+    queryFn: () => getChannelsVideos(),
+  });
 
   return (
     <StyledCarouselsContainer>
-      {channels && channels.map((channel, key) => <Carousel channel={channel} key={key}/>)}
+      {channels &&
+        channels.map((channel, key) => (
+          <Carousel channel={channel} key={key} />
+        ))}
 
       <CarouselModal />
     </StyledCarouselsContainer>

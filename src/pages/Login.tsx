@@ -48,13 +48,13 @@ export default function Login() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  const { login, user } = useAuth();
+  const { login, isLogged } = useAuth();
 
   useEffect(() => {
-    if (user?.email) {
+    if (isLogged) {
       navigate("/");
     }
-  }, [user, navigate]);
+  }, [isLogged, navigate]);
 
   const btnStyle = {
     width: "100%",

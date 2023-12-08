@@ -15,8 +15,3 @@ export const getAuthenticationConfig = () => ({
     Authorization: `Bearer ` + getAccessToken(),
   },
 });
-// export const getSavedTrackList = async (): Promise<SavedTrackType[]> => {
-//     const response = await fetch(`${BASE_URL}me/tracks`, getDefaultConfig())
-//     const data = await response.json();
-//     return data.items
-// }

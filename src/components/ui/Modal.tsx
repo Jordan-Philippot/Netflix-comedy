@@ -22,9 +22,9 @@ const StyledModal = styled.div`
   border-radius: 6px;
   width: 50vw;
   max-width: 80%;
-  height: fit-content;
   height: 95vh;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   cursor: default;
   box-shadow: rgb(0 0 0 / 75%) 0px 3px 10px;
   transition: opacity 0.2s linear;

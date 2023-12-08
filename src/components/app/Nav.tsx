@@ -71,7 +71,9 @@ function Nav() {
 
         <StyledLinkNav>
           <NavItem labelKey="Vidéos" path="/videos" />
-          <NavItem labelKey="Podcasts" path="/podcasts" />
+          {user && (
+            <NavItem labelKey="Abonnements" path="/user/subscriptions" />
+          )}
         </StyledLinkNav>
 
         <StyledRightNav>
@@ -111,5 +113,3 @@ function Nav() {
 }
 
 export default Nav;
-
-

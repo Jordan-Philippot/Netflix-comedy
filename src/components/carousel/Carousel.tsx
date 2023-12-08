@@ -13,7 +13,7 @@ import Title from "components/ui/Title";
 import CardItem from "../CardItem";
 
 // --------------
-// Api / Redux
+// Api
 // --------------
 import { VideoDataType } from "api/video.type";
 import { ChannelData } from "api/channel.type";

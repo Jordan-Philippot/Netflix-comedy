@@ -6,11 +6,16 @@ import {
   removeSubscription,
   getUserSubscriptions,
 } from "api/subscription";
+import { useAuth } from "./useAuth";
 
 interface SubscriptionHook {
   userSubscriptions: SubscriptionType[] | undefined;
   addSubscription: (channelId: string) => void;
   removeSubscription: (channelId: string) => void;
+  findUserSubscription: (
+    channelId: string,
+    setIsSubscribed: (bool: boolean) => void
+  ) => void;
 }
 
 export function useSubscription(): SubscriptionHook {
@@ -22,15 +27,21 @@ export function useSubscription(): SubscriptionHook {
     queryFn: () => getUserSubscriptions(),
   });
 
+  const { user } = useAuth();
+
   const mutationUserSubscription = useMutation({
     mutationFn: getUserSubscriptions,
     mutationKey: ["userSubscriptions"],
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["userSubscriptions"] });
-      const initialDataQuery = await queryClient.getQueryData([
-        "userSubscriptions",
-      ]);
-      await queryClient.setQueryData(["userSubscriptions"], initialDataQuery);
+      if (user) {
+        await queryClient.invalidateQueries({
+          queryKey: ["userSubscriptions"],
+        });
+        const initialDataQuery = await queryClient.getQueryData([
+          "userSubscriptions",
+        ]);
+        await queryClient.setQueryData(["userSubscriptions"], initialDataQuery);
+      }
     },
     onError: () => {
       queryClient.removeQueries({ queryKey: ["userSubscriptions"] });
@@ -53,7 +64,7 @@ export function useSubscription(): SubscriptionHook {
     try {
       const response = await removeSubscription(channelId);
       if (response) {
-        sendInformation("Supprimé de votre liste");
+        sendInformation("Supprimé de vos abonnements");
         mutationUserSubscription.mutate();
       }
     } catch (error) {
@@ -61,9 +72,24 @@ export function useSubscription(): SubscriptionHook {
     }
   };
 
+  function findUserSubscription(
+    channelId: string,
+    setIsSubscribed: (bool: boolean) => void
+  ) {
+    if (data) {
+      if (data.find((subscription) => subscription?.channel.channelId === channelId)) {
+        setIsSubscribed(true);
+      } else {
+        setIsSubscribed(false);
+      }
+    }
+  }
+
   return {
     userSubscriptions: data,
     addSubscription: handleAddSubscription,
     removeSubscription: handleRemove,
+    findUserSubscription,
+
   };
 }

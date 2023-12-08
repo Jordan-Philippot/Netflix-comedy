@@ -1,38 +1,27 @@
 import styled from "styled-components";
 import { useQuery } from "@tanstack/react-query";
-import { RefObject, useEffect, useRef, useState } from "react";
+import { RefObject, useRef } from "react";
 import { COLOR_GREY_LIGHT, COLOR_WHITE } from "utils/colors";
+import useToggle from "hooks/useToggle";
+// import { controlBtnType } from "utils/controlVideo";
 
 // ----------
 // Components / UI
 // ----------
 import Button from "components/ui/Button";
-import Play from "components/icon/Play";
 import InfoCircle from "components/icon/InfoCircle";
 import CarouselsContainer from "components/carousel/CarouselsContainer";
-
-// ----------
-// Api / Redux
-// ----------
-import { useDispatch } from "react-redux";
-import { provideChannels, provideHomeVideo } from "redux/youtube";
-import { getVidéoById, getVidéoYoutubeById } from "api/video";
-import { getChannelsVideos } from "api/channel";
 import Loader from "components/ui/Loader";
-import { useLike } from "hooks/useLike";
-import { LikeTypeType } from "api/like.type";
-import { removeLike } from "api/like";
-import { useSubscription } from "hooks/useSubscription";
+import ButtonPlay from "components/ui/ButtonPlay";
 
 // ----------
-// Assets
+// Api 
 // ----------
-// import VideoHomepage from "videos/panamArt/Paname_Comedy_Club___Les_radins.mp4";
+import { getVidéoYoutubeById } from "api/video";
+
 
 interface VideosProps {
-  // ref: RefObject<HTMLVideoElement>;
   ref: RefObject<HTMLIFrameElement>;
-
 }
 
 const StyledContainerHome = styled.div`
@@ -80,12 +69,11 @@ const StyledBtnContainer = styled.div`
 `;
 
 export default function Home() {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   // const videoHomepageId = process.env.REACT_APP_HOMEPAGE_VIDEO_ID as string;
   const videoHomepageId = "Z7M1mW9Xlgc";
 
-  // const videoRef: RefObject<HTMLVideoElement> = useRef(null);
   const videoRef: RefObject<HTMLIFrameElement> = useRef(null);
 
   const { data: videoHomepage } = useQuery({
@@ -93,41 +81,16 @@ export default function Home() {
     queryFn: () => getVidéoYoutubeById(videoHomepageId),
   });
 
-  const { data: channels } = useQuery({
-    queryKey: ["channels"],
-    queryFn: () => getChannelsVideos(),
-  });
 
-  useEffect(() => {
-    if (videoHomepage) dispatch(provideHomeVideo(videoHomepage));
-    if (channels) dispatch(provideChannels(channels));
-  }, [videoHomepage, channels, dispatch]);
+  // useEffect(() => {
+  //   if (videoHomepage) dispatch(provideHomeVideo(videoHomepage));
+  //   if (channels) dispatch(provideChannels(channels));
+  // }, [videoHomepage, channels, dispatch]);
 
   // --------------------------
   // Loading Vidéo autoplay
   // --------------------------
-  const [load, setLoad] = useState(false);
-
-  useEffect(() => {
-    if (!load)
-      setTimeout(() => {
-        setLoad(true);
-      }, 1000);
-  }, [load]);
-
-  function controlVideo(vidFunc: "playVideo" | "pauseVideo") {
-    var iframe = document.getElementsByTagName("iframe")[0].contentWindow;
-    if (iframe) {
-      iframe.postMessage(
-        '{"event":"command","func":"' + vidFunc + '","args":""}',
-        "*"
-      );
-    }
-  }
-
-  // useEffect(() => {
-  //   if (load) controlVideo("playVideo");
-  // }, [load]);
+  const [playedVideo, setPlayedVideo] = useToggle(false);
 
   // window.addEventListener("scroll", function () {
   //   const windowHeght = window.innerHeight as number;
@@ -141,24 +104,11 @@ export default function Home() {
   // ----------------------------
   // End Loading Vidéo autoplay
   // ---------------------------
-  const { removeSubscription } = useSubscription();
   return (
     <>
-      {load && videoHomepage ? (
+      {videoHomepage ? (
         <>
           <StyledContainerHome>
-            {/* <StyledVideoHome
-              src={VideoHomepage}
-              controls
-              ref={videoRef}
-              //muted={isMuted ? true : false}
-              poster={
-                videoHomepage.thumbnails &&
-                videoHomepage.thumbnails.maxres?.url
-              }
-            >
-              <source type="video/mp4" />
-            </StyledVideoHome> */}
             <StyledIframeHome
               src={
                 "https://www.youtube.com/embed/" +
@@ -179,23 +129,22 @@ export default function Home() {
                   videoHomepage.description.substring(0, 150) + "..."}
               </StyledDescriptionIframe>
               <StyledBtnContainer>
-                <Button
-                  label={"Lecture"}
-                  color="light"
-                  icon={<Play inverted />}
-                  onClick={() => controlVideo("playVideo")}
+                <ButtonPlay
+                  videoRef={videoRef}
+                  setPlayedVideo={setPlayedVideo}
+                  playedVideo={playedVideo}
                 />
                 <Button
                   color="dark"
                   label={"Informations"}
                   icon={<InfoCircle />}
-                  onClick={() => removeSubscription("UChRDMSM10aB3lr_4rBPO_VA")}
+                  onClick={() => console.log("ok")}
                 />
               </StyledBtnContainer>
             </StyledHomeInfos>
           </StyledContainerHome>
 
-          {/* <CarouselsContainer /> */}
+          <CarouselsContainer />
         </>
       ) : (
         <Loader />

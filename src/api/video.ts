@@ -24,4 +24,3 @@ export const getVidéoById = async (videoId: string): Promise<VideoDataType> => 
   const data = await response.json();
   return data;
 };
-

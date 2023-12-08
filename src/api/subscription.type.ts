@@ -1,9 +1,11 @@
-import { ChannelType } from "./channel.type";
+import { ChannelData } from "./channel.type";
 import { UserType } from "./user.type";
+import { VideoDataType } from "./video.type";
 
 export interface SubscriptionType {
   id: number;
-  channel: ChannelType;
+  channel: ChannelData;
   user: UserType;
+  videos: VideoDataType[];
   createdAt: string;
 }

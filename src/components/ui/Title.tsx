@@ -46,7 +46,7 @@ function Title({
   size = "h1",
   weight = "400",
   style,
-  onClick,
+  onClick
 }: PropsWithChildren<TitleProps>) {
   return (
     <StyledTitle
