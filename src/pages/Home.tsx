@@ -6,7 +6,7 @@ import useToggle from "hooks/useToggle";
 // import { controlBtnType } from "utils/controlVideo";
 
 // ----------
-// Components / UI
+// Component
 // ----------
 import Button from "components/ui/Button";
 import InfoCircle from "components/icon/InfoCircle";
@@ -15,10 +15,10 @@ import Loader from "components/ui/Loader";
 import ButtonPlay from "components/ui/ButtonPlay";
 
 // ----------
-// Api 
+// Api
 // ----------
 import { getVidéoYoutubeById } from "api/video";
-
+import { device } from "utils/breakpoints";
 
 interface VideosProps {
   ref: RefObject<HTMLIFrameElement>;
@@ -28,39 +28,65 @@ const StyledContainerHome = styled.div`
   position: relative;
   z-index: 0;
   min-width: 100vw;
-  height: 100vh;
-  margin: -40px 0 0 -60px;
+  height: auto;
+  margin-left: -60px;
+  margin-top: 80px;
+  @media ${device.laptopL} {
+    margin: -40px 0 0 -60px;
+    height: 100vh;
+  }
 `;
 
 const StyledIframeHome = styled.iframe<VideosProps>`
+  position: absolute;
+  top: 0;
   width: 100%;
-  height: 100vh;
+  height: auto;
   border: none;
+  @media ${device.laptopL} {
+    position: relative;
+    top: 0;
+
+    height: 100vh;
+  }
 `;
 
 const StyledHomeInfos = styled.div`
   position: relative;
-  top: -50%;
-  transform: translateY(calc(-50% - 40px));
+  top: 0;
   z-index: 2;
-  width: 40vw;
-  margin-left: 40px;
+  width: 90vw;
+  margin-left: 10px;
+
+  @media ${device.laptopL} {
+    top: -50%;
+    transform: translateY(calc(-50% - 40px));
+    z-index: 2;
+    width: 40vw;
+    margin-left: 40px;
+  }
 `;
 
 const StyledTitleIframe = styled.h2`
-  font-size: 36px;
+  font-size: 16px;
   color: ${COLOR_WHITE};
   text-transform: uppercase;
   text-shadow: 0px 0px 5px #00000030;
+  @media ${device.laptopL} {
+    font-size: 36px;
+  }
 `;
 
 const StyledDescriptionIframe = styled.p`
   margin-top: 15px;
-  font-size: 18px;
+  font-size: 12px;
   color: ${COLOR_GREY_LIGHT};
   font-style: italic;
   fon-weight: bold;
   text-shadow: 0px 0px 5px #00000030;
+  @media ${device.laptopL} {
+    font-size: 18px;
+  }
 `;
 
 const StyledBtnContainer = styled.div`
@@ -69,8 +95,6 @@ const StyledBtnContainer = styled.div`
 `;
 
 export default function Home() {
-  // const dispatch = useDispatch();
-
   // const videoHomepageId = process.env.REACT_APP_HOMEPAGE_VIDEO_ID as string;
   const videoHomepageId = "Z7M1mW9Xlgc";
 
@@ -80,12 +104,6 @@ export default function Home() {
     queryKey: ["videoHomepage"],
     queryFn: () => getVidéoYoutubeById(videoHomepageId),
   });
-
-
-  // useEffect(() => {
-  //   if (videoHomepage) dispatch(provideHomeVideo(videoHomepage));
-  //   if (channels) dispatch(provideChannels(channels));
-  // }, [videoHomepage, channels, dispatch]);
 
   // --------------------------
   // Loading Vidéo autoplay
@@ -104,6 +122,7 @@ export default function Home() {
   // ----------------------------
   // End Loading Vidéo autoplay
   // ---------------------------
+
   return (
     <>
       {videoHomepage ? (

@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import "./App.css";
 
 // ----------
@@ -12,8 +12,24 @@ import Register from "pages/Register";
 import Profile from "pages/Profile";
 import UserFavorites from "pages/UserFavorites";
 import UserSubscriptions from "pages/UserSubscriptions";
+import { useAuth } from "hooks/useAuth";
+import { useEffect } from "react";
 
 function App() {
+  const { user } = useAuth();
+  const location = useLocation();
+  let navigate = useNavigate();
+
+  useEffect(() => {
+    console.log(location.pathname, user);
+
+    if (!user?.email && location.pathname.match(/user/)) {
+      navigate("/login");
+    } else if (user?.email && location.pathname.match(/login|register/)) {
+      navigate("/");
+    }
+  }, [location, navigate, user]);
+
   return (
     <Routes>
       <Route path="/" element={<MainLayout />}>

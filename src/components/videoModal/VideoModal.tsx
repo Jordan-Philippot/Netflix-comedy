@@ -25,6 +25,7 @@ import Minus from "components/icon/Minus";
 import ChannelDescription from "./ChannelDescription";
 import Check from "components/icon/Check";
 import LikeFull from "components/icon/LikeFull";
+import { useAuth } from "hooks/useAuth";
 
 interface VideosProps {
   ref: RefObject<HTMLIFrameElement>;
@@ -75,7 +76,7 @@ const StyledDescriptionContainer = styled.div`
 
 export default function VideoModal() {
   const { selectedVideo, isModalOpen, closeModal } = useModal();
-
+  const { user } = useAuth();
   const { addLike, removeLike, userLikeList, findUserLike } = useLike();
   const { addFavorite, findUserFavorite, userFavorites, removeFavorite } =
     useFavorite();
@@ -135,6 +136,7 @@ export default function VideoModal() {
               position="top"
               label={
                 <SvgButton
+                  disabled={!user}
                   onClick={() => {
                     isFavorite
                       ? removeFavorite(selectedVideo.videoId)
@@ -162,6 +164,7 @@ export default function VideoModal() {
               position="top"
               label={
                 <SvgButton
+                  disabled={!user}
                   onClick={() =>
                     isLiked
                       ? removeLike(selectedVideo.videoId)

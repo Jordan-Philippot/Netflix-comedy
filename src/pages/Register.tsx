@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import { useAuth } from "hooks/useAuth";
+import { COLOR_GREY_LIGHT, COLOR_WHITE } from "utils/colors";
 
 // ----------
 // Components
@@ -16,24 +17,16 @@ import Input from "components/ui/Input";
 import { StyledFormContainer, StyledMainContainer } from "./Login";
 
 export default function Register() {
-  const { register, user, errors } = useAuth();
+  const { register, errors } = useAuth();
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [firstname, setFirstname] = useState<string>("");
   const [lastname, setLastname] = useState<string>("");
 
-  let navigate = useNavigate();
-
   const handleRegister = async () => {
     register(email, password, firstname, lastname);
   };
-
-  useEffect(() => {
-    if (user?.email) {
-      navigate("/");
-    }
-  }, [user, navigate]);
 
   const inputStyle = {
     marginTop: "20px",
@@ -41,7 +34,7 @@ export default function Register() {
   };
   const btnStyle = {
     width: "100%",
-    margin: "35px 0",
+    margin: "35px 0 25px 0",
   };
 
   return (
@@ -92,11 +85,28 @@ export default function Register() {
           color="red"
           style={btnStyle}
         />
-        <Link to="help" style={{ textAlign: "right" }}>
+        <Link
+          to="/help"
+          style={{
+            textAlign: "right",
+            color: COLOR_GREY_LIGHT,
+            fontSize: "14px",
+          }}
+        >
           Besoin d'aide ?
         </Link>
-        <Text style={{ marginTop: "15px" }}>
-          Déjà inscrit(e) ?<Link to="/login"> Connectez-vous</Link>
+        <Text style={{ marginTop: "30px" }}>
+          Déjà inscrit(e) ?
+          <Link
+            to="/login"
+            style={{
+              color: COLOR_WHITE,
+              marginLeft: "10px",
+              fontWeight: "bold",
+            }}
+          >
+            Connectez-vous
+          </Link>
         </Text>
       </StyledFormContainer>
     </StyledMainContainer>

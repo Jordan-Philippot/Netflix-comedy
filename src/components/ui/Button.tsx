@@ -73,7 +73,7 @@ const StyledButton = styled.button<StyledButtonProps>`
 
   :disabled {
     opacity: 0.2;
-    cursor: default;
+    cursor: not-allowed;
   }
 `;
 

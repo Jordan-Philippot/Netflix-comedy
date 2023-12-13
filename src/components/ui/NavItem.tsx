@@ -15,7 +15,7 @@ interface StyledNavItemProps {
 const StyledNavItem = styled.div<StyledNavItemProps>`
   padding: 10px 20px;
   color: ${(props) => (props.isActive ? COLOR_WHITE : COLOR_GREY_LIGHT)};
-  font-size: 16px;
+  font-size: 14px;
   text-decoration: none;
   font-weight: ${(props) => (props.isActive ? "bold" : "normal")};
   margin: auto;

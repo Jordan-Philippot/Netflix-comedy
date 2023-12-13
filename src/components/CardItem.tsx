@@ -3,9 +3,9 @@ import { unescapeHtml } from "utils/unescapeHtml";
 import { COLOR_BLACK } from "utils/colors";
 import { useModal } from "components/context/ModalContext";
 
-// --------------
+// ------
 // Api 
-// --------------
+// ------
 import { VideoDataType } from "api/video.type";
 import { ChannelType } from "api/channel.type";
 
@@ -17,8 +17,8 @@ interface CardItemProps {
 const StyledCardItem = styled.div`
   position: relative;
   cursor: pointer;
-  margin: 15px;
-  border-radius: 6px;
+  margin: 0 5px;
+  border-radius: 2px;
   max-width: 350px;
   height: auto;
   :hover img {
@@ -35,7 +35,7 @@ const StyledItemImage = styled.img`
   backface-visibility: hidden;
   width: 100%;
   height: auto;
-  border-radius: 6px;
+  border-radius: 2px;
 `;
 const StyledOverlayImg = styled.div`
   transition: 0.5s ease;
@@ -50,7 +50,7 @@ const StyledOverlayImg = styled.div`
   width: 100%;
   height: 100%;
   background-color: ${COLOR_BLACK}EE;
-  border-radius: 6px;
+  border-radius: 2px;
 `;
 
 const StyledTitle = styled.div`

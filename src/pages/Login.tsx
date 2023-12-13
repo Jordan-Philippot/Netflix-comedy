@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { COLOR_BLACK } from "utils/colors";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { COLOR_BLACK, COLOR_GREY_LIGHT, COLOR_WHITE } from "utils/colors";
 import { useAuth } from "hooks/useAuth";
 
 // ----------
@@ -18,6 +18,7 @@ import Input from "components/ui/Input";
 import NetflixBg from "assets/netflix_bg.jpg";
 
 export const StyledMainContainer = styled.main`
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -40,27 +41,22 @@ export const StyledFormContainer = styled.div`
   padding: 50px 50px 100px 50px;
   width: fit-content;
   height: fit-content;
+  a {
+    color: white;
+  }
 `;
 
 export default function Login() {
-  let navigate = useNavigate();
-
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  const { login, isLogged } = useAuth();
-
-  useEffect(() => {
-    if (isLogged) {
-      navigate("/");
-    }
-  }, [isLogged, navigate]);
+  const { login } = useAuth();
 
   const btnStyle = {
     width: "100%",
-    margin: "35px 0",
+    margin: "35px 0 25px 0",
   };
-  
+
   return (
     <StyledMainContainer>
       <StyledFormContainer>
@@ -87,12 +83,28 @@ export default function Login() {
           color="red"
           style={btnStyle}
         />
-        <Link to="help" style={{ textAlign: "right" }}>
+        <Link
+          to="/help"
+          style={{
+            textAlign: "right",
+            color: COLOR_GREY_LIGHT,
+            fontSize: "14px",
+          }}
+        >
           Besoin d'aide ?
         </Link>
-        <Text style={{ marginTop: "15px" }}>
+        <Text color={"grey"} style={{ marginTop: "30px" }}>
           Première visite sur Netflix ?
-          <Link to="/register"> Inscrivez-vous</Link>
+          <Link
+            to="/register"
+            style={{
+              color: COLOR_WHITE,
+              marginLeft: "10px",
+              fontWeight: "bold",
+            }}
+          >
+            Inscrivez-vous
+          </Link>
         </Text>
       </StyledFormContainer>
     </StyledMainContainer>

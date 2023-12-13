@@ -21,7 +21,6 @@ interface AuthHook {
     lastname: string
   ) => void;
   errors: FieldErrors | undefined;
-  isLogged: boolean | undefined;
 }
 
 export function useAuth(): AuthHook {
@@ -30,7 +29,6 @@ export function useAuth(): AuthHook {
   const { sendInformation, sendError } = useMessage();
 
   const [errors, setErrors] = useState<FieldErrors | undefined>();
-  const [isLogged, setIsLogged] = useState<boolean>();
 
   const { data } = useQuery({
     queryKey: ["user"],
@@ -45,11 +43,9 @@ export function useAuth(): AuthHook {
       await queryClient.invalidateQueries({ queryKey: ["user"] });
       const initialDataQuery = await queryClient.getQueryData(["user"]);
       await queryClient.setQueryData(["user"], initialDataQuery);
-      setIsLogged(true);
     },
-    onError: () => {
-      setIsLogged(false);
-
+    onError: (e) => {
+      console.log(e, "aaa");
       queryClient.removeQueries({ queryKey: ["user"] });
       queryClient.removeQueries({ queryKey: ["userLikeList"] });
       queryClient.removeQueries({ queryKey: ["userSubscriptions"] });
@@ -134,6 +130,5 @@ export function useAuth(): AuthHook {
     register: registerHandler,
     profile: profileHandler,
     errors,
-    isLogged,
   };
 }

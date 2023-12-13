@@ -34,6 +34,7 @@ export default function Profile() {
     }
   }, [user]);
 
+  
   const inputStyle = {
     marginTop: "20px",
     marginBottom: "5px",

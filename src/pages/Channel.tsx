@@ -1,8 +1,14 @@
+import { useEffect, useState } from "react";
 import { getChannelVideos } from "api/channel";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { COLOR_BLACK, COLOR_WHITE } from "utils/colors";
+import {
+  COLOR_BLACK,
+  COLOR_WHITE,
+} from "utils/colors";
+import { useSubscription } from "hooks/useSubscription";
+import { useAuth } from "hooks/useAuth";
 
 // --------------
 // Components
@@ -13,12 +19,9 @@ import Button from "components/ui/Button";
 import Text from "components/ui/Text";
 import Wifi from "components/icon/Wifi";
 import Title from "components/ui/Title";
-import { useSubscription } from "hooks/useSubscription";
-import { useEffect, useState } from "react";
 
 const StyledChannelData = styled.div`
   display: flex;
-  margin-bottom: 15px;
   margin-top: 120px;
   padding: 0 20px;
 `;
@@ -28,6 +31,7 @@ const StyledVideosContainer = styled.div`
   justify-content: space-between;
   margin: 50px auto;
   padding: 0 20px;
+  gap: 80px 0;
 `;
 
 const StyledChannelBannerContainer = styled.div`
@@ -43,9 +47,16 @@ const StyledBannerInfos = styled.div`
 `;
 const StyledHr = styled.hr`
   display: block;
-  margin: 35px 80px;
+  margin: 0 20px;
+`;
+
+const StyledDescription = styled.div`
+  display: block;
+  position: relative;
+  margin: 40px;
 `;
 export default function Channel() {
+  const { user } = useAuth();
   const { channelId } = useParams() as { channelId: string };
   const { data: channelById } = useQuery({
     queryKey: ["channelById"],
@@ -70,6 +81,8 @@ export default function Channel() {
       {/* Channel Informations */}
       {channelById && (
         <>
+          {/* Banner informations */}
+
           <StyledChannelData>
             <StyledChannelBannerContainer>
               <StyledBanner
@@ -105,6 +118,7 @@ export default function Channel() {
 
             <Button
               label={isSubscribed ? "Abonné(e)" : "S'abonner"}
+              disabled={!user}
               icon={<Wifi />}
               onClick={() => {
                 isSubscribed
@@ -119,7 +133,12 @@ export default function Channel() {
               }}
             />
           </StyledChannelData>
-          <Text style={{ padding: "0 80px" }}> {channelById.description}</Text>
+          {/* End Banner informations */}
+
+          <StyledDescription>
+            <Text> {channelById.description}</Text>
+          </StyledDescription>
+
           <StyledHr />
           <StyledVideosContainer>
             {channelById.videos.map((video, key) => (

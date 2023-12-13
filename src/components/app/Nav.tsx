@@ -1,6 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useAuth } from "hooks/useAuth";
+import { useState } from "react";
+import { COLOR_TEXT_DARK } from "utils/colors";
 
 // ----------
 // Component
@@ -17,6 +19,7 @@ import Search from "components/icon/Search";
 // ----------
 import Avatar from "assets/avatar.png";
 import Tooltip from "components/ui/Tooltip";
+import Button from "components/ui/Button";
 
 const StyledNav = styled.nav`
   position: relative;
@@ -61,6 +64,7 @@ function Nav() {
   let navigate = useNavigate();
 
   const { logout, user } = useAuth();
+  const [hasSearch, setHasSearch] = useState<boolean>(false);
 
   return (
     <>
@@ -70,7 +74,7 @@ function Nav() {
         </Link>
 
         <StyledLinkNav>
-          <NavItem labelKey="Vidéos" path="/videos" />
+          <NavItem labelKey="Jeunesse" path="/videos/youth" />
           {user && (
             <NavItem labelKey="Abonnements" path="/user/subscriptions" />
           )}
@@ -96,15 +100,32 @@ function Nav() {
                 }
                 position="bottom"
               >
-                <Text color="dark">{user?.firstname}</Text>
-                <Link to="user/profile">Mon profil</Link>
+                <Text
+                  color="secondary"
+                  size="l"
+                  weight="800"
+                  style={{ marginBottom: "10px" }}
+                >
+                  {user?.firstname}{" "}
+                </Text>
+                <Link
+                  to="user/profile"
+                  style={{ color: COLOR_TEXT_DARK, fontSize: "14px" }}
+                >
+                  Mon profil
+                </Link>
                 <Text color="dark" onClick={() => logout()}>
                   Se déconnecter
                 </Text>
               </Tooltip>
             </>
           ) : (
-            <NavItem labelKey="Connexion" path="/login" />
+            <Button
+              label="S'identifier"
+              link={"/login"}
+              color="red"
+              style={{ fontSize: "16px", marginLeft: "20px" }}
+            />
           )}
         </StyledRightNav>
       </StyledNav>

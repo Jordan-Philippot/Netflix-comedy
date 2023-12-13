@@ -1,12 +1,11 @@
 import styled from "styled-components";
-import { COLOR_PRIMARY_1 } from "utils/colors";
+import { COLOR_BLACK_LIGHT, COLOR_PRIMARY_1 } from "utils/colors";
 
 const StyledLoader = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
+  position: relative;
+  height: 100vh;
   width: 100%;
+  background-color: ${COLOR_BLACK_LIGHT};
 `;
 
 const StyledInnerLoader = styled.div`

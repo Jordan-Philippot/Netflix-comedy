@@ -1,23 +1,27 @@
-import ReactDOM from 'react-dom'
-import { useSelector } from 'react-redux'
-import styled from 'styled-components'
-import type { RootState } from 'redux/store'
-import Toaster from 'components/ui/Toaster'
+import ReactDOM from "react-dom";
+import { useSelector } from "react-redux";
+import styled from "styled-components";
+import type { RootState } from "redux/store";
+
+// ----------
+// Component
+// ----------
+import Toaster from "components/ui/Toaster";
 
 const StyledMessagesContainer = styled.div`
   position: fixed;
   z-index: 5;
   bottom: 0;
   left: 0;
-`
+`;
 
 const StyledToasterContainer = styled.div`
   position: relative;
   margin-top: 10px;
-`
+`;
 
 function Messages() {
-  const { messages } = useSelector((state: RootState) => state.app)
+  const { messages } = useSelector((state: RootState) => state.app);
 
   return ReactDOM.createPortal(
     <StyledMessagesContainer>
@@ -27,13 +31,13 @@ function Messages() {
             message={message.text}
             status={message.status}
             duration={2500}
-            style={{ position: 'relative' }}
+            style={{ position: "relative" }}
           />
         </StyledToasterContainer>
       ))}
     </StyledMessagesContainer>,
-    document.body,
-  )
+    document.body
+  );
 }
 
-export default Messages
+export default Messages;

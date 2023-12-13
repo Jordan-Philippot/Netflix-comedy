@@ -2,8 +2,13 @@ import styled from "styled-components";
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import { COLOR_BLACK } from "utils/colors";
+
+// ----------
+// Component
+// ----------
 import Messages from "components/app/Messages";
 import Nav from "components/app/Nav";
+import Footer from "./Footer";
 
 interface StyledNavProps {
   isVisible: boolean;
@@ -60,6 +65,8 @@ function MainLayout() {
       <StyledContainer>
         <Outlet />
       </StyledContainer>
+      <Footer/>
+      
       <Messages />
     </StyledLayout>
   );
