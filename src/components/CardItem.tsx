@@ -2,9 +2,10 @@ import styled from "styled-components";
 import { unescapeHtml } from "utils/unescapeHtml";
 import { COLOR_BLACK } from "utils/colors";
 import { useModal } from "components/context/ModalContext";
+import { device } from "utils/breakpoints";
 
 // ------
-// Api 
+// Api
 // ------
 import { VideoDataType } from "api/video.type";
 import { ChannelType } from "api/channel.type";
@@ -19,13 +20,16 @@ const StyledCardItem = styled.div`
   cursor: pointer;
   margin: 0 5px;
   border-radius: 2px;
-  max-width: 350px;
+  max-width: 300px;
   height: auto;
   :hover img {
     opacity: 1;
   }
   :hover div {
     opacity: 1;
+  }
+  @media ${device.laptop} {
+    max-width: 350px;
   }
 `;
 const StyledItemImage = styled.img`
@@ -56,11 +60,19 @@ const StyledOverlayImg = styled.div`
 const StyledTitle = styled.div`
   position: relative;
   color: white;
-  font-size: 16px;
-  padding: 25px;
+  font-size: 12px;
+  padding: 15px;
   font-weight: 600;
   margin: auto;
   z-index: 3;
+
+  @media ${device.laptop} {
+    padding: 25px;
+  }
+
+  @media ${device.desktop} {
+    font-size: 14px;
+  }
 `;
 
 export default function CardItem({ item, channel, style }: CardItemProps) {
@@ -94,7 +106,7 @@ export default function CardItem({ item, channel, style }: CardItemProps) {
   // }, []);
 
   return (
-    <StyledCardItem onClick={openModalWithVideo}>
+    <StyledCardItem onClick={openModalWithVideo} className="card-item">
       <StyledItemImage src={thumbnails?.medium && thumbnails.medium.url} />
       <StyledOverlayImg>
         <StyledTitle>{item?.title && unescapeHtml(item.title)}</StyledTitle>

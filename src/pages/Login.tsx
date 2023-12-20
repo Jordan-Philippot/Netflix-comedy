@@ -24,7 +24,6 @@ export const StyledMainContainer = styled.main`
   align-items: center;
   height: 100vh;
   width: 100vw;
-  margin-left: -60px;
   background-image: linear-gradient(
       to bottom,
       rgba(0, 0, 0, 0.5),
@@ -33,6 +32,7 @@ export const StyledMainContainer = styled.main`
     url(${NetflixBg});
   background-size: cover;
 `;
+
 export const StyledFormContainer = styled.div`
   display: flex;
   flex-direction: column;

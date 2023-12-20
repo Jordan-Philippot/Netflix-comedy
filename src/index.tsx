@@ -7,6 +7,8 @@ import { PersistGate } from "redux-persist/integration/react";
 import { ModalProvider } from "components/context/ModalContext";
 
 import App from "./App";
+import CarouselModal from "components/videoModal/VideoModal";
+
 import reportWebVitals from "./reportWebVitals";
 import stores from "./redux/store";
 
@@ -26,6 +28,8 @@ root.render(
         <QueryClientProvider client={queryClient}>
           <ModalProvider>
             <App />
+            <CarouselModal />
+
           </ModalProvider>
           {/* For react-query debugging */}
           <ReactQueryDevtools initialIsOpen={false} />

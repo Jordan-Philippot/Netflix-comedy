@@ -12,10 +12,15 @@ import Text from "components/ui/Text";
 import Check from "components/icon/Check";
 import { useAuth } from "hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import { device } from "utils/breakpoints";
 
 const StyledChannelData = styled.div`
   display: flex;
+  flex-direction: column;
   margin-bottom: 15px;
+  @media ${device.tablet} {
+    flex-direction: row;
+  }
 `;
 
 const StyledChannelBannerContainer = styled.div<{
@@ -34,7 +39,12 @@ const StyledBanner = styled.img`
 const StyledBannerInfos = styled.div`
   margin: auto auto auto 15px;
 `;
-
+const StyledButtonContainer = styled.div`
+  margin-top: 25px;
+  @media ${device.tablet} {
+    margin: auto 0 auto auto;
+  }
+`;
 export default function ChannelDescription() {
   let navigate = useNavigate();
   const { selectedChannel } = useModal();
@@ -63,28 +73,26 @@ export default function ChannelDescription() {
               src={selectedChannel.thumbnails?.medium?.url}
               alt="Chaine youtube"
             />
+
             <StyledBannerInfos>
               <Text weight="800">{selectedChannel?.title}</Text>
               <Text> {selectedChannel.subscriberCount} abonnés</Text>
             </StyledBannerInfos>
           </StyledChannelBannerContainer>
-
-          <Button
-            label={isSubscribed ? "Abonné(e)" : "S'abonner"}
-            icon={isSubscribed ? <Check /> : <Wifi />}
-            onClick={() =>
-              isSubscribed
-                ? removeSubscription(selectedChannel.channelId)
-                : addSubscription(selectedChannel.channelId)
-            }
-            color="red"
-            disabled={!user}
-            style={{
-              margin: "auto 0 auto auto",
-              borderRadius: "35px",
-              whiteSpace: "nowrap",
-            }}
-          />
+          <StyledButtonContainer>
+            <Button
+              label={isSubscribed ? "Abonné(e)" : "S'abonner"}
+              icon={isSubscribed ? <Check /> : <Wifi />}
+              onClick={() =>
+                isSubscribed
+                  ? removeSubscription(selectedChannel.channelId)
+                  : addSubscription(selectedChannel.channelId)
+              }
+              color="red"
+              disabled={!user}
+              style={{ borderRadius: "35px", whiteSpace: "nowrap" }}
+            />
+          </StyledButtonContainer>
         </StyledChannelData>
       )}
     </>

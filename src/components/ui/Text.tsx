@@ -23,13 +23,13 @@ interface TextProps {
 const handleSizeStyle = (size?: textSize) => {
   switch (size) {
     case "s":
-      return { fontSize: "12px", lineHeight: "20px" };
+      return { fontSize: "12px" };
     case "m":
-      return { fontSize: "14px", lineHeight: "22px" };
+      return { fontSize: "14px" };
     case "l":
-      return { fontSize: "16px", lineHeight: "24px" };
+      return { fontSize: "16px" };
     case "xl":
-      return { fontSize: "20px", lineHeight: "28px" };
+      return { fontSize: "20px" };
   }
 };
 
@@ -50,10 +50,10 @@ const StyledText = styled.p<TextProps>`
   max-width: 700px;
   margin: 0;
   font-size: ${(props) => handleSizeStyle(props.size)?.fontSize};
-  line-height: ${(props) => handleSizeStyle(props.size)?.lineHeight};
   font-weight: ${(props) => props.weight};
   color: ${(props) => handleColorStyle(props.color)};
   white-space: pre-line;
+  line-height: 22px;
 `;
 
 function Text({

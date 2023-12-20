@@ -4,6 +4,7 @@ import type { PropsWithChildren } from "react";
 import Overlay from "components/ui/Overlay";
 import Cross from "components/icon/Cross";
 import { COLOR_BLACK, COLOR_BLACK_LIGHT } from "utils/colors";
+import { device } from "utils/breakpoints";
 
 interface ModalProps {
   opened: boolean;
@@ -20,14 +21,29 @@ const StyledModal = styled.div`
   margin: auto;
   background: ${COLOR_BLACK};
   border-radius: 6px;
-  width: 50vw;
-  max-width: 80%;
+  width: 95vw;
   height: 95vh;
   overflow-y: auto;
   overflow-x: hidden;
   cursor: default;
   box-shadow: rgb(0 0 0 / 75%) 0px 3px 10px;
   transition: opacity 0.2s linear;
+
+  @media ${device.mobile} {
+    width: 90vw;
+  }
+  @media ${device.tablet} {
+    width: 80vw;
+  }
+  @media ${device.laptop} {
+    width: 70vw;
+  }
+  @media ${device.laptop} {
+    width: 60vw;
+  }
+  @media ${device.desktop} {
+    width: 50vw;
+  }
 `;
 
 const StyledModalCross = styled.div`

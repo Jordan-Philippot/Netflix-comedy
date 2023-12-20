@@ -21,11 +21,11 @@ import Mute from "components/icon/Mute";
 import UnMute from "components/icon/UnMute";
 import useToggle from "hooks/useToggle";
 import ButtonPlay from "components/ui/ButtonPlay";
-import Minus from "components/icon/Minus";
 import ChannelDescription from "./ChannelDescription";
 import Check from "components/icon/Check";
 import LikeFull from "components/icon/LikeFull";
 import { useAuth } from "hooks/useAuth";
+import { device } from "utils/breakpoints";
 
 interface VideosProps {
   ref: RefObject<HTMLIFrameElement>;
@@ -59,14 +59,28 @@ const StyledModalHeader = styled.div`
 }`;
 
 const StyledModalBody = styled.div`
-  padding: 40px;
+  padding: 20px;
+  @media ${device.tablet} {
+    padding: 40px;
+  }
 `;
 
 const StyledBtnContainer = styled.div`
   display: flex;
+  flex-direction: column;
   margin-bottom: 25px;
+  @media ${device.mobile} {
+    flex-direction: row;
+  }
 `;
-
+const StyledIconContainer = styled.div`
+  display: flex;
+  width: 100%;
+  margin-top: 25px;
+  @media ${device.mobile} {
+    margin-top: 0;
+  }
+`;
 const StyledDescriptionContainer = styled.div`
   background-color: #212121;
   border-radius: 6px;
@@ -132,67 +146,69 @@ export default function VideoModal() {
             {/* -----------------
                Favorite Component
               ------------------- */}
-            <Tooltip
-              position="top"
-              label={
-                <SvgButton
-                  disabled={!user}
-                  onClick={() => {
-                    isFavorite
-                      ? removeFavorite(selectedVideo.videoId)
-                      : addFavorite(selectedVideo.videoId);
-                  }}
-                >
-                  {isFavorite ? <Check /> : <Add />}
-                </SvgButton>
-              }
-            >
-              <Text
-                size="xl"
-                weight={"800"}
-                color={"secondary"}
-                style={{ textAlign: "center" }}
+            <StyledIconContainer>
+              <Tooltip
+                position="top"
+                label={
+                  <SvgButton
+                    disabled={!user}
+                    onClick={() => {
+                      isFavorite
+                        ? removeFavorite(selectedVideo.videoId)
+                        : addFavorite(selectedVideo.videoId);
+                    }}
+                  >
+                    {isFavorite ? <Check /> : <Add />}
+                  </SvgButton>
+                }
               >
-                {isFavorite ? "Retirer de ma liste" : "Ajouter à ma liste"}
-              </Text>
-            </Tooltip>
+                <Text
+                  size="xl"
+                  weight={"800"}
+                  color={"secondary"}
+                  style={{ textAlign: "center" }}
+                >
+                  {isFavorite ? "Retirer de ma liste" : "Ajouter à ma liste"}
+                </Text>
+              </Tooltip>
 
-            {/* -----------------
+              {/* -----------------
                Like Component
               ------------------- */}
-            <Tooltip
-              position="top"
-              label={
-                <SvgButton
-                  disabled={!user}
-                  onClick={() =>
-                    isLiked
-                      ? removeLike(selectedVideo.videoId)
-                      : addLike(selectedVideo.videoId, LikeTypeType.like)
-                  }
-                >
-                  {isLiked ? <LikeFull /> : <Like />}
-                </SvgButton>
-              }
-            >
-              <Text
-                size="xl"
-                weight={"800"}
-                color={"secondary"}
-                style={{ textAlign: "center" }}
+              <Tooltip
+                position="top"
+                label={
+                  <SvgButton
+                    disabled={!user}
+                    onClick={() =>
+                      isLiked
+                        ? removeLike(selectedVideo.videoId)
+                        : addLike(selectedVideo.videoId, LikeTypeType.like)
+                    }
+                  >
+                    {isLiked ? <LikeFull /> : <Like />}
+                  </SvgButton>
+                }
               >
-                {isLiked ? "Je n'aime plus ce contenu" : "J'aime ce contenu"}
-              </Text>
-            </Tooltip>
+                <Text
+                  size="xl"
+                  weight={"800"}
+                  color={"secondary"}
+                  style={{ textAlign: "center" }}
+                >
+                  {isLiked ? "Je n'aime plus ce contenu" : "J'aime ce contenu"}
+                </Text>
+              </Tooltip>
 
-            <SvgButton
-              onClick={() => {
-                setIsMuted((prev) => !prev);
-              }}
-              style={{ marginLeft: "auto" }}
-            >
-              {isMuted ? <Mute /> : <UnMute />}
-            </SvgButton>
+              <SvgButton
+                onClick={() => {
+                  setIsMuted((prev) => !prev);
+                }}
+                style={{ marginLeft: "auto" }}
+              >
+                {isMuted ? <Mute /> : <UnMute />}
+              </SvgButton>
+            </StyledIconContainer>
           </StyledBtnContainer>
 
           {/* ---------------------

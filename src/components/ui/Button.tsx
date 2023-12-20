@@ -43,7 +43,7 @@ const handleTypeStyle = (color: buttonColor) => {
   }
 };
 
-const StyledButton = styled.button<StyledButtonProps>`
+export const StyledButton = styled.button<StyledButtonProps>`
   display: flex;
   align-items: center;
   justify-content: center;

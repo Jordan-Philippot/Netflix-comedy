@@ -5,24 +5,48 @@ import { useSubscription } from "hooks/useSubscription";
 // Components
 // --------------
 import CardItem from "components/CardItem";
-import CarouselModal from "components/videoModal/VideoModal";
 import Title from "components/ui/Title";
+import { device } from "utils/breakpoints";
 
 export const StyledPageContainer = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  padding: 0 20px;
   height: auto;
   min-height: 95vh;
+  padding: 0 20px;
+
+  @media ${device.laptop} {
+    padding: 0 40px;
+  }
+  @media ${device.laptopL} {
+    padding: 0 60px;
+  }
 `;
 export const StyledVideosContainer = styled.div`
   position: relative;
   display: flex;
   flex-wrap: wrap;
   justify-content: start;
-  gap: 80px 0;
+  gap: 20px 0;
   margin: 50px 0;
+
+  @media ${device.mobile} {
+    .card-item {
+      max-width: 200px;
+    }
+  }
+  @media ${device.laptop} {
+    gap: 80px 0;
+    .card-item {
+      max-width: 250px;
+    }
+  }
+  @media ${device.laptopL} {
+    .card-item {
+      max-width: unset;
+    }
+  }
 `;
 
 export default function UserSubscriptions() {
@@ -49,7 +73,6 @@ export default function UserSubscriptions() {
             )}
           </StyledVideosContainer>
         )}
-        <CarouselModal />
       </StyledPageContainer>
     </>
   );

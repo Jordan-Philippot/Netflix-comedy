@@ -5,17 +5,24 @@ import { useQuery } from "@tanstack/react-query";
 // Components
 // --------------
 import Carousel from "./Carousel";
-import CarouselModal from "components/videoModal/VideoModal";
 import { getChannelsVideos } from "api/channel";
+import { device } from "utils/breakpoints";
 
 const StyledCarouselsContainer = styled.main`
-  margin-top: -140px;
   position: relavtive;
   z-index: 3;
+  padding: 0 20px;
+
+  @media ${device.laptop} {
+    padding: 0 40px;
+    margin-top: -160px;
+  }
+  @media ${device.laptopL} {
+    padding: 0 60px;
+  }
 `;
 
 export default function CarouselsContainer() {
-
   const { data: channels } = useQuery({
     queryKey: ["channels"],
     queryFn: () => getChannelsVideos(),
@@ -27,8 +34,6 @@ export default function CarouselsContainer() {
         channels.map((channel, key) => (
           <Carousel channel={channel} key={key} />
         ))}
-
-      <CarouselModal />
     </StyledCarouselsContainer>
   );
 }

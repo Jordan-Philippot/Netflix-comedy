@@ -8,9 +8,10 @@ export const COLOR_GREY_DARK = "#6d6d6eb3";
 export const COLOR_RED = "#e50914";
 export const COLOR_GREEN = "#27AE60";
 export const COLOR_YELLOW = "#FBBD00";
+export const COLOR_BLUE = "#4437D8";
 
 // Primary colors
-export const COLOR_PRIMARY_1 = "#4437D8";
+export const COLOR_PRIMARY_1 = COLOR_BLUE;
 
 // Secondary colors
 export const COLOR_SECONDARY_1 = "#000000";

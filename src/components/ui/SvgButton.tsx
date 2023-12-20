@@ -23,7 +23,7 @@ const StyledSvgButton = styled.button<SvgButtonsProps>`
   align-items: center;
   :disabled {
     opacity: 0.2;
-    cursor: default;
+    cursor: not-allowed;
   }
   svg {
     width: 24px;

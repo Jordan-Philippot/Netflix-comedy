@@ -4,7 +4,6 @@ import { useFavorite } from "hooks/useFavorite";
 // Components
 // --------------
 import CardItem from "components/CardItem";
-import CarouselModal from "components/videoModal/VideoModal";
 import Title from "components/ui/Title";
 
 // ----------
@@ -37,7 +36,6 @@ export default function UserFavorites() {
             ))}
           </StyledVideosContainer>
         )}
-        <CarouselModal />
       </StyledPageContainer>
     </>
   );
