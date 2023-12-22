@@ -50,4 +50,7 @@ export type VideoDataType = {
   videoId: string;
   filePath: string;
   description?: string;
+  viewCount?: string;
+  likeCount?: string;
+  commentCount?: string;
 };

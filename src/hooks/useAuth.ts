@@ -45,7 +45,6 @@ export function useAuth(): AuthHook {
       await queryClient.setQueryData(["user"], initialDataQuery);
     },
     onError: (e) => {
-      console.log(e, "aaa");
       queryClient.removeQueries({ queryKey: ["user"] });
       queryClient.removeQueries({ queryKey: ["userLikeList"] });
       queryClient.removeQueries({ queryKey: ["userSubscriptions"] });

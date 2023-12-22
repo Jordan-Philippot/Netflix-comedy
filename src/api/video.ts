@@ -9,10 +9,11 @@ export const getVidéoYoutubeById = async (
   videoId: string
 ): Promise<VideoYoutubeType> => {
   const response = await fetch(
-    `${BASE_URL_YOUTUBE}videos?part=snippet&id=${videoId}&key=${API_KEY}`
+    `${BASE_URL_YOUTUBE}videos?part=snippet,statistics,contentDetails&id=${videoId}&key=${API_KEY}`
   );
   const data = await response.json();
   const videoData = data.items[0].snippet;
+  console.log(data)
   return videoData;
 };
 

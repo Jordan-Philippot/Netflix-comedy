@@ -132,8 +132,9 @@ const StyledBtnContainer = styled.div`
 
 export default function Home() {
   // const videoHomepageId = process.env.REACT_APP_HOMEPAGE_VIDEO_ID as string;
-  const videoHomepageId = "Z7M1mW9Xlgc";
-
+  const videoHomepageId = "kpLxL7Uvsxw";
+ // I0zFWSsz8zk
+  //roman : Z7M1mW9Xlgc
   const videoRef: RefObject<HTMLIFrameElement> = useRef(null);
 
   const { data: videoHomepage } = useQuery({
@@ -150,7 +151,7 @@ export default function Home() {
     (state: RootState) => state.video
   );
 
-  console.log(searchResult);
+  console.log(videoHomepage);
   // window.addEventListener("scroll", function () {
   //   const windowHeght = window.innerHeight as number;
   //   const scrollOffset = window.scrollY as number;

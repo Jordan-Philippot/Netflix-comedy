@@ -21,8 +21,6 @@ function App() {
   let navigate = useNavigate();
 
   useEffect(() => {
-    console.log(location.pathname, user);
-
     if (!user?.email && location.pathname.match(/user/)) {
       navigate("/login");
     } else if (user?.email && location.pathname.match(/login|register/)) {

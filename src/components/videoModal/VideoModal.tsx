@@ -84,8 +84,12 @@ const StyledIconContainer = styled.div`
 const StyledDescriptionContainer = styled.div`
   background-color: #212121;
   border-radius: 6px;
-  padding: 15px;
+  padding: 15px 15px 0 15px;
   margin-bottom: 25px;
+`;
+const StyledRightIconContainer = styled.div`
+  margin-left: auto;
+  display: flex;
 `;
 
 export default function VideoModal() {
@@ -200,14 +204,17 @@ export default function VideoModal() {
                 </Text>
               </Tooltip>
 
-              <SvgButton
-                onClick={() => {
-                  setIsMuted((prev) => !prev);
-                }}
-                style={{ marginLeft: "auto" }}
-              >
-                {isMuted ? <Mute /> : <UnMute />}
-              </SvgButton>
+              <StyledRightIconContainer>
+                {selectedVideo.viewCount && <Text style={{margin: 'auto 15px'}}> {selectedVideo.viewCount} vues</Text>}
+                <SvgButton
+                  onClick={() => {
+                    setIsMuted((prev) => !prev);
+                  }}
+                  style={{ marginLeft: "auto" }}
+                >
+                  {isMuted ? <Mute /> : <UnMute />}
+                </SvgButton>
+              </StyledRightIconContainer>
             </StyledIconContainer>
           </StyledBtnContainer>
 
@@ -225,7 +232,7 @@ export default function VideoModal() {
           </Title>
 
           <StyledDescriptionContainer>
-            <div style={{ display: "flex" }}>
+            <div style={{ display: "flex" , flexWrap: 'wrap'}}>
               <Text
                 size="l"
                 color="secondary"
@@ -256,16 +263,20 @@ export default function VideoModal() {
                 Publié le {selectedVideo.publishedAt?.substring(0, 10)}
               </Text>
             </div>
-            <Text style={{ color: COLOR_WHITE }} weight="800">
-              {selectedVideo.description}
-            </Text>
+            {selectedVideo.description && (
+              <Text style={{ color: COLOR_WHITE }} weight="800">
+                {selectedVideo.description}
+              </Text>
+            )}
           </StyledDescriptionContainer>
 
-          <StyledDescriptionContainer>
-            <Text style={{ color: COLOR_WHITE }} weight="800" size="s">
-              {selectedVideo.tags?.map((tag: string) => "#" + tag + " - ")}
-            </Text>
-          </StyledDescriptionContainer>
+          {selectedVideo.tags && (
+            <StyledDescriptionContainer>
+              <Text style={{ color: COLOR_WHITE }} weight="800" size="s">
+                {selectedVideo.tags?.map((tag: string) => "#" + tag + " - ")}
+              </Text>
+            </StyledDescriptionContainer>
+          )}
         </StyledModalBody>
       )}
     </Modal>
