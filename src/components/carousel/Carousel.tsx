@@ -50,7 +50,7 @@ const StyledArrow = styled.div`
   }
 `;
 
-const StyledTitleLink = styled(Link)`
+export const StyledTitleLink = styled(Link)`
   text-decoration: none;
   cursor: pointer;
   &:hover,

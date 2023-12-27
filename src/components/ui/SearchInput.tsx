@@ -5,6 +5,8 @@ import { useQueryClient } from "@tanstack/react-query";
 import { ChannelData } from "api/channel.type";
 import { setSearchResult, setSearchText } from "redux/video";
 import { useState } from "react";
+import Fuse from "fuse.js";
+import { mergeAndRemoveDuplicates } from "utils/mergeAndRemoveDuplicates";
 
 // ----------
 // Component
@@ -12,6 +14,7 @@ import { useState } from "react";
 import type { InputProps } from "components/ui/Input";
 import Search from "components/icon/Search";
 import Cross from "components/icon/Cross";
+import { VideoDataType } from "api/video.type";
 
 interface ExtendedInputProps extends InputProps {
   hasSearch: boolean;
@@ -54,9 +57,11 @@ export default function SearchInput() {
 
   const [hasSearch, setHasSearch] = useState<boolean>(false);
   const [search, setSearch] = useState<string>("");
-  
+
+  // Get data
   const channelsData = queryClient.getQueryData(["channels"]) as ChannelData[];
 
+  // Input onChange
   const checkSearchBar = () => {
     if (hasSearch) {
       setSearch("");
@@ -65,7 +70,7 @@ export default function SearchInput() {
     }
     setHasSearch((prev) => !prev);
   };
-  
+
   const setSearchAndResult = (e: string) => {
     dispatch(setSearchText(e));
     setSearch(e);
@@ -73,26 +78,43 @@ export default function SearchInput() {
       dispatch(setSearchResult([]));
       return;
     }
-    const valueLowerCase = e.toLowerCase();
 
-    channelsData.forEach((channel) => {
-      const filteredResults = channel.videos.filter((video) => {
-        let tagsMatch = false;
+    // -----------------
+    // Filter by Channel
+    // -----------------
+    const fuseOptionsChannel = {
+      threshold: 0.2,
+      keys: ["title"],
+    };
 
-        const titleMatch = video.title.toLowerCase().includes(valueLowerCase);
-        const descriptionMatch = video.description
-          ?.toLowerCase()
-          .includes(valueLowerCase);
+    const fuseChannel = new Fuse(channelsData, fuseOptionsChannel);
 
-        if (video.tags)
-          video.tags.forEach((tag) => {
-            tagsMatch = tag?.toLowerCase().includes(valueLowerCase);
-          });
+    const resultsChannel = fuseChannel.search(e);
+    const channelsResult: VideoDataType[] = resultsChannel.flatMap(
+      (channel) => channel.item.videos
+    );
 
-        return titleMatch || descriptionMatch || tagsMatch;
-      });
-      dispatch(setSearchResult(filteredResults));
-    });
+    // -----------------
+    // Filter by Videos
+    // -----------------
+    const fuseOptionsVideos = {
+      threshold: 0.2,
+      keys: ["title", "description", "tags"],
+    };
+
+    const allVideos: VideoDataType[] = channelsData.flatMap(
+      (channel) => channel.videos
+    );
+
+    const fuseVideos = new Fuse(allVideos, fuseOptionsVideos);
+    const resultVideos = fuseVideos.search(e);
+    // Change type
+    const videosResult: VideoDataType[] = resultVideos.map(
+      (result) => result.item
+    );
+
+    const resultArray = mergeAndRemoveDuplicates(videosResult, channelsResult);
+    dispatch(setSearchResult(resultArray));
   };
 
   return (
@@ -100,7 +122,7 @@ export default function SearchInput() {
       <StyledSearchInputContainer>
         <StyledSearchInput
           onChange={(e) => setSearchAndResult(e.target.value)}
-          placeholder="Titre, Genre, Description..."
+          placeholder="Titre, Description, Chaîne..."
           type="text"
           hasSearch={hasSearch}
           value={search}

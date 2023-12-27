@@ -1,11 +1,9 @@
 import { useAuth } from "hooks/useAuth";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import {
-  COLOR_BLACK,
   COLOR_RED,
-  COLOR_TEXT_DARK,
   COLOR_WHITE,
 } from "utils/colors";
 
@@ -99,6 +97,7 @@ const LogoContainer = styled.div`
 `;
 export default function NavMobile() {
   const { logout, user } = useAuth();
+  const location = useLocation();
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -127,7 +126,7 @@ export default function NavMobile() {
           <StyledUserContainer>
             <StyledIconContainer>
               <NavItem labelKey={<Notification />} path="notifications" />
-              <SearchInput />
+              {location.pathname === "/" && <SearchInput />}
             </StyledIconContainer>
 
             <Text

@@ -25,8 +25,7 @@ const StyledTooltip = styled.div<StyledTooltipProps>`
     visibility: hidden;
     cursor: pointer;
     z-index: 100;
-    width: 200px;
- 
+    min-width: 200px;
   }
 
   &.isHover .dialog {

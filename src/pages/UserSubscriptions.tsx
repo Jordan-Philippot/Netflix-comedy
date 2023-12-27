@@ -1,12 +1,16 @@
 import styled from "styled-components";
 import { useSubscription } from "hooks/useSubscription";
+import { device } from "utils/breakpoints";
 
 // --------------
 // Components
 // --------------
 import CardItem from "components/CardItem";
 import Title from "components/ui/Title";
-import { device } from "utils/breakpoints";
+import Alert from "components/ui/Alert";
+import { COLOR_BLUE } from "utils/colors";
+import { StyledTitleLink } from "components/carousel/Carousel";
+import Arrow from "components/icon/Arrow";
 
 export const StyledPageContainer = styled.div`
   position: relative;
@@ -44,8 +48,32 @@ export const StyledVideosContainer = styled.div`
   }
   @media ${device.laptopL} {
     .card-item {
-      max-width: unset;
+      max-width: 270px;
     }
+  }
+`;
+export const StyledSpan = styled.span`
+  position: relative;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  margin: auto 0 0 25px;
+
+  text-align: center;
+  color: ${COLOR_BLUE};
+  :hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    svg {
+      margin-left: 10px;
+    }
+  }
+  svg {
+    margin-top: 5px;
+    transition: all 0.3s ease;
+  }
+  path {
+    fill: ${COLOR_BLUE} !important;
   }
 `;
 
@@ -55,23 +83,66 @@ export default function UserSubscriptions() {
   return (
     <>
       <StyledPageContainer>
-        <Title weight="800" style={{ marginTop: "120px" }}>
-          Mes abonnements
+        <Title weight="800" style={{ margin: "120px 0 50px 0" }}>
+          Vos abonnements
         </Title>
-        {/* Channel Informations */}
-        {userSubscriptions && (
-          <StyledVideosContainer>
-            {userSubscriptions.map((subscripion) =>
-              subscripion.videos.map((video, key) => (
+
+        {userSubscriptions && userSubscriptions.latestVideos.length > 0 && (
+          <>
+            <Title size="h3" weight="600" >
+              Dernières sorties
+            </Title>
+            <StyledVideosContainer>
+              {userSubscriptions?.latestVideos.map((video, key) => (
                 <CardItem
                   item={video}
-                  channel={subscripion.channel}
+                  channel={video.channel}
                   key={key}
                   style={{ marginBottom: "25px" }}
                 />
-              ))
-            )}
-          </StyledVideosContainer>
+              ))}
+            </StyledVideosContainer>
+          </>
+        )}
+
+        {/* Last week videos */}
+        {userSubscriptions && userSubscriptions.subscriptions.length > 0 ? (
+          userSubscriptions.subscriptions.map((subscripion) => (
+            <>
+              <StyledTitleLink to={"/channel/" + subscripion.channel.customUrl}>
+                <Title
+                  size="h2"
+                  weight="600"
+                  style={{
+                    cursor: "pointer",
+                    display: "flex",
+                    flexWrap: "wrap",
+                    paddingBottom: 0,
+                  }}
+                >
+                  {subscripion.channel && subscripion.channel.title}{" "}
+                  <StyledSpan>
+                    Voir tout <Arrow />
+                  </StyledSpan>
+                </Title>
+              </StyledTitleLink>
+
+              <StyledVideosContainer>
+                {subscripion.videos.map((video, key) => (
+                  <CardItem
+                    item={video}
+                    channel={subscripion.channel}
+                    key={key}
+                    style={{ marginBottom: "25px" }}
+                  />
+                ))}
+              </StyledVideosContainer>
+            </>
+          ))
+        ) : (
+          <Alert>
+            Abonnez-vous à vos chaines préférées afin de ne rater aucune vidéo
+          </Alert>
         )}
       </StyledPageContainer>
     </>

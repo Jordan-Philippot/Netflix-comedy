@@ -5,7 +5,6 @@ import {
   COLOR_BLUE,
   COLOR_GREY,
   COLOR_GREY_LIGHT,
-  COLOR_RED,
   COLOR_WHITE,
 } from "utils/colors";
 import useToggle from "hooks/useToggle";
@@ -132,8 +131,14 @@ const StyledBtnContainer = styled.div`
 
 export default function Home() {
   // const videoHomepageId = process.env.REACT_APP_HOMEPAGE_VIDEO_ID as string;
-  const videoHomepageId = "kpLxL7Uvsxw";
- // I0zFWSsz8zk
+  const videoHomepageId = "cQdCbN2Ec1k";
+  // panayotis uKtWBk78y48
+  //roman : OA0jm1zqO-8
+  // fary 97A_MH5SVvA
+  //ilyes mela  wo9EuUCGTZ8
+  //malik bentalha : Obm_qUuAIDM
+
+  // mister v _JhmNjntth8
   //roman : Z7M1mW9Xlgc
   const videoRef: RefObject<HTMLIFrameElement> = useRef(null);
 
@@ -178,10 +183,10 @@ export default function Home() {
               </Title>
               <Title
                 weight="800"
-                size="h3"
+                size="h2"
                 style={{
                   textShadow: "1px 1px 30px" + COLOR_BLUE,
-                  color: COLOR_GREY
+                  color: COLOR_GREY,
                 }}
               >
                 {search.toLocaleUpperCase()}

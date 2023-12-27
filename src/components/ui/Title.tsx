@@ -22,13 +22,13 @@ const handleSizeStyle = (size?: titleSize, addMediaSize?: number) => {
     case "h2":
       return { fontSize: 22 + mediaSize };
     case "h3":
-      return { fontSize: 22 + mediaSize };
+      return { fontSize: 18 + mediaSize };
     case "h4":
-      return { fontSize: 20 + mediaSize };
-    case "h5":
       return { fontSize: 16 + mediaSize };
-    case "h6":
+    case "h5":
       return { fontSize: 14 + mediaSize };
+    case "h6":
+      return { fontSize: 12 + mediaSize };
   }
 };
 
@@ -44,6 +44,12 @@ const StyledTitle = styled.h1<TitleProps>`
   color: ${COLOR_WHITE};
   position: relative;
   @media ${device.tablet} {
+    font-size: ${(props) => handleSizeStyle(props.size, 4)?.fontSize}px;
+  }
+  @media ${device.laptop} {
+    font-size: ${(props) => handleSizeStyle(props.size, 6)?.fontSize}px;
+  }
+  @media ${device.laptopL} {
     font-size: ${(props) => handleSizeStyle(props.size, 8)?.fontSize}px;
   }
 `;

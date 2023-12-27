@@ -8,4 +8,10 @@ export interface SubscriptionType {
   user: UserType;
   videos: VideoDataType[];
   createdAt: string;
+  latestVideos?: VideoDataType[];
+}
+
+export interface SubscriptionResponseType {
+  subscriptions: SubscriptionType[];
+  latestVideos: VideoDataType[];
 }

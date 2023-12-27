@@ -5,6 +5,7 @@ import { useFavorite } from "hooks/useFavorite";
 // --------------
 import CardItem from "components/CardItem";
 import Title from "components/ui/Title";
+import Alert from "components/ui/Alert";
 
 // ----------
 // Assets
@@ -24,7 +25,7 @@ export default function UserFavorites() {
           Ma liste
         </Title>
         {/* Channel Informations */}
-        {userFavorites && (
+        {userFavorites && userFavorites.length > 0 ? (
           <StyledVideosContainer>
             {userFavorites.map((favorite, key) => (
               <CardItem
@@ -35,7 +36,7 @@ export default function UserFavorites() {
               />
             ))}
           </StyledVideosContainer>
-        )}
+        ): <Alert>Ajoutez des vidéos à votre liste pour les regarder plus tard </Alert>}
       </StyledPageContainer>
     </>
   );

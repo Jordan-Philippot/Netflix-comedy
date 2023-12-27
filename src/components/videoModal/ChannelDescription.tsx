@@ -33,8 +33,8 @@ const StyledChannelBannerContainer = styled.div<{
 `;
 const StyledBanner = styled.img`
   border-radius: 50%;
-  width: 80px;
-  height: 80px;
+  width: 90px;
+  height: 90px;
 `;
 const StyledBannerInfos = styled.div`
   margin: auto auto auto 15px;
@@ -77,6 +77,7 @@ export default function ChannelDescription() {
             <StyledBannerInfos>
               <Text weight="800">{selectedChannel?.title}</Text>
               <Text> {selectedChannel.subscriberCount} abonnés</Text>
+              <Text size="s"> {selectedChannel.viewCount} vues</Text>
             </StyledBannerInfos>
           </StyledChannelBannerContainer>
           <StyledButtonContainer>

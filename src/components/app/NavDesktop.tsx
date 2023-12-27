@@ -1,7 +1,8 @@
 import { COLOR_TEXT_DARK } from "utils/colors";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { useAuth } from "hooks/useAuth";
+import { device } from "utils/breakpoints";
 
 // ----------
 // Component
@@ -19,7 +20,6 @@ import SearchInput from "components/ui/SearchInput";
 // Assets
 // ----------
 import Avatar from "assets/avatar.png";
-import { device } from "utils/breakpoints";
 
 const StyledNav = styled.nav`
   position: relative;
@@ -72,6 +72,7 @@ export const StyledAvatarImg = styled.img`
 
 export default function NavDesktop() {
   const { logout, user } = useAuth();
+  const location = useLocation();
 
   return (
     <StyledNav>
@@ -85,8 +86,7 @@ export default function NavDesktop() {
       </StyledLinkNav>
 
       <StyledRightNav>
-        <SearchInput />
-
+        {location.pathname === "/" && <SearchInput />}
         {user ? (
           <>
             <NavItem labelKey={<Notification />} path="notifications" />

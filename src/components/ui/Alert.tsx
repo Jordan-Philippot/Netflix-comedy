@@ -66,6 +66,7 @@ const StyledAlert = styled.aside<StyledAlertProps>`
   padding: 15px 20px;
   border-radius: 3px;
   min-width: 200px;
+  width: fit-content;
   text-align: center;
   text-align: left;
 `;

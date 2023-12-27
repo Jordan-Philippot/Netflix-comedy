@@ -87,10 +87,6 @@ const StyledDescriptionContainer = styled.div`
   padding: 15px 15px 0 15px;
   margin-bottom: 25px;
 `;
-const StyledRightIconContainer = styled.div`
-  margin-left: auto;
-  display: flex;
-`;
 
 export default function VideoModal() {
   const { selectedVideo, isModalOpen, closeModal } = useModal();
@@ -204,17 +200,14 @@ export default function VideoModal() {
                 </Text>
               </Tooltip>
 
-              <StyledRightIconContainer>
-                {selectedVideo.viewCount && <Text style={{margin: 'auto 15px'}}> {selectedVideo.viewCount} vues</Text>}
-                <SvgButton
-                  onClick={() => {
-                    setIsMuted((prev) => !prev);
-                  }}
-                  style={{ marginLeft: "auto" }}
-                >
-                  {isMuted ? <Mute /> : <UnMute />}
-                </SvgButton>
-              </StyledRightIconContainer>
+              <SvgButton
+                onClick={() => {
+                  setIsMuted((prev) => !prev);
+                }}
+                style={{ marginLeft: "auto" }}
+              >
+                {isMuted ? <Mute /> : <UnMute />}
+              </SvgButton>
             </StyledIconContainer>
           </StyledBtnContainer>
 
@@ -224,7 +217,7 @@ export default function VideoModal() {
           <ChannelDescription />
 
           <Title
-            size="h3"
+            size="h2"
             weight="600"
             style={{ marginBottom: "15px", width: "90%" }}
           >
@@ -232,22 +225,24 @@ export default function VideoModal() {
           </Title>
 
           <StyledDescriptionContainer>
-            <div style={{ display: "flex" , flexWrap: 'wrap'}}>
-              <Text
-                size="l"
-                color="secondary"
-                style={{
-                  marginBottom: "25px",
-                  backgroundColor: COLOR_BLACK_LIGHT,
-                  color: COLOR_WHITE,
-                  borderRadius: "6px",
-                  padding: "10px 20px",
-                  width: "fit-content",
-                  marginRight: "15px",
-                }}
-              >
-                542 235 vues
-              </Text>
+            <div style={{ display: "flex", flexWrap: "wrap" }}>
+              {selectedVideo.viewCount && (
+                <Text
+                  size="l"
+                  color="secondary"
+                  style={{
+                    marginBottom: "25px",
+                    backgroundColor: COLOR_BLACK_LIGHT,
+                    color: COLOR_WHITE,
+                    borderRadius: "6px",
+                    padding: "10px 20px",
+                    width: "fit-content",
+                    marginRight: "15px",
+                  }}
+                >
+                  {selectedVideo.viewCount} vues
+                </Text>
+              )}
               <Text
                 size="l"
                 color="secondary"
@@ -262,6 +257,23 @@ export default function VideoModal() {
               >
                 Publié le {selectedVideo.publishedAt?.substring(0, 10)}
               </Text>
+              {selectedVideo.viewCount && (
+                <Text
+                  size="l"
+                  color="secondary"
+                  style={{
+                    marginBottom: "25px",
+                    backgroundColor: COLOR_BLACK_LIGHT,
+                    color: COLOR_WHITE,
+                    borderRadius: "6px",
+                    padding: "10px 20px",
+                    width: "fit-content",
+                    marginLeft: "15px",
+                  }}
+                >
+                  {selectedVideo.commentCount} commentaires
+                </Text>
+              )}
             </div>
             {selectedVideo.description && (
               <Text style={{ color: COLOR_WHITE }} weight="800">

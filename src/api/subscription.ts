@@ -1,15 +1,15 @@
 import { getAuthenticationConfig } from "./app";
-import { SubscriptionType } from "./subscription.type";
+import { SubscriptionResponseType } from "./subscription.type";
 
 const BASE_URL = process.env.REACT_APP_API_URL_SYMFONY;
 
-export const getUserSubscriptions = async (): Promise<SubscriptionType[]> => {
+export const getUserSubscriptions = async (): Promise<SubscriptionResponseType> => {
     const response = await fetch(
       `${BASE_URL}auth/subscription/list`,
       getAuthenticationConfig()
     );
     const data = await response.json();
-    return data.subscriptions;
+    return data;
   };
 
   

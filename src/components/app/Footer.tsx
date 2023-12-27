@@ -11,6 +11,7 @@ import Github from "components/icon/Github";
 import LinkedIn from "components/icon/LinkedIn";
 import Mail from "components/icon/Mail";
 import Phone from "components/icon/Phone";
+import Tooltip from "components/ui/Tooltip";
 
 const StyledFooterContainer = styled.footer`
   position: relative;
@@ -56,12 +57,12 @@ export default function Footer() {
         >
           <LinkedIn />
         </Link>
-        <Link to="/truc">
-          <Phone />
-        </Link>
-        <Link to="/truc">
-          <Mail />
-        </Link>
+        <Tooltip label={ <Phone />} position="top">
+          07 81 19 74 38
+        </Tooltip>
+        <Tooltip label={ <Mail />} position="top">
+         jordan.philippot.pro@gmail.com
+        </Tooltip>
       </StyledSocialMediaContainer>
 
       <StyledCguContainer>

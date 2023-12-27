@@ -1,6 +1,6 @@
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import useMessage from "hooks/useMessage";
-import { SubscriptionType } from "api/subscription.type";
+import { SubscriptionResponseType } from "api/subscription.type";
 import {
   addSubscription,
   removeSubscription,
@@ -8,8 +8,9 @@ import {
 } from "api/subscription";
 import { useAuth } from "./useAuth";
 
+
 interface SubscriptionHook {
-  userSubscriptions: SubscriptionType[] | undefined;
+  userSubscriptions: SubscriptionResponseType | undefined;
   addSubscription: (channelId: string) => void;
   removeSubscription: (channelId: string) => void;
   findUserSubscription: (
@@ -76,8 +77,8 @@ export function useSubscription(): SubscriptionHook {
     channelId: string,
     setIsSubscribed: (bool: boolean) => void
   ) {
-    if (data) {
-      if (data.find((subscription) => subscription?.channel.channelId === channelId)) {
+    if (data?.subscriptions) {
+      if (data.subscriptions.find((subscription) => subscription?.channel.channelId === channelId)) {
         setIsSubscribed(true);
       } else {
         setIsSubscribed(false);

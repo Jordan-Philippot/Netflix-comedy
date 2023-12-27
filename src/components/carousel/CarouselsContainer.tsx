@@ -31,9 +31,10 @@ export default function CarouselsContainer() {
   return (
     <StyledCarouselsContainer>
       {channels &&
-        channels.map((channel, key) => (
-          <Carousel channel={channel} key={key} />
-        ))}
+        channels.map(
+          (channel, key) =>
+            !channel?.madeForKids && <Carousel channel={channel} key={key} />
+        )}
     </StyledCarouselsContainer>
   );
 }
