@@ -12,10 +12,10 @@ import {
 // ----------
 import NavItem from "components/ui/NavItem";
 import Text from "components/ui/Text";
-import Logo from "components/icon/Logo";
 import Notification from "components/icon/Notification";
 import Button from "components/ui/Button";
 import SearchInput from "components/ui/SearchInput";
+import Logo from "components/app/Logo";
 
 const StyledContainer = styled.div`
   background-color: rgb(0, 0, 0);
@@ -116,7 +116,7 @@ export default function NavMobile() {
 
         <LogoContainer>
           <Link to="/">
-            <Logo />
+           <Logo/>
           </Link>
         </LogoContainer>
       </StyledContainer>

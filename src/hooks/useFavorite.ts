@@ -46,7 +46,7 @@ export function useFavorite(): FavoriteHook {
     try {
       const response = await addFavorite(videoId);
       if (response) {
-        sendInformation("Ajouté à vos favoris");
+        sendInformation("Ajouté à votre liste");
         mutationUserFavorite.mutate();
       }
     } catch (error) {
@@ -58,7 +58,7 @@ export function useFavorite(): FavoriteHook {
     try {
       const response = await removeFavorite(videoId);
       if (response) {
-        sendInformation("Supprimé de vos favoris");
+        sendInformation("Supprimé de votre liste");
         mutationUserFavorite.mutate();
       }
     } catch (error) {

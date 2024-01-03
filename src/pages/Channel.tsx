@@ -3,10 +3,7 @@ import { getChannelVideos } from "api/channel";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import {
-  COLOR_BLACK,
-  COLOR_WHITE,
-} from "utils/colors";
+import { COLOR_BLACK, COLOR_WHITE } from "utils/colors";
 import { useSubscription } from "hooks/useSubscription";
 import { useAuth } from "hooks/useAuth";
 
@@ -19,19 +16,34 @@ import Button from "components/ui/Button";
 import Text from "components/ui/Text";
 import Wifi from "components/icon/Wifi";
 import Title from "components/ui/Title";
+import { device } from "utils/breakpoints";
 
 const StyledChannelData = styled.div`
   display: flex;
   margin-top: 120px;
   padding: 0 20px;
+  @media ${device.laptop} {
+    padding: 0 40px;
+  }
+  @media ${device.laptopL} {
+    padding: 0 60px;
+  }
 `;
 const StyledVideosContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  align-items: flex-start;
   margin: 50px auto;
-  padding: 0 20px;
   gap: 80px 0;
+  padding: 0 20px;
+
+  @media ${device.laptop} {
+    padding: 0 40px;
+  }
+  @media ${device.laptopL} {
+    padding: 0 60px;
+  }
 `;
 
 const StyledChannelBannerContainer = styled.div`
@@ -48,6 +60,12 @@ const StyledBannerInfos = styled.div`
 const StyledHr = styled.hr`
   display: block;
   margin: 0 20px;
+  @media ${device.laptop} {
+    margin: 0 40px;
+  }
+  @media ${device.laptopL} {
+    margin: 0 60px;
+  }
 `;
 
 const StyledDescription = styled.div`

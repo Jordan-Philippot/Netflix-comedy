@@ -1,6 +1,7 @@
 // Base colors
 export const COLOR_BLACK = "#121212";
 export const COLOR_BLACK_LIGHT = "#181818";
+export const COLOR_BLACK_LIGHTER = "#212121";
 export const COLOR_WHITE = "#fefefe";
 export const COLOR_GREY = "#C6C6C6";
 export const COLOR_GREY_LIGHT = "#e5e5e5";

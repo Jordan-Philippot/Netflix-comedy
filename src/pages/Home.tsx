@@ -156,7 +156,7 @@ export default function Home() {
     (state: RootState) => state.video
   );
 
-  console.log(videoHomepage);
+  // console.log(videoHomepage);
   // window.addEventListener("scroll", function () {
   //   const windowHeght = window.innerHeight as number;
   //   const scrollOffset = window.scrollY as number;

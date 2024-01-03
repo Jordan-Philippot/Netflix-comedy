@@ -1,6 +1,6 @@
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import "./App.css";
-
+import 'assets/font/bebas-neue/BebasNeue.otf'
 // ----------
 // Pages
 // ----------
@@ -13,19 +13,25 @@ import Profile from "pages/Profile";
 import UserFavorites from "pages/UserFavorites";
 import UserSubscriptions from "pages/UserSubscriptions";
 import { useAuth } from "hooks/useAuth";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
   const { user } = useAuth();
   const location = useLocation();
   let navigate = useNavigate();
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
   useEffect(() => {
-    if (!user?.email && location.pathname.match(/user/)) {
-      navigate("/login");
-    } else if (user?.email && location.pathname.match(/login|register/)) {
-      navigate("/");
-    }
+    setIsLoaded(true);
+  }, []);
+
+  useEffect(() => {
+    if (isLoaded)
+      if (!user?.email && location.pathname.match(/user/)) {
+        navigate("/login");
+      } else if (user?.email && location.pathname.match(/login|register/)) {
+        navigate("/");
+      }
   }, [location, navigate, user]);
 
   return (

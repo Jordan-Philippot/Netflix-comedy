@@ -6,6 +6,6 @@ const StyledLogo = styled.img`
   height: auto;
 `;
 
-export default function Logo() {
+export default function LogoImg() {
   return <StyledLogo src={NetflixLogo} alt="Logo Netflix Comedy" />;
 }

@@ -43,7 +43,7 @@ export function useLike(): LikeHook {
     try {
       const response = await addLike(videoId, type);
       if (response) {
-        sendInformation("Ajouté à votre liste");
+        sendInformation("Ajouté à vos j'aime");
         mutationUserLike.mutate();
       }
     } catch (error) {
@@ -55,7 +55,7 @@ export function useLike(): LikeHook {
     try {
       const response = await removeLike(videoId);
       if (response) {
-        sendInformation("Supprimé de votre liste");
+        sendInformation("Supprimé de vos j'aime");
         mutationUserLike.mutate();
       }
     } catch (error) {

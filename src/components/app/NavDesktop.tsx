@@ -1,4 +1,4 @@
-import { COLOR_TEXT_DARK } from "utils/colors";
+import { COLOR_BLACK, COLOR_BLUE, COLOR_RED, COLOR_TEXT_DARK, COLOR_WHITE } from "utils/colors";
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { useAuth } from "hooks/useAuth";
@@ -9,12 +9,12 @@ import { device } from "utils/breakpoints";
 // ----------
 import NavItem from "components/ui/NavItem";
 import Text from "components/ui/Text";
-import Logo from "components/icon/Logo";
 import Arrow from "components/icon/Arrow";
 import Notification from "components/icon/Notification";
 import Tooltip from "components/ui/Tooltip";
 import Button from "components/ui/Button";
 import SearchInput from "components/ui/SearchInput";
+import Logo from "components/app/Logo";
 
 // ----------
 // Assets
@@ -77,11 +77,15 @@ export default function NavDesktop() {
   return (
     <StyledNav>
       <Link to="/">
-        <Logo />
+        <Logo/>
       </Link>
 
       <StyledLinkNav>
-        <NavItem labelKey="Jeunesse" path="/videos/youth" />
+        {user && (
+          <NavItem labelKey="Recommandations" path="/user/recommended" />
+        )}
+
+        {/* <NavItem labelKey="Jeunesse" path="/videos/youth" /> */}
         {user && <NavItem labelKey="Abonnements" path="/user/subscriptions" />}
       </StyledLinkNav>
 

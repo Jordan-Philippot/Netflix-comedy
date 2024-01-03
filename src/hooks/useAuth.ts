@@ -29,7 +29,7 @@ export function useAuth(): AuthHook {
   const { sendInformation, sendError } = useMessage();
 
   const [errors, setErrors] = useState<FieldErrors | undefined>();
-
+  
   const { data } = useQuery({
     queryKey: ["user"],
     queryFn: () => getUser(),

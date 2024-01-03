@@ -1,12 +1,17 @@
 import { useEffect, useState, useRef, RefObject } from "react";
 import styled from "styled-components";
 import { useModal } from "components/context/ModalContext";
-import { COLOR_BLACK_LIGHT, COLOR_WHITE } from "utils/colors";
+import {
+  COLOR_BLACK_LIGHT,
+  COLOR_BLACK_LIGHTER,
+  COLOR_WHITE,
+} from "utils/colors";
 import { useLike } from "hooks/useLike";
 import { useFavorite } from "hooks/useFavorite";
 import { LikeTypeType } from "api/like.type";
 // import { controlBtnType, controlVideo } from "utils/controlVideo";
-
+import { useAuth } from "hooks/useAuth";
+import { device } from "utils/breakpoints";
 // --------------
 // Components
 // --------------
@@ -24,8 +29,9 @@ import ButtonPlay from "components/ui/ButtonPlay";
 import ChannelDescription from "./ChannelDescription";
 import Check from "components/icon/Check";
 import LikeFull from "components/icon/LikeFull";
-import { useAuth } from "hooks/useAuth";
-import { device } from "utils/breakpoints";
+import Comment from "components/icon/Comment";
+import Stats from "components/icon/Stats";
+import Calendar from "components/icon/Calendar";
 
 interface VideosProps {
   ref: RefObject<HTMLIFrameElement>;
@@ -82,7 +88,7 @@ const StyledIconContainer = styled.div`
   }
 `;
 const StyledDescriptionContainer = styled.div`
-  background-color: #212121;
+  background-color: ${COLOR_BLACK_LIGHTER};
   border-radius: 6px;
   padding: 15px 15px 0 15px;
   margin-bottom: 25px;
@@ -121,6 +127,52 @@ export default function VideoModal() {
     if (selectedVideo) findUserLike(selectedVideo.videoId, setIsLiked);
   }, [userLikeList, selectedVideo, findUserLike]);
 
+  const styledStatsContainer = {
+    marginBottom: "25px",
+    backgroundColor: COLOR_BLACK_LIGHT,
+    color: COLOR_WHITE,
+    borderRadius: "6px",
+    padding: "10px 20px",
+    width: "fit-content",
+    display: "flex",
+    gap: "0 10px",
+  };
+
+  const onChangeMute = () => {
+    setIsMuted((prev) => !prev);
+    if (selectedVideo?.videoId) {
+      const iframe = document.getElementById(
+        selectedVideo?.videoId
+      ) as HTMLIFrameElement;
+      // if (iframe?.ownerDocument) {
+      //   const document = iframe.ownerDocument;
+      //   if (document.body) {
+      //     console.log(document.body);
+      //     // document.body.postMessage("click", "*");
+      //   }
+
+      //   //   var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+      //   //   const content = iframe.ownerDocument;
+      //   //   console.log(iframe?.body,content);
+      //   //
+      // }
+      console.log(iframe?.contentWindow);
+      if (iframe?.contentWindow) {
+        const truc =  iframe.contentWindow
+        // Envoie un message à la fenêtre contenu de l'iframe
+        iframe.contentWindow.postMessage({ type: "click" }, "*");
+        console.log(truc.window)
+      }
+    }
+  };
+
+  window.addEventListener("message", (event) => {
+    if (event.data && event.data.type === "click") {
+      // Fais quelque chose en réponse au message 'click'
+      console.log("Simuler un clic dans l'iframe");
+    }
+  });
+
   return (
     <Modal opened={isModalOpen} onClose={closeModal}>
       <StyledModalHeader>
@@ -130,7 +182,7 @@ export default function VideoModal() {
             title="GCP Bucket video player"
             allow="accelerometer; encrypted-media; fullscreen"
             allowFullScreen
-            id="fullscreenIframe"
+            id={selectedVideo?.videoId}
             ref={videoRef}
           />
         )}
@@ -200,12 +252,7 @@ export default function VideoModal() {
                 </Text>
               </Tooltip>
 
-              <SvgButton
-                onClick={() => {
-                  setIsMuted((prev) => !prev);
-                }}
-                style={{ marginLeft: "auto" }}
-              >
+              <SvgButton onClick={onChangeMute} style={{ marginLeft: "auto" }}>
                 {isMuted ? <Mute /> : <UnMute />}
               </SvgButton>
             </StyledIconContainer>
@@ -225,58 +272,27 @@ export default function VideoModal() {
           </Title>
 
           <StyledDescriptionContainer>
-            <div style={{ display: "flex", flexWrap: "wrap" }}>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "0 15px" }}>
               {selectedVideo.viewCount && (
-                <Text
-                  size="l"
-                  color="secondary"
-                  style={{
-                    marginBottom: "25px",
-                    backgroundColor: COLOR_BLACK_LIGHT,
-                    color: COLOR_WHITE,
-                    borderRadius: "6px",
-                    padding: "10px 20px",
-                    width: "fit-content",
-                    marginRight: "15px",
-                  }}
-                >
-                  {selectedVideo.viewCount} vues
+                <Text size="l" color="secondary" style={styledStatsContainer}>
+                  <Stats /> {selectedVideo.viewCount} vues
                 </Text>
               )}
-              <Text
-                size="l"
-                color="secondary"
-                style={{
-                  marginBottom: "25px",
-                  backgroundColor: COLOR_BLACK_LIGHT,
-                  color: COLOR_WHITE,
-                  borderRadius: "6px",
-                  padding: "10px 20px",
-                  width: "fit-content",
-                }}
-              >
+              <Text size="l" color="secondary" style={styledStatsContainer}>
+                <Calendar />
                 Publié le {selectedVideo.publishedAt?.substring(0, 10)}
               </Text>
               {selectedVideo.viewCount && (
-                <Text
-                  size="l"
-                  color="secondary"
-                  style={{
-                    marginBottom: "25px",
-                    backgroundColor: COLOR_BLACK_LIGHT,
-                    color: COLOR_WHITE,
-                    borderRadius: "6px",
-                    padding: "10px 20px",
-                    width: "fit-content",
-                    marginLeft: "15px",
-                  }}
-                >
-                  {selectedVideo.commentCount} commentaires
+                <Text size="l" color="secondary" style={styledStatsContainer}>
+                  <Comment /> {selectedVideo.commentCount} commentaires
                 </Text>
               )}
             </div>
             {selectedVideo.description && (
-              <Text style={{ color: COLOR_WHITE }} weight="800">
+              <Text
+                style={{ color: COLOR_WHITE, paddingBottom: "15px" }}
+                weight="800"
+              >
                 {selectedVideo.description}
               </Text>
             )}
@@ -284,7 +300,11 @@ export default function VideoModal() {
 
           {selectedVideo.tags && (
             <StyledDescriptionContainer>
-              <Text style={{ color: COLOR_WHITE }} weight="800" size="s">
+              <Text
+                style={{ color: COLOR_WHITE, paddingBottom: "15px" }}
+                weight="800"
+                size="s"
+              >
                 {selectedVideo.tags?.map((tag: string) => "#" + tag + " - ")}
               </Text>
             </StyledDescriptionContainer>

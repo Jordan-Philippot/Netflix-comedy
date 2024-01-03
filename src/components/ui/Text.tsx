@@ -12,7 +12,7 @@ type textWeight = "200" | "400" | "600" | "800";
 
 export type textColor = "primary" | "secondary" | "dark" | "grey";
 
-interface TextProps {
+export interface TextProps {
   size?: textSize;
   weight?: textWeight;
   color?: textColor;
