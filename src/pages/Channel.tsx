@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { getChannelVideos } from "api/channel";
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { COLOR_BLACK, COLOR_WHITE } from "utils/colors";
 import { useSubscription } from "hooks/useSubscription";
 import { useAuth } from "hooks/useAuth";
+import { device } from "utils/breakpoints";
 
 // --------------
 // Components
@@ -16,7 +17,6 @@ import Button from "components/ui/Button";
 import Text from "components/ui/Text";
 import Wifi from "components/icon/Wifi";
 import Title from "components/ui/Title";
-import { device } from "utils/breakpoints";
 
 const StyledChannelData = styled.div`
   display: flex;
@@ -33,7 +33,6 @@ const StyledVideosContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  align-items: flex-start;
   margin: 50px auto;
   gap: 80px 0;
   padding: 0 20px;
@@ -72,6 +71,10 @@ const StyledDescription = styled.div`
   display: block;
   position: relative;
   margin: 40px;
+
+  @media ${device.laptopL} {
+    margin: 40px 60px;
+  }
 `;
 export default function Channel() {
   const { user } = useAuth();
@@ -125,9 +128,17 @@ export default function Channel() {
                 >
                   {channelById.subscriberCount} abonnés
                 </Text>
-                <Text size="l" style={{ marginBottom: "10px" }}>
+                <Link
+                  style={{
+                    display: "block",
+                    marginBottom: "10px",
+                    color: COLOR_WHITE,
+                  }}
+                  target='_blank'
+                  to={"https://www.youtube.com/" + channelId}
+                >
                   {channelId}
-                </Text>
+                </Link>
                 <Text size="l">
                   {channelById.viewCount} vues - {channelById.videoCount} vidéos
                 </Text>

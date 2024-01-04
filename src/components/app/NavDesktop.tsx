@@ -81,9 +81,9 @@ export default function NavDesktop() {
       </Link>
 
       <StyledLinkNav>
-        {user && (
+        {/* {user && (
           <NavItem labelKey="Recommandations" path="/user/recommended" />
-        )}
+        )} */}
 
         {/* <NavItem labelKey="Jeunesse" path="/videos/youth" /> */}
         {user && <NavItem labelKey="Abonnements" path="/user/subscriptions" />}
@@ -93,7 +93,7 @@ export default function NavDesktop() {
         {location.pathname === "/" && <SearchInput />}
         {user ? (
           <>
-            <NavItem labelKey={<Notification />} path="notifications" />
+            {/* <NavItem labelKey={<Notification />} path="notifications" /> */}
             <NavItem labelKey="Ma liste" path="user/list" />
 
             <Tooltip

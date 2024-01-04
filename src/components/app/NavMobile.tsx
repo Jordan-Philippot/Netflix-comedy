@@ -2,17 +2,14 @@ import { useAuth } from "hooks/useAuth";
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
-import {
-  COLOR_RED,
-  COLOR_WHITE,
-} from "utils/colors";
+import { COLOR_RED, COLOR_WHITE } from "utils/colors";
 
 // ----------
 // Component
 // ----------
 import NavItem from "components/ui/NavItem";
 import Text from "components/ui/Text";
-import Notification from "components/icon/Notification";
+// import Notification from "components/icon/Notification";
 import Button from "components/ui/Button";
 import SearchInput from "components/ui/SearchInput";
 import Logo from "components/app/Logo";
@@ -34,8 +31,8 @@ const StyledBurgerContainer = styled.div`
 `;
 
 const StyledBar = styled.div<{ open: boolean }>`
-  width: 30px;
-  height: 3px;
+  width: 25px;
+  height: 2px;
   background-color: ${COLOR_WHITE};
   margin: 6px 0;
   transition: 0.4s;
@@ -61,17 +58,14 @@ const NavContainer = styled.nav<{ open: boolean }>`
   height: auto;
   display: flex;
   flex-direction: column;
-  margin-top: 10px;
   transition: margin 0.4s;
-  margin-top: ${(props) => (props.open ? "0" : "-100vh")};
+  margin-top: ${(props) => (props.open ? "-15px" : "-100vh")};
   overflow: hidden;
   background-color: rgb(0, 0, 0);
   z-index: 5;
   padding: 25px;
 `;
 const StyledIconContainer = styled.div`
-  margin-right: auto;
-  margin-left: -20px;
   margin-bottom: 25px;
   display: flex;
   color: white;
@@ -89,12 +83,7 @@ const StyledHr = styled.div`
   height: 1px;
   width: 150px;
 `;
-const LogoContainer = styled.div`
-  position: relative;
-  margin-right: auto;
-  widht: fit-content;
-  margin-left: 15px;
-`;
+
 export default function NavMobile() {
   const { logout, user } = useAuth();
   const location = useLocation();
@@ -114,18 +103,16 @@ export default function NavMobile() {
           <StyledBar open={isOpen} />
         </StyledBurgerContainer>
 
-        <LogoContainer>
-          <Link to="/">
-           <Logo/>
-          </Link>
-        </LogoContainer>
+        <Link to="/">
+          <Logo />
+        </Link>
       </StyledContainer>
 
       <NavContainer open={isOpen}>
         {user && (
           <StyledUserContainer>
             <StyledIconContainer>
-              <NavItem labelKey={<Notification />} path="notifications" />
+              {/* <NavItem labelKey={<Notification />} path="notifications" /> */}
               {location.pathname === "/" && <SearchInput />}
             </StyledIconContainer>
 
@@ -156,8 +143,6 @@ export default function NavMobile() {
             <StyledHr />
           </StyledUserContainer>
         )}
-
-        <NavItem labelKey={"Jeunesse"} path="/videos/youth" />
 
         {user ? (
           <>

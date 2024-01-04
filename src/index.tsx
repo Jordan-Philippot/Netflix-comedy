@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+// import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
@@ -7,7 +7,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import { ModalProvider } from "components/context/ModalContext";
 
 import App from "./App";
-import CarouselModal from "components/videoModal/VideoModal";
+import VideoModal from "components/videoModal/VideoModal";
 
 import reportWebVitals from "./reportWebVitals";
 import stores from "./redux/store";
@@ -28,11 +28,11 @@ root.render(
         <QueryClientProvider client={queryClient}>
           <ModalProvider>
             <App />
-            <CarouselModal />
+            <VideoModal />
 
           </ModalProvider>
           {/* For react-query debugging */}
-          <ReactQueryDevtools initialIsOpen={false} />
+          {/* <ReactQueryDevtools initialIsOpen={false} /> */}
         </QueryClientProvider>
       </BrowserRouter>
     </PersistGate>

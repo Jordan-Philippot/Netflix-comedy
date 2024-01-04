@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { COLOR_RED, COLOR_WHITE } from "utils/colors";
 
 const StyledLogoContainer = styled.div`
-  margin-left: 25px;
   font-family: "BebasNeue";
   font-size: 35px;
   color: ${COLOR_RED};

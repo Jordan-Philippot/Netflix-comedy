@@ -102,20 +102,10 @@ export default function VideoModal() {
     useFavorite();
 
   const videoRef: RefObject<HTMLIFrameElement> = useRef(null);
-  const [isLoaded, setIsLoaded] = useState<boolean>(false);
-  const [videoPath, setVideoPath] = useState<string>();
   const [isMuted, setIsMuted] = useState<boolean>(false);
   const [playedVideo, setPlayedVideo] = useToggle(true);
 
-  useEffect(() => {
-    if (isModalOpen) setIsLoaded(true);
-  }, [isModalOpen]);
 
-  useEffect(() => {
-    if (isLoaded && selectedVideo?.filePath) {
-      setVideoPath(selectedVideo.filePath);
-    }
-  }, [selectedVideo, isLoaded]);
 
   const [isFavorite, setIsFavorite] = useState<boolean>();
   useEffect(() => {
@@ -156,29 +146,29 @@ export default function VideoModal() {
       //   //   console.log(iframe?.body,content);
       //   //
       // }
-      console.log(iframe?.contentWindow);
-      if (iframe?.contentWindow) {
-        const truc =  iframe.contentWindow
-        // Envoie un message à la fenêtre contenu de l'iframe
-        iframe.contentWindow.postMessage({ type: "click" }, "*");
-        console.log(truc.window)
-      }
+      // console.log(iframe?.contentWindow);
+      // if (iframe?.contentWindow) {
+      //   const truc = iframe.contentWindow;
+      //   // Envoie un message à la fenêtre contenu de l'iframe
+      //   iframe.contentWindow.postMessage({ type: "click" }, "*");
+      //   console.log(truc.window);
+      // }
     }
   };
 
-  window.addEventListener("message", (event) => {
-    if (event.data && event.data.type === "click") {
-      // Fais quelque chose en réponse au message 'click'
-      console.log("Simuler un clic dans l'iframe");
-    }
-  });
+  // window.addEventListener("message", (event) => {
+  //   if (event.data && event.data.type === "click") {
+  //     // Fais quelque chose en réponse au message 'click'
+  //     console.log("Simuler un clic dans l'iframe");
+  //   }
+  // });
 
   return (
     <Modal opened={isModalOpen} onClose={closeModal}>
       <StyledModalHeader>
-        {videoPath && (
+        {selectedVideo?.filePath && (
           <StyledModalVideo
-            src={`https://storage.googleapis.com/netflix_comedy_videos_bucket/videos/${videoPath}`}
+            src={`https://storage.googleapis.com/netflix_comedy_videos_bucket/videos/${selectedVideo.filePath}`}
             title="GCP Bucket video player"
             allow="accelerometer; encrypted-media; fullscreen"
             allowFullScreen

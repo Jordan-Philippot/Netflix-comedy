@@ -79,6 +79,8 @@ export default function CardItem({ item, channel, style }: CardItemProps) {
   const { openModal } = useModal();
 
   const openModalWithVideo = () => {
+    console.log("card", item);
+
     return openModal(item, channel);
   };
 
