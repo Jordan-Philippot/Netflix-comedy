@@ -51,19 +51,18 @@ const StyledModalVideo = styled.iframe<VideosProps>`
 const StyledModalHeader = styled.div`
   position: relative;
   background: ${COLOR_BLACK_LIGHT};
-
-  :before{
-    pointer-events: none; 
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    content: "";
-    background: linear-gradient(0deg, ${COLOR_BLACK_LIGHT}, transparent 90%);
-  }
 }`;
 
+// :before{
+//   pointer-events: none; 
+//   position: absolute;
+//   width: 100%;
+//   height: 100%;
+//   top: 0;
+//   left: 0;
+//   content: "";
+//   background: linear-gradient(0deg, ${COLOR_BLACK_LIGHT}40, transparent 30%);
+// }
 const StyledModalBody = styled.div`
   padding: 20px;
   @media ${device.tablet} {
