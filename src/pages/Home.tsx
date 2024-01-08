@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useQuery } from "@tanstack/react-query";
-import { RefObject, useRef } from "react";
+import { RefObject, useRef, useState } from "react";
 import {
   COLOR_BLUE,
   COLOR_GREY,
@@ -9,7 +9,6 @@ import {
 } from "utils/colors";
 import useToggle from "hooks/useToggle";
 import { device } from "utils/breakpoints";
-// import { controlBtnType } from "utils/controlVideo";
 
 // ----------
 // Component
@@ -17,25 +16,30 @@ import { device } from "utils/breakpoints";
 import Button from "components/ui/Button";
 import InfoCircle from "components/icon/InfoCircle";
 import CarouselsContainer from "components/carousel/CarouselsContainer";
-import Loader from "components/ui/Loader";
+import LoaderPage from "components/ui/LoaderPage";
 import ButtonPlay from "components/ui/ButtonPlay";
 import CardItem from "components/CardItem";
 import Title from "components/ui/Title";
 import Text from "components/ui/Text";
+import SvgButton from "components/ui/SvgButton";
+import Mute from "components/icon/Mute";
+import UnMute from "components/icon/UnMute";
 
 // ----------
 // Api
 // ----------
-import { getVidéoYoutubeById } from "api/video";
+import { getVidéoById } from "api/video";
 import { RootState } from "redux/store";
 import { useSelector } from "react-redux";
 import {
   StyledPageContainer,
   StyledVideosContainer,
 } from "./UserSubscriptions";
+import { useModal } from "components/context/ModalContext";
+
 
 interface VideosProps {
-  ref: RefObject<HTMLIFrameElement>;
+  ref: RefObject<HTMLVideoElement>;
 }
 
 const StyledContainerHome = styled.div`
@@ -49,13 +53,14 @@ const StyledContainerHome = styled.div`
   }
 `;
 
-const StyledIframeHome = styled.iframe<VideosProps>`
+const StyledVideoHome = styled.video<VideosProps>`
   position: relative;
   top: 0;
   width: 100%;
   height: 100%;
   min-height: 50vh;
   border: none;
+  object-fit: cover;
   @media ${device.laptop} {
     position: relative;
     top: 0;
@@ -130,51 +135,32 @@ const StyledBtnContainer = styled.div`
 `;
 
 export default function Home() {
-  // const videoHomepageId = process.env.REACT_APP_HOMEPAGE_VIDEO_ID as string;
-  const videoHomepageId = "cQdCbN2Ec1k";
-  // panayotis uKtWBk78y48
-  //roman : OA0jm1zqO-8
-  // fary 97A_MH5SVvA
-  //ilyes mela  wo9EuUCGTZ8
-  //malik bentalha : Obm_qUuAIDM
+  const videoHomepageId = process.env.REACT_APP_HOMEPAGE_VIDEO_ID as string;
 
-  // mister v _JhmNjntth8
-  //roman : Z7M1mW9Xlgc
-  const videoRef: RefObject<HTMLIFrameElement> = useRef(null);
+  const { openModal } = useModal();
+
+  const videoRef: RefObject<HTMLVideoElement> = useRef(null);
 
   const { data: videoHomepage } = useQuery({
     queryKey: ["videoHomepage"],
-    queryFn: () => getVidéoYoutubeById(videoHomepageId),
+    queryFn: () => getVidéoById(videoHomepageId),
   });
 
   // --------------------------
-  // Loading Vidéo autoplay
+  // Loading Vidéo
   // --------------------------
   const [playedVideo, setPlayedVideo] = useToggle(false);
+  const [isMuted, setIsMuted] = useState<boolean>(false);
 
   const { searchResult, isLoading, search } = useSelector(
     (state: RootState) => state.video
   );
 
-  // console.log(videoHomepage);
-  // window.addEventListener("scroll", function () {
-  //   const windowHeght = window.innerHeight as number;
-  //   const scrollOffset = window.scrollY as number;
-  //   if (scrollOffset > windowHeght) {
-  //     controlVideo("pauseVideo");
-  //   } else {
-  //     controlVideo("playVideo");
-  //   }
-  // });
-  // ----------------------------
-  // End Loading Vidéo autoplay
-  // ---------------------------
-
   return (
     <>
       {(() => {
         if (isLoading) {
-          return <Loader />;
+          return <LoaderPage />;
         } else if (search.length > 0) {
           return (
             <StyledPageContainer>
@@ -213,18 +199,19 @@ export default function Home() {
           return (
             <>
               <StyledContainerHome>
-                <StyledIframeHome
-                  src={
-                    "https://www.youtube.com/embed/" +
-                    videoHomepageId +
-                    "?controls=0&amp;modestbranding=1&amp;showinfo=0&enablejsapi=1"
-                  }
-                  title="YouTube video player"
-                  allow="accelerometer; encrypted-media; fullscreen"
-                  allowFullScreen
-                  id="fullscreenIframe"
+                <StyledVideoHome
+                  title="Dave Chapelle - GOAT"
                   ref={videoRef}
-                />
+                  id={videoHomepage?.videoId}
+                  controls
+                  poster={videoHomepage.thumbnails?.maxres?.url}
+                  muted={isMuted}
+                >
+                  <source
+                    src={`${process.env.REACT_APP_CLOUDFRONT_AWS_VIDEOS}${videoHomepage.filePath}`}
+                    type="video/mp4"
+                  />
+                </StyledVideoHome>
 
                 <StyledHomeInfos>
                   <StyledTitleIframe>{videoHomepage.title}</StyledTitleIframe>
@@ -242,17 +229,29 @@ export default function Home() {
                       color="dark"
                       label={"Informations"}
                       icon={<InfoCircle />}
-                      onClick={() => console.log("ok")}
+                      onClick={() =>
+                        openModal(videoHomepage, videoHomepage?.channel)
+                      }
                     />
                   </StyledBtnContainer>
                 </StyledHomeInfos>
+                <SvgButton
+                  onClick={() => setIsMuted((prev) => !prev)}
+                  style={{
+                    position: "absolute",
+                    top: "50px",
+                    right: "25px",
+                  }}
+                >
+                  {isMuted ? <Mute /> : <UnMute />}
+                </SvgButton>
               </StyledContainerHome>
 
               <CarouselsContainer />
             </>
           );
         } else {
-          return <Loader />;
+          return <LoaderPage />;
         }
       })()}
     </>

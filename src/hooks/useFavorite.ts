@@ -12,6 +12,7 @@ interface FavoriteHook {
     videoId: string,
     setIsFavorite: (bool: boolean) => void
   ) => void;
+  isLoading: boolean;
 }
 
 export function useFavorite(): FavoriteHook {
@@ -20,7 +21,7 @@ export function useFavorite(): FavoriteHook {
 
   const { user } = useAuth();
 
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["userFavorites"],
     queryFn: () => getUserFavoriteList(),
   });
@@ -78,11 +79,12 @@ export function useFavorite(): FavoriteHook {
       }
     }
   }
-  
+
   return {
     userFavorites: data,
     addFavorite: handleAddFavorite,
     removeFavorite: handleRemove,
     findUserFavorite: findUserFavorite,
+    isLoading: isLoading,
   };
 }

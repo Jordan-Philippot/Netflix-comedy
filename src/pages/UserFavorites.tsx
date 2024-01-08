@@ -6,6 +6,7 @@ import { useFavorite } from "hooks/useFavorite";
 import CardItem from "components/CardItem";
 import Title from "components/ui/Title";
 import Alert from "components/ui/Alert";
+import Loader from "components/ui/Loader";
 
 // ----------
 // Assets
@@ -16,7 +17,7 @@ import {
 } from "./UserSubscriptions";
 
 export default function UserFavorites() {
-  const { userFavorites } = useFavorite();
+  const { userFavorites, isLoading } = useFavorite();
 
   return (
     <>
@@ -24,19 +25,28 @@ export default function UserFavorites() {
         <Title weight="800" style={{ marginTop: "120px" }}>
           Ma liste
         </Title>
+        
         {/* Channel Informations */}
-        {userFavorites && userFavorites.length > 0 ? (
-          <StyledVideosContainer>
-            {userFavorites.map((favorite, key) => (
-              <CardItem
-                item={favorite.video}
-                channel={favorite.video.channel}
-                key={key}
-                style={{ marginBottom: "25px" }}
-              />
-            ))}
-          </StyledVideosContainer>
-        ): <Alert>Ajoutez des vidéos à votre liste pour les regarder plus tard </Alert>}
+        {!isLoading ? (
+          userFavorites && userFavorites.length > 0 ? (
+            <StyledVideosContainer>
+              {userFavorites.map((favorite, key) => (
+                <CardItem
+                  item={favorite.video}
+                  channel={favorite.video.channel}
+                  key={key}
+                  style={{ marginBottom: "25px" }}
+                />
+              ))}
+            </StyledVideosContainer>
+          ) : (
+            <Alert>
+              Ajoutez des vidéos à votre liste pour les regarder plus tard
+            </Alert>
+          )
+        ) : (
+          <Loader />
+        )}
       </StyledPageContainer>
     </>
   );

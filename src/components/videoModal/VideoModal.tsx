@@ -9,7 +9,6 @@ import {
 import { useLike } from "hooks/useLike";
 import { useFavorite } from "hooks/useFavorite";
 import { LikeTypeType } from "api/like.type";
-// import { controlBtnType, controlVideo } from "utils/controlVideo";
 import { useAuth } from "hooks/useAuth";
 import { device } from "utils/breakpoints";
 // --------------
@@ -34,10 +33,10 @@ import Stats from "components/icon/Stats";
 import Calendar from "components/icon/Calendar";
 
 interface VideosProps {
-  ref: RefObject<HTMLIFrameElement>;
+  ref: RefObject<HTMLVideoElement>;
 }
 
-const StyledModalVideo = styled.iframe<VideosProps>`
+const StyledModalVideo = styled.video<VideosProps>`
   width: 100%;
   height: 500px;
   border-radius: 6px 6px 0 0;
@@ -53,16 +52,6 @@ const StyledModalHeader = styled.div`
   background: ${COLOR_BLACK_LIGHT};
 }`;
 
-// :before{
-//   pointer-events: none; 
-//   position: absolute;
-//   width: 100%;
-//   height: 100%;
-//   top: 0;
-//   left: 0;
-//   content: "";
-//   background: linear-gradient(0deg, ${COLOR_BLACK_LIGHT}40, transparent 30%);
-// }
 const StyledModalBody = styled.div`
   padding: 20px;
   @media ${device.tablet} {
@@ -100,11 +89,9 @@ export default function VideoModal() {
   const { addFavorite, findUserFavorite, userFavorites, removeFavorite } =
     useFavorite();
 
-  const videoRef: RefObject<HTMLIFrameElement> = useRef(null);
+  const videoRef: RefObject<HTMLVideoElement> = useRef(null);
   const [isMuted, setIsMuted] = useState<boolean>(false);
   const [playedVideo, setPlayedVideo] = useToggle(true);
-
-
 
   const [isFavorite, setIsFavorite] = useState<boolean>();
   useEffect(() => {
@@ -129,51 +116,24 @@ export default function VideoModal() {
 
   const onChangeMute = () => {
     setIsMuted((prev) => !prev);
-    if (selectedVideo?.videoId) {
-      const iframe = document.getElementById(
-        selectedVideo?.videoId
-      ) as HTMLIFrameElement;
-      // if (iframe?.ownerDocument) {
-      //   const document = iframe.ownerDocument;
-      //   if (document.body) {
-      //     console.log(document.body);
-      //     // document.body.postMessage("click", "*");
-      //   }
-
-      //   //   var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-      //   //   const content = iframe.ownerDocument;
-      //   //   console.log(iframe?.body,content);
-      //   //
-      // }
-      // console.log(iframe?.contentWindow);
-      // if (iframe?.contentWindow) {
-      //   const truc = iframe.contentWindow;
-      //   // Envoie un message à la fenêtre contenu de l'iframe
-      //   iframe.contentWindow.postMessage({ type: "click" }, "*");
-      //   console.log(truc.window);
-      // }
-    }
   };
-
-  // window.addEventListener("message", (event) => {
-  //   if (event.data && event.data.type === "click") {
-  //     // Fais quelque chose en réponse au message 'click'
-  //     console.log("Simuler un clic dans l'iframe");
-  //   }
-  // });
 
   return (
     <Modal opened={isModalOpen} onClose={closeModal}>
       <StyledModalHeader>
         {selectedVideo?.filePath && (
           <StyledModalVideo
-            src={`https://storage.googleapis.com/netflix_comedy_videos_bucket/videos/${selectedVideo.filePath}`}
-            title="GCP Bucket video player"
-            allow="accelerometer; encrypted-media; fullscreen"
-            allowFullScreen
+            title="Netflux iframe video"
+            controls
             id={selectedVideo?.videoId}
             ref={videoRef}
-          />
+            muted={isMuted}
+          >
+            <source
+              src={`${process.env.REACT_APP_CLOUDFRONT_AWS_VIDEOS}${selectedVideo.filePath}`}
+              type="video/mp4"
+            />
+          </StyledModalVideo>
         )}
       </StyledModalHeader>
       {selectedVideo && (

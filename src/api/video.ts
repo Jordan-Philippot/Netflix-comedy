@@ -22,5 +22,5 @@ export const getVidéoById = async (videoId: string): Promise<VideoDataType> => 
     getDefaultConfig()
   );
   const data = await response.json();
-  return data;
+  return data.videoById;
 };

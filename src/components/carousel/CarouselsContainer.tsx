@@ -1,12 +1,13 @@
 import styled from "styled-components";
 import { useQuery } from "@tanstack/react-query";
+import { getChannelsVideos } from "api/channel";
+import { device } from "utils/breakpoints";
 
 // --------------
 // Components
 // --------------
 import Carousel from "./Carousel";
-import { getChannelsVideos } from "api/channel";
-import { device } from "utils/breakpoints";
+import Loader from "components/ui/Loader";
 
 const StyledCarouselsContainer = styled.main`
   position: relavtive;
@@ -23,18 +24,22 @@ const StyledCarouselsContainer = styled.main`
 `;
 
 export default function CarouselsContainer() {
-  const { data: channels } = useQuery({
+  const { data: channels, isLoading } = useQuery({
     queryKey: ["channels"],
     queryFn: () => getChannelsVideos(),
   });
 
   return (
     <StyledCarouselsContainer>
-      {channels &&
+      {isLoading ? (
+        <Loader />
+      ) : (
+        channels &&
         channels.map(
           (channel, key) =>
             !channel?.madeForKids && <Carousel channel={channel} key={key} />
-        )}
+        )
+      )}
     </StyledCarouselsContainer>
   );
 }

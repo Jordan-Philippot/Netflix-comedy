@@ -1,5 +1,5 @@
 import { RefObject } from "react";
-import { controlBtnType } from "utils/controlVideo";
+import { controlVideo } from "utils/controlVideo";
 // ----------------------------
 // Components
 // ----------------------------
@@ -8,7 +8,7 @@ import Stop from "components/icon/Stop";
 import Button from "./Button";
 
 interface ButtonPlayType {
-  videoRef: RefObject<HTMLIFrameElement>;
+  videoRef: RefObject<HTMLVideoElement>;
   playedVideo: boolean;
   setPlayedVideo: () => void;
 }
@@ -37,7 +37,7 @@ export default function ButtonPlay({
         )
       }
       color="light"
-      onClick={() => controlBtnType(videoRef, playedVideo, setPlayedVideo)}
+      onClick={() => controlVideo(videoRef, playedVideo, setPlayedVideo)}
       style={{ width: "170px", justifyContent: "start" }}
     />
   );

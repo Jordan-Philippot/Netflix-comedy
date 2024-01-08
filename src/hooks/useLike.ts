@@ -9,13 +9,14 @@ interface LikeHook {
   addLike: (videoId: string, type: LikeTypeType) => void;
   removeLike: (videoId: string) => void;
   findUserLike: (videoId: string, setIsLiked: (bool: boolean) => void) => void;
+  isLoading: boolean;
 }
 
 export function useLike(): LikeHook {
   const queryClient = useQueryClient();
   const { sendInformation, sendError } = useMessage();
 
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["userLikeList"],
     queryFn: () => getUserLikeList(),
   });
@@ -77,5 +78,6 @@ export function useLike(): LikeHook {
     addLike: handleAddLike,
     removeLike: handleRemove,
     findUserLike: findUserLike,
+    isLoading: isLoading,
   };
 }

@@ -9,7 +9,6 @@ import { COLOR_BLACK } from "utils/colors";
 import Messages from "components/app/Messages";
 import Nav from "components/app/Nav";
 import Footer from "./Footer";
-import { device } from "utils/breakpoints";
 
 interface StyledNavProps {
   isVisible: boolean;

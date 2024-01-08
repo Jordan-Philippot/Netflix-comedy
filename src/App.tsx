@@ -32,7 +32,7 @@ function App() {
       } else if (user?.email && location.pathname.match(/login|register/)) {
         navigate("/");
       }
-  }, [location, navigate, user]);
+  }, [location, navigate, user, isLoaded]);
 
   return (
     <Routes>

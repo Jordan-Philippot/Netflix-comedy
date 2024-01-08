@@ -8,7 +8,6 @@ import {
 } from "api/subscription";
 import { useAuth } from "./useAuth";
 
-
 interface SubscriptionHook {
   userSubscriptions: SubscriptionResponseType | undefined;
   addSubscription: (channelId: string) => void;
@@ -17,13 +16,14 @@ interface SubscriptionHook {
     channelId: string,
     setIsSubscribed: (bool: boolean) => void
   ) => void;
+  isLoading: boolean;
 }
 
 export function useSubscription(): SubscriptionHook {
   const queryClient = useQueryClient();
   const { sendInformation, sendError } = useMessage();
 
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["userSubscriptions"],
     queryFn: () => getUserSubscriptions(),
   });
@@ -78,7 +78,11 @@ export function useSubscription(): SubscriptionHook {
     setIsSubscribed: (bool: boolean) => void
   ) {
     if (data?.subscriptions) {
-      if (data.subscriptions.find((subscription) => subscription?.channel.channelId === channelId)) {
+      if (
+        data.subscriptions.find(
+          (subscription) => subscription?.channel.channelId === channelId
+        )
+      ) {
         setIsSubscribed(true);
       } else {
         setIsSubscribed(false);
@@ -91,6 +95,6 @@ export function useSubscription(): SubscriptionHook {
     addSubscription: handleAddSubscription,
     removeSubscription: handleRemove,
     findUserSubscription,
-
+    isLoading: isLoading,
   };
 }
