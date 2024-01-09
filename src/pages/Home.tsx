@@ -148,7 +148,7 @@ export default function Home() {
   // --------------------------
   // Loading Vidéo
   // --------------------------
-  const [playedVideo, setPlayedVideo] =  useState<boolean>(false);
+  const [playedVideo, setPlayedVideo] = useState<boolean>(false);
   const [isMuted, setIsMuted] = useState<boolean>(false);
 
   const { searchResult, isLoading, search } = useSelector(
@@ -160,7 +160,6 @@ export default function Home() {
       addVideoEventListener(videoRef, setPlayedVideo, setIsMuted);
     }
   }, [videoRef, videoHomepage]);
-
 
   return (
     <>
