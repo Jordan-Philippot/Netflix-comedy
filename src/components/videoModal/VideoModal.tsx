@@ -135,6 +135,7 @@ export default function VideoModal() {
             id={selectedVideo?.videoId}
             ref={videoRef}
             muted={isMuted}
+            poster={selectedVideo.thumbnails?.maxres?.url}
           >
             <source
               src={`${process.env.REACT_APP_CLOUDFRONT_AWS_VIDEOS}${selectedVideo.filePath}`}
