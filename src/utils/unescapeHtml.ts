@@ -1,23 +1,3 @@
-// let entityMap = {
-//     '&amp;': '&',
-//     '&lt;': '<',
-//     '&gt;': '>',
-//     '&quot;': '"',
-//     '&#39;': "'",
-//     '&#x2F;': '/',
-//     '&#x60;': '`',
-//     '&#x3D;': '=',
-//     '&#8230;' : '...',
-//     '&rsquo;': "'",
-//     "&#8217;": "'"
-// };
-
-// export function unescapeHtml(string : string) {
-//     return String(string).replace(/&amp;|&lt;|&gt;|&quot;|&#39;|&#x2F;|&#x60;|&#x3D;|&#8230;|&rsquo;|&#8217;/g, function (s) {
-//         return entityMap[s];
-//     });
-// }
-
 let entityMap: Record<string, string> = {
     '&amp;': '&',
     '&lt;': '<',

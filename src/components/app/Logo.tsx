@@ -7,8 +7,7 @@ const StyledLogoContainer = styled.div`
   color: ${COLOR_RED};
   margin: 0 0 10px 25px;
   padding: 10px 0;
-  background-color: black;
-  border-radius: 50%;
+
 `;
 
 const StyledLogoTitle = styled.p`

@@ -23,7 +23,6 @@ import Like from "components/icon/Like";
 import Tooltip from "components/ui/Tooltip";
 import Mute from "components/icon/Mute";
 import UnMute from "components/icon/UnMute";
-import useToggle from "hooks/useToggle";
 import ButtonPlay from "components/ui/ButtonPlay";
 import ChannelDescription from "./ChannelDescription";
 import Check from "components/icon/Check";
@@ -31,6 +30,7 @@ import LikeFull from "components/icon/LikeFull";
 import Comment from "components/icon/Comment";
 import Stats from "components/icon/Stats";
 import Calendar from "components/icon/Calendar";
+import { addVideoEventListener, muteVideo } from "utils/controlVideo";
 
 interface VideosProps {
   ref: RefObject<HTMLVideoElement>;
@@ -63,6 +63,10 @@ const StyledBtnContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 25px;
+  svg {
+    width: 26px;
+    height: 26px;
+  }
   @media ${device.mobile} {
     flex-direction: row;
   }
@@ -91,17 +95,8 @@ export default function VideoModal() {
 
   const videoRef: RefObject<HTMLVideoElement> = useRef(null);
   const [isMuted, setIsMuted] = useState<boolean>(false);
-  const [playedVideo, setPlayedVideo] = useToggle(true);
-
+  const [playedVideo, setPlayedVideo] = useState<boolean>(true);
   const [isFavorite, setIsFavorite] = useState<boolean>();
-  useEffect(() => {
-    if (selectedVideo) findUserFavorite(selectedVideo.videoId, setIsFavorite);
-  }, [userFavorites, selectedVideo, findUserFavorite]);
-
-  const [isLiked, setIsLiked] = useState<boolean>();
-  useEffect(() => {
-    if (selectedVideo) findUserLike(selectedVideo.videoId, setIsLiked);
-  }, [userLikeList, selectedVideo, findUserLike]);
 
   const styledStatsContainer = {
     marginBottom: "25px",
@@ -114,9 +109,21 @@ export default function VideoModal() {
     gap: "0 10px",
   };
 
-  const onChangeMute = () => {
-    setIsMuted((prev) => !prev);
-  };
+  useEffect(() => {
+    if (selectedVideo) findUserFavorite(selectedVideo.videoId, setIsFavorite);
+  }, [userFavorites, selectedVideo, findUserFavorite]);
+
+  const [isLiked, setIsLiked] = useState<boolean>();
+
+  useEffect(() => {
+    if (selectedVideo) findUserLike(selectedVideo.videoId, setIsLiked);
+  }, [userLikeList, selectedVideo, findUserLike]);
+
+  useEffect(() => {
+    if (isModalOpen) {
+      addVideoEventListener(videoRef, setPlayedVideo, setIsMuted);
+    }
+  }, [videoRef, isModalOpen]);
 
   return (
     <Modal opened={isModalOpen} onClose={closeModal}>
@@ -128,6 +135,7 @@ export default function VideoModal() {
             id={selectedVideo?.videoId}
             ref={videoRef}
             muted={isMuted}
+            autoPlay
           >
             <source
               src={`${process.env.REACT_APP_CLOUDFRONT_AWS_VIDEOS}${selectedVideo.filePath}`}
@@ -139,11 +147,7 @@ export default function VideoModal() {
       {selectedVideo && (
         <StyledModalBody>
           <StyledBtnContainer>
-            <ButtonPlay
-              videoRef={videoRef}
-              setPlayedVideo={setPlayedVideo}
-              playedVideo={playedVideo}
-            />
+            <ButtonPlay videoRef={videoRef} playedVideo={playedVideo} />
             {/* -----------------
                Favorite Component
               ------------------- */}
@@ -201,7 +205,10 @@ export default function VideoModal() {
                 </Text>
               </Tooltip>
 
-              <SvgButton onClick={onChangeMute} style={{ marginLeft: "auto" }}>
+              <SvgButton
+                onClick={() => muteVideo(videoRef)}
+                style={{ marginLeft: "auto" }}
+              >
                 {isMuted ? <Mute /> : <UnMute />}
               </SvgButton>
             </StyledIconContainer>

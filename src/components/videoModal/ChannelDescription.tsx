@@ -47,7 +47,7 @@ const StyledButtonContainer = styled.div`
 `;
 export default function ChannelDescription() {
   let navigate = useNavigate();
-  const { selectedChannel } = useModal();
+  const { selectedChannel, closeModal } = useModal();
   const { user } = useAuth();
   const {
     addSubscription,
@@ -67,7 +67,10 @@ export default function ChannelDescription() {
       {selectedChannel && (
         <StyledChannelData>
           <StyledChannelBannerContainer
-            onClick={() => navigate(`/channel/${selectedChannel.customUrl}`)}
+            onClick={() => {
+              closeModal();
+              navigate(`/channel/${selectedChannel.customUrl}`);
+            }}
           >
             <StyledBanner
               src={selectedChannel.thumbnails?.medium?.url}

@@ -1,13 +1,12 @@
 import styled from "styled-components";
 import { useQuery } from "@tanstack/react-query";
-import { RefObject, useRef, useState } from "react";
+import { RefObject, useEffect, useRef, useState } from "react";
 import {
   COLOR_BLUE,
   COLOR_GREY,
   COLOR_GREY_LIGHT,
   COLOR_WHITE,
 } from "utils/colors";
-import useToggle from "hooks/useToggle";
 import { device } from "utils/breakpoints";
 
 // ----------
@@ -36,7 +35,7 @@ import {
   StyledVideosContainer,
 } from "./UserSubscriptions";
 import { useModal } from "components/context/ModalContext";
-
+import { addVideoEventListener, muteVideo } from "utils/controlVideo";
 
 interface VideosProps {
   ref: RefObject<HTMLVideoElement>;
@@ -149,12 +148,19 @@ export default function Home() {
   // --------------------------
   // Loading Vidéo
   // --------------------------
-  const [playedVideo, setPlayedVideo] = useToggle(false);
+  const [playedVideo, setPlayedVideo] =  useState<boolean>(false);
   const [isMuted, setIsMuted] = useState<boolean>(false);
 
   const { searchResult, isLoading, search } = useSelector(
     (state: RootState) => state.video
   );
+
+  useEffect(() => {
+    if (videoHomepage) {
+      addVideoEventListener(videoRef, setPlayedVideo, setIsMuted);
+    }
+  }, [videoRef, videoHomepage]);
+
 
   return (
     <>
@@ -220,11 +226,7 @@ export default function Home() {
                       videoHomepage.description.substring(0, 150) + "..."}
                   </StyledDescriptionIframe>
                   <StyledBtnContainer>
-                    <ButtonPlay
-                      videoRef={videoRef}
-                      setPlayedVideo={setPlayedVideo}
-                      playedVideo={playedVideo}
-                    />
+                    <ButtonPlay videoRef={videoRef} playedVideo={playedVideo} />
                     <Button
                       color="dark"
                       label={"Informations"}
@@ -236,7 +238,7 @@ export default function Home() {
                   </StyledBtnContainer>
                 </StyledHomeInfos>
                 <SvgButton
-                  onClick={() => setIsMuted((prev) => !prev)}
+                  onClick={() => muteVideo(videoRef)}
                   style={{
                     position: "absolute",
                     top: "50px",

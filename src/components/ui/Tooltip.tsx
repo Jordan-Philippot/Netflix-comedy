@@ -1,22 +1,25 @@
-import React, { useEffect, useRef, useCallback } from 'react'
-import styled from 'styled-components'
-import type { dialogPosition, dialogBgColor } from 'components/ui/Dialog'
-import type { PropsWithChildren } from 'react'
-import Dialog from 'components/ui/Dialog'
+import React, { useEffect, useRef, useCallback } from "react";
+import styled from "styled-components";
+import type { dialogPosition, dialogBgColor } from "components/ui/Dialog";
+import type { PropsWithChildren } from "react";
+import Dialog from "components/ui/Dialog";
 
 interface TooltipProps {
-  label?: React.ReactElement
-  isClickable?: boolean
-  position: dialogPosition
-  bgColor?: dialogBgColor
+  label?: React.ReactElement;
+  isClickable?: boolean;
+  position: dialogPosition;
+  bgColor?: dialogBgColor;
 }
 
-type StyledTooltipProps = Omit<TooltipProps, 'label' | 'children' | 'position' | 'bgColor'>
+type StyledTooltipProps = Omit<
+  TooltipProps,
+  "label" | "children" | "position" | "bgColor"
+>;
 
 const StyledTooltip = styled.div<StyledTooltipProps>`
   width: fit-content;
   position: relative;
-
+  cursor: pointer;
   &:nth-child(0) {
     position: relative;
   }
@@ -35,63 +38,70 @@ const StyledTooltip = styled.div<StyledTooltipProps>`
   &.isActive .dialog {
     visibility: visible;
   }
-`
+`;
 
 function Tooltip({
   label,
   children,
   isClickable = false,
-  position = 'top',
+  position = "top",
   bgColor,
 }: PropsWithChildren<TooltipProps>) {
-  const tooltipRef = useRef<HTMLDivElement>(null)
+  const tooltipRef = useRef<HTMLDivElement>(null);
 
   const handleOpen = useCallback(() => {
     if (isClickable) {
-      tooltipRef.current?.classList.add('isActive')
+      tooltipRef.current?.classList.add("isActive");
     }
-  }, [isClickable])
+  }, [isClickable]);
 
   const handleClose = useCallback(
     (event: MouseEvent) => {
-      const currentRef = tooltipRef.current
+      const currentRef = tooltipRef.current;
       if (isClickable) {
         if (!currentRef?.contains(event.target as Node)) {
-          currentRef?.classList.remove('isActive')
+          currentRef?.classList.remove("isActive");
         }
       }
     },
-    [isClickable],
-  )
+    [isClickable]
+  );
 
   const handleMouseEnter = useCallback(() => {
-    const currentRef = tooltipRef.current
+    const currentRef = tooltipRef.current;
     if (!isClickable) {
-      currentRef?.classList.add('isHover')
+      currentRef?.classList.add("isHover");
     }
-  }, [isClickable])
+  }, [isClickable]);
 
   const handleMouseLeave = useCallback(() => {
-    const currentRef = tooltipRef.current
+    const currentRef = tooltipRef.current;
     if (!isClickable) {
-      if (currentRef?.classList.contains('isHover')) {
-        currentRef?.classList.remove('isHover')
+      if (currentRef?.classList.contains("isHover")) {
+        currentRef?.classList.remove("isHover");
       }
     }
-  }, [isClickable])
+  }, [isClickable]);
 
   useEffect(() => {
-    const currentRef = tooltipRef.current
-    const labelElement = tooltipRef?.current?.firstChild
+    const currentRef = tooltipRef.current;
+    const labelElement = tooltipRef?.current?.firstChild;
 
     if (isClickable) {
-      labelElement?.addEventListener('click', handleOpen)
-      document.addEventListener('click', handleClose)
+      labelElement?.addEventListener("click", handleOpen);
+      document.addEventListener("click", handleClose);
     } else {
-      currentRef?.addEventListener('mouseenter', handleMouseEnter)
-      currentRef?.addEventListener('mouseleave', handleMouseLeave)
+      currentRef?.addEventListener("mouseenter", handleMouseEnter);
+      currentRef?.addEventListener("mouseleave", handleMouseLeave);
     }
-  }, [tooltipRef, isClickable, handleOpen, handleClose, handleMouseEnter, handleMouseLeave])
+  }, [
+    tooltipRef,
+    isClickable,
+    handleOpen,
+    handleClose,
+    handleMouseEnter,
+    handleMouseLeave,
+  ]);
 
   return (
     <StyledTooltip isClickable={isClickable} ref={tooltipRef}>
@@ -101,7 +111,7 @@ function Tooltip({
         {children}
       </Dialog>
     </StyledTooltip>
-  )
+  );
 }
 
-export default Tooltip
+export default Tooltip;

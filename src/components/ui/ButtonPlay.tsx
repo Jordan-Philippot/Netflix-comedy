@@ -10,13 +10,11 @@ import Button from "./Button";
 interface ButtonPlayType {
   videoRef: RefObject<HTMLVideoElement>;
   playedVideo: boolean;
-  setPlayedVideo: () => void;
 }
 
 export default function ButtonPlay({
   videoRef,
   playedVideo,
-  setPlayedVideo,
 }: ButtonPlayType) {
 
   const iconStopStyle = {
@@ -37,7 +35,7 @@ export default function ButtonPlay({
         )
       }
       color="light"
-      onClick={() => controlVideo(videoRef, playedVideo, setPlayedVideo)}
+      onClick={() => controlVideo(videoRef)}
       style={{ width: "170px", justifyContent: "start" }}
     />
   );

@@ -57,24 +57,24 @@ export default function Footer() {
         >
           <LinkedIn />
         </Link>
-        <Tooltip label={ <Phone />} position="top">
+        <Tooltip label={ <Phone />} position="top" isClickable>
           07 81 19 74 38
         </Tooltip>
-        <Tooltip label={ <Mail />} position="top">
+        <Tooltip label={ <Mail />} position="top" isClickable>
          jordan.philippot.pro@gmail.com
         </Tooltip>
       </StyledSocialMediaContainer>
 
       <StyledCguContainer>
-        <Link to="/truc">Nous contacter</Link>{" "}
-        <Link to="/truc">Mentions Légales</Link>{" "}
-        <Link to="/truc">Conditions d'utilisation </Link>
-        <Link to="/truc">Information légales </Link>
-        <Link to="/truc">Centre d'aide </Link>
+        <Link to="#">Nous contacter</Link>{" "}
+        <Link to="#">Mentions Légales</Link>{" "}
+        <Link to="#">Conditions d'utilisation </Link>
+        <Link to="#">Information légales </Link>
+        <Link to="#">Centre d'aide </Link>
       </StyledCguContainer>
 
       <Text size="s">
-        &copy; 2023 Netflix, Jordan Philippot - Développeur Fullstack{" "}
+        &copy; 2024 Netflix, Jordan Philippot - Développeur Fullstack
       </Text>
     </StyledFooterContainer>
   );

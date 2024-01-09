@@ -3,11 +3,11 @@ import { getChannelVideos } from "api/channel";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
-import { COLOR_BLACK, COLOR_WHITE } from "utils/colors";
+import { COLOR_BLACK, COLOR_BLUE, COLOR_WHITE } from "utils/colors";
 import { useSubscription } from "hooks/useSubscription";
 import { useAuth } from "hooks/useAuth";
 import { device } from "utils/breakpoints";
-
+import Linkify from "linkify-react";
 // --------------
 // Components
 // --------------
@@ -71,7 +71,9 @@ const StyledDescription = styled.div`
   display: block;
   position: relative;
   margin: 40px;
-
+  .linkify {
+    color: ${COLOR_BLUE};
+  }
   @media ${device.laptopL} {
     margin: 40px 60px;
   }
@@ -97,6 +99,11 @@ export default function Channel() {
       findUserSubscription(channelById.channelId, setIsSubscribed);
   }, [userSubscriptions, channelById, findUserSubscription]);
 
+  const linkifyOptions = {
+    target: "_blank",
+    rel: "noopener",
+    className: "linkify",
+  };
   return (
     <>
       {/* Channel Informations */}
@@ -134,7 +141,7 @@ export default function Channel() {
                     marginBottom: "10px",
                     color: COLOR_WHITE,
                   }}
-                  target='_blank'
+                  target="_blank"
                   to={"https://www.youtube.com/" + channelId}
                 >
                   {channelId}
@@ -165,7 +172,11 @@ export default function Channel() {
           {/* End Banner informations */}
 
           <StyledDescription>
-            <Text> {channelById.description}</Text>
+            <Text>
+              <Linkify options={linkifyOptions}>
+                {channelById.description}
+              </Linkify>
+            </Text>
           </StyledDescription>
 
           <StyledHr />
