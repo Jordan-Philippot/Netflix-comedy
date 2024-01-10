@@ -95,7 +95,7 @@ export default function VideoModal() {
 
   const videoRef: RefObject<HTMLVideoElement> = useRef(null);
   const [isMuted, setIsMuted] = useState<boolean>(false);
-  const [playedVideo, setPlayedVideo] = useState<boolean>(true);
+  const [playedVideo, setPlayedVideo] = useState<boolean>(false);
   const [isFavorite, setIsFavorite] = useState<boolean>();
 
   const styledStatsContainer = {
