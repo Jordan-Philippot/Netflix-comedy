@@ -109,8 +109,8 @@ export default function UserSubscriptions() {
         {/* Last week videos */}
         {!isLoading ? (
           userSubscriptions && userSubscriptions.subscriptions.length > 0 ? (
-            userSubscriptions.subscriptions.map((subscripion) => (
-              <>
+            userSubscriptions.subscriptions.map((subscripion, key) => (
+              <div key={key}>
                 <StyledTitleLink
                   to={"/channel/" + subscripion.channel.customUrl}
                 >
@@ -141,7 +141,7 @@ export default function UserSubscriptions() {
                     />
                   ))}
                 </StyledVideosContainer>
-              </>
+              </div>
             ))
           ) : (
             <Alert>

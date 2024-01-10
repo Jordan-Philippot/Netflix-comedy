@@ -1,6 +1,6 @@
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import "./App.css";
-import 'assets/font/bebas-neue/BebasNeue.otf'
+import "assets/font/bebas-neue/BebasNeue.otf";
 // ----------
 // Pages
 // ----------
@@ -14,25 +14,30 @@ import UserFavorites from "pages/UserFavorites";
 import UserSubscriptions from "pages/UserSubscriptions";
 import { useAuth } from "hooks/useAuth";
 import { useEffect, useState } from "react";
+import LoaderPage from "components/ui/LoaderPage";
 
 function App() {
-  const { user } = useAuth();
+  const { user, isLoading } = useAuth();
   const location = useLocation();
   let navigate = useNavigate();
-  const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
+  const [loading, setLoading] = useState<boolean>(true);
   useEffect(() => {
-    setIsLoaded(true);
+    setLoading(false);
   }, []);
 
   useEffect(() => {
-    if (isLoaded)
+    if (!loading && !isLoading)
       if (!user?.email && location.pathname.match(/user/)) {
         navigate("/login");
       } else if (user?.email && location.pathname.match(/login|register/)) {
         navigate("/");
       }
-  }, [location, navigate, user, isLoaded]);
+  }, [location, navigate, user, loading, isLoading]);
+
+  if (loading) {
+    return <LoaderPage />;
+  }
 
   return (
     <Routes>

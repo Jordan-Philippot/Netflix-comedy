@@ -21,6 +21,7 @@ interface AuthHook {
     lastname: string
   ) => void;
   errors: FieldErrors | undefined;
+  isLoading: boolean;
 }
 
 export function useAuth(): AuthHook {
@@ -29,8 +30,8 @@ export function useAuth(): AuthHook {
   const { sendInformation, sendError } = useMessage();
 
   const [errors, setErrors] = useState<FieldErrors | undefined>();
-  
-  const { data } = useQuery({
+
+  const { data, isLoading } = useQuery({
     queryKey: ["user"],
     queryFn: () => getUser(),
   });
@@ -129,5 +130,6 @@ export function useAuth(): AuthHook {
     register: registerHandler,
     profile: profileHandler,
     errors,
+    isLoading: isLoading,
   };
 }

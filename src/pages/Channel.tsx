@@ -17,6 +17,7 @@ import Button from "components/ui/Button";
 import Text from "components/ui/Text";
 import Wifi from "components/icon/Wifi";
 import Title from "components/ui/Title";
+import LoaderPage from "components/ui/LoaderPage";
 
 const StyledChannelData = styled.div`
   display: flex;
@@ -81,7 +82,7 @@ const StyledDescription = styled.div`
 export default function Channel() {
   const { user } = useAuth();
   const { channelId } = useParams() as { channelId: string };
-  const { data: channelById } = useQuery({
+  const { data: channelById, isLoading } = useQuery({
     queryKey: ["channelById"],
     queryFn: () => getChannelVideos(channelId as string),
   });
@@ -104,8 +105,10 @@ export default function Channel() {
     rel: "noopener",
     className: "linkify",
   };
+
   return (
     <>
+      {isLoading && <LoaderPage />}
       {/* Channel Informations */}
       {channelById && (
         <>
