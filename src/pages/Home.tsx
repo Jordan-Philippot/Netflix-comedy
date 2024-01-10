@@ -136,7 +136,7 @@ const StyledBtnContainer = styled.div`
 export default function Home() {
   const videoHomepageId = process.env.REACT_APP_HOMEPAGE_VIDEO_ID as string;
 
-  const { openModal } = useModal();
+  const { openModal, isModalOpen } = useModal();
 
   const videoRef: RefObject<HTMLVideoElement> = useRef(null);
 
@@ -160,6 +160,13 @@ export default function Home() {
       addVideoEventListener(videoRef, setPlayedVideo, setIsMuted);
     }
   }, [videoRef, videoHomepage]);
+
+  useEffect(() => {
+    const currentVideo = videoRef.current;
+    if (isModalOpen && !currentVideo?.paused) {
+      currentVideo?.pause();
+    }
+  }, [isModalOpen]);
 
   return (
     <>
