@@ -36,7 +36,7 @@ export default function ButtonPlay({
       }
       color="light"
       onClick={() => controlVideo(videoRef)}
-      style={{ width: "170px", justifyContent: "start" }}
+      style={{ maxWidth: "170px", justifyContent: "start" }}
     />
   );
 }

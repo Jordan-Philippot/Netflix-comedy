@@ -36,6 +36,8 @@ import {
 } from "./UserSubscriptions";
 import { useModal } from "components/context/ModalContext";
 import { addVideoEventListener, muteVideo } from "utils/controlVideo";
+import { linkifyOptions } from "constant/linkifyOptions";
+import Linkify from "linkify-react";
 
 interface VideosProps {
   ref: RefObject<HTMLVideoElement>;
@@ -131,6 +133,23 @@ const StyledBtnContainer = styled.div`
   display: flex;
   margin-top: 25px;
   pointer-events: auto;
+
+  button {
+    width: fit-content;
+    font-size: 18px;
+    svg {
+      display: none;
+    }
+  }
+  @media ${device.mobile} {
+    button {
+      width: auto;
+      font-size: 20px;
+      svg {
+        display: block;
+      }
+    }
+  }
 `;
 
 export default function Home() {
@@ -212,7 +231,7 @@ export default function Home() {
             <>
               <StyledContainerHome>
                 <StyledVideoHome
-                  title="Dave Chapelle - GOAT"
+                  title={videoHomepage.title}
                   ref={videoRef}
                   id={videoHomepage?.videoId}
                   controls
@@ -228,8 +247,12 @@ export default function Home() {
                 <StyledHomeInfos>
                   <StyledTitleIframe>{videoHomepage.title}</StyledTitleIframe>
                   <StyledDescriptionIframe>
-                    {videoHomepage.description &&
-                      videoHomepage.description.substring(0, 150) + "..."}
+                    {videoHomepage.description && (
+                      <Linkify options={linkifyOptions}>
+                        {videoHomepage.description}
+                      </Linkify>
+                    )}
+                    {/* // videoHomepage.description.substring(0, 190) + "..."} */}
                   </StyledDescriptionIframe>
                   <StyledBtnContainer>
                     <ButtonPlay videoRef={videoRef} playedVideo={playedVideo} />

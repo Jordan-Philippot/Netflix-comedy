@@ -8,6 +8,8 @@ import { useSubscription } from "hooks/useSubscription";
 import { useAuth } from "hooks/useAuth";
 import { device } from "utils/breakpoints";
 import Linkify from "linkify-react";
+import { linkifyOptions } from "constant/linkifyOptions";
+
 // --------------
 // Components
 // --------------
@@ -99,12 +101,6 @@ export default function Channel() {
     if (channelById)
       findUserSubscription(channelById.channelId, setIsSubscribed);
   }, [userSubscriptions, channelById, findUserSubscription]);
-
-  const linkifyOptions = {
-    target: "_blank",
-    rel: "noopener",
-    className: "linkify",
-  };
 
   return (
     <>

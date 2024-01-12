@@ -1,6 +1,8 @@
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import "./App.css";
 import "assets/font/bebas-neue/BebasNeue.otf";
+import { useAuth } from "hooks/useAuth";
+import { useEffect, useState } from "react";
 // ----------
 // Pages
 // ----------
@@ -12,8 +14,6 @@ import Register from "pages/Register";
 import Profile from "pages/Profile";
 import UserFavorites from "pages/UserFavorites";
 import UserSubscriptions from "pages/UserSubscriptions";
-import { useAuth } from "hooks/useAuth";
-import { useEffect, useState } from "react";
 import LoaderPage from "components/ui/LoaderPage";
 
 function App() {
