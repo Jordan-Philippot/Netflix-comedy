@@ -81,6 +81,7 @@ const StyledDescription = styled.div`
     margin: 40px 60px;
   }
 `;
+
 export default function Channel() {
   const { user } = useAuth();
   const { channelId } = useParams() as { channelId: string };
