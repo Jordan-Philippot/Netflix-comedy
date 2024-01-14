@@ -3,7 +3,7 @@ import styled from "styled-components";
 import type { PropsWithChildren } from "react";
 import Overlay from "components/ui/Overlay";
 import Cross from "components/icon/Cross";
-import { COLOR_BLACK, COLOR_BLACK_LIGHT } from "utils/colors";
+import { COLOR_BLACK, COLOR_BLACK_LIGHT, COLOR_WHITE } from "utils/colors";
 import { device } from "utils/breakpoints";
 
 interface ModalProps {
@@ -65,6 +65,7 @@ const StyledModalCross = styled.div`
   padding: 12px;
   width: 24px;
   border: 0;
+  box-shadow: 0 0 1px 1px ${COLOR_WHITE}4D;
 `;
 
 function Modal({ children, opened, onClose }: PropsWithChildren<ModalProps>) {

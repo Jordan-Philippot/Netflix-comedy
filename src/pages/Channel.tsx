@@ -23,8 +23,12 @@ import LoaderPage from "components/ui/LoaderPage";
 
 const StyledChannelData = styled.div`
   display: flex;
+  flex-direction: column;
   margin-top: 120px;
   padding: 0 20px;
+  @media ${device.tablet} {
+    flex-direction: row;
+  }
   @media ${device.laptop} {
     padding: 0 40px;
   }
@@ -50,14 +54,26 @@ const StyledVideosContainer = styled.div`
 
 const StyledChannelBannerContainer = styled.div`
   display: flex;
+  flex-direction: column;
+  @media ${device.mobile} {
+    flex-direction: row;
+  }
 `;
 const StyledBanner = styled.img`
   border-radius: 50%;
   width: 200px;
   height: 200px;
+  margin: auto;
+  @media ${device.mobile} {
+    margin-left: 0;
+    margin-right: 0;
+  }
 `;
 const StyledBannerInfos = styled.div`
-  margin: auto auto auto 15px;
+  margin: 25px auto auto 15px;
+  @media ${device.mobile} {
+    margin: auto 15px auto 25px;
+  }
 `;
 const StyledHr = styled.hr`
   display: block;
@@ -79,6 +95,16 @@ const StyledDescription = styled.div`
   }
   @media ${device.laptopL} {
     margin: 40px 60px;
+  }
+`;
+const StyledButtonContainer = styled.div`
+  margin: 25px auto 0 15px;
+  button {
+    border-radius: 35px;
+    white-space: nowrap;
+  }
+  @media ${device.tablet} {
+    margin: auto 0 auto auto;
   }
 `;
 
@@ -152,22 +178,19 @@ export default function Channel() {
               </StyledBannerInfos>
             </StyledChannelBannerContainer>
 
-            <Button
-              label={isSubscribed ? "Abonné(e)" : "S'abonner"}
-              disabled={!user}
-              icon={<Wifi />}
-              onClick={() => {
-                isSubscribed
-                  ? removeSubscription(channelById.channelId)
-                  : addSubscription(channelById.channelId);
-              }}
-              color="red"
-              style={{
-                margin: "auto 0 auto auto",
-                borderRadius: "35px",
-                whiteSpace: "nowrap",
-              }}
-            />
+            <StyledButtonContainer>
+              <Button
+                label={isSubscribed ? "Abonné(e)" : "S'abonner"}
+                disabled={!user}
+                icon={<Wifi />}
+                onClick={() => {
+                  isSubscribed
+                    ? removeSubscription(channelById.channelId)
+                    : addSubscription(channelById.channelId);
+                }}
+                color="red"
+              />
+            </StyledButtonContainer>
           </StyledChannelData>
           {/* End Banner informations */}
 

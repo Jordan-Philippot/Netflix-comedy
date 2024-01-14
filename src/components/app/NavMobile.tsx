@@ -154,7 +154,7 @@ export default function NavMobile() {
             label="S'identifier"
             link={"/login"}
             color="red"
-            style={{ fontSize: "16px", marginLeft: "20px" }}
+            style={{ fontSize: "16px", marginLeft: "0", width: 'fit-content' }}
           />
         )}
       </NavContainer>
