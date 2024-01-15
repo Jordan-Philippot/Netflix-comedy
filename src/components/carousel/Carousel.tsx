@@ -79,15 +79,6 @@ function PrevArrow(props: any) {
 }
 
 export default function Carousel({ channel }: CardItems) {
-  // const [isMobile, setIsMobile] = useState<boolean>(true);
-
-  // window.addEventListener("resize", () => {
-  //   if (window.innerWidth < 768) {
-  //     setIsMobile(true);
-  //   } else {
-  //     setIsMobile(false);
-  //   }
-  // });
 
   const settings = {
     infinite: true,

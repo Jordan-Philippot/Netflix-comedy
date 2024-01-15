@@ -94,7 +94,7 @@ const StyledHomeInfos = styled.div`
   }
 `;
 
-const StyledTitleIframe = styled.h1`
+const StyledTitleVideo = styled.h1`
   text-transform: uppercase;
   text-shadow: 0px 0px 5px #00000030;
   color: ${COLOR_WHITE};
@@ -111,7 +111,7 @@ const StyledTitleIframe = styled.h1`
   }
 `;
 
-const StyledDescriptionIframe = styled.p`
+const StyledDescriptionVideo = styled.p`
   margin-top: 15px;
   font-size: 12px;
   color: ${COLOR_GREY_LIGHT};
@@ -245,15 +245,16 @@ export default function Home() {
                 </StyledVideoHome>
 
                 <StyledHomeInfos>
-                  <StyledTitleIframe>{videoHomepage.title}</StyledTitleIframe>
-                  <StyledDescriptionIframe>
+                  <StyledTitleVideo>{videoHomepage.title}</StyledTitleVideo>
+                  <StyledDescriptionVideo>
                     {videoHomepage.description && (
                       <Linkify options={linkifyOptions}>
-                        {videoHomepage.description}
+                        Le monstre du rire Dave Chappelle termine l'année en beauté avec deux spectacles bourrés de nouveautés, 
+                        d'introspection et de piques. Qui aime bien, châtie bien !
+                        {/* {videoHomepage.description.substring(0, 100) + "..."} */}
                       </Linkify>
                     )}
-                    {/* // videoHomepage.description.substring(0, 190) + "..."} */}
-                  </StyledDescriptionIframe>
+                  </StyledDescriptionVideo>
                   <StyledBtnContainer>
                     <ButtonPlay videoRef={videoRef} playedVideo={playedVideo} />
                     <Button

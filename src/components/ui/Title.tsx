@@ -18,9 +18,9 @@ const handleSizeStyle = (size?: titleSize, addMediaSize?: number) => {
 
   switch (size) {
     case "h1":
-      return { fontSize: 24 + mediaSize };
-    case "h2":
       return { fontSize: 22 + mediaSize };
+    case "h2":
+      return { fontSize: 20 + mediaSize };
     case "h3":
       return { fontSize: 18 + mediaSize };
     case "h4":
