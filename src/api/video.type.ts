@@ -53,4 +53,5 @@ export type VideoDataType = {
   viewCount?: string;
   likeCount?: string;
   commentCount?: string;
+  duration: number;
 };

@@ -8,6 +8,7 @@ import { device } from "utils/breakpoints";
 // --------------
 import Carousel from "./Carousel";
 import Loader from "components/ui/Loader";
+import { useResume } from "hooks/useResume";
 
 const StyledCarouselsContainer = styled.main`
   position: relavtive;
@@ -24,21 +25,37 @@ const StyledCarouselsContainer = styled.main`
 `;
 
 export default function CarouselsContainer() {
-  const { data: channels, isLoading } = useQuery({
+  const { data: channels, isLoading: isChannelsLoading } = useQuery({
     queryKey: ["channels"],
     queryFn: () => getChannelsVideos(),
   });
+  const { userResumeList, isLoading: isResumeLoading } = useResume();
+
+  const firstTwoChannels = channels?.slice(0, 2);
+  const restOfChannels = channels?.slice(2);
 
   return (
     <StyledCarouselsContainer>
-      {isLoading ? (
+      {isChannelsLoading ? (
         <Loader />
       ) : (
-        channels &&
-        channels.map(
-          (channel, key) =>
-            !channel?.madeForKids && <Carousel channel={channel} key={key} />
-        )
+        <>
+          {firstTwoChannels &&
+            firstTwoChannels.map(
+              (channel, key) =>
+                !channel?.madeForKids && (
+                  <Carousel channel={channel} key={key} />
+                )
+            )}
+          {isResumeLoading ? <Loader /> : <Carousel resumes={userResumeList} />}
+          {restOfChannels &&
+            restOfChannels.map(
+              (channel, key) =>
+                !channel?.madeForKids && (
+                  <Carousel channel={channel} key={key} />
+                )
+            )}
+        </>
       )}
     </StyledCarouselsContainer>
   );

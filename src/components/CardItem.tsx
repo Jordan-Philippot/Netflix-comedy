@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { unescapeHtml } from "utils/unescapeHtml";
-import { COLOR_BLACK } from "utils/colors";
+import { COLOR_BLACK, COLOR_GREY_LIGHT, COLOR_RED } from "utils/colors";
 import { useModal } from "components/context/ModalContext";
 import { device } from "utils/breakpoints";
 
@@ -9,11 +9,13 @@ import { device } from "utils/breakpoints";
 // ------
 import { VideoDataType } from "api/video.type";
 import { ChannelType } from "api/channel.type";
+import { ResumeType } from "api/resume.type";
 
 interface CardItemProps {
   item: VideoDataType;
   channel: ChannelType;
   style?: React.CSSProperties;
+  resume?: ResumeType;
 }
 const StyledCardItem = styled.div`
   position: relative;
@@ -40,6 +42,26 @@ const StyledItemImage = styled.img`
   width: 100%;
   height: auto;
   border-radius: 2px;
+`;
+const StyledProgressBar = styled.div<{ viewPercent?: number | null }>`
+  opacity: 1;
+  display: block;
+  width: ${(props) => (typeof props.viewPercent === "number" ? "100%" : 0)};
+  height: 5px;
+  background-color: ${COLOR_GREY_LIGHT}20;
+  position: absolute;
+  bottom: 0;
+  border-bottom-left-radius: 2px;
+  border-bottom-right-radius: 2px;
+  div{
+    width: ${(props) => (typeof props.viewPercent === "number" ? props.viewPercent + "%" : 0)};
+    height: 5px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background-color: ${COLOR_RED};
+  }
+
 `;
 const StyledOverlayImg = styled.div`
   transition: 0.5s ease;
@@ -75,39 +97,24 @@ const StyledTitle = styled.div`
   }
 `;
 
-export default function CardItem({ item, channel, style }: CardItemProps) {
+export default function CardItem({
+  item,
+  channel,
+  resume,
+  style,
+}: CardItemProps) {
   const { openModal } = useModal();
 
   const openModalWithVideo = () => {
-    return openModal(item, channel);
+    return openModal(item, channel, resume);
   };
-
   const thumbnails = item.thumbnails;
 
-  // useEffect(() => {
-  //   function handleResize() {
-  //     const width = window.innerWidth;
-  //     if (width < 768) {
-  //       setImageSource(thumbnails.default.url);
-  //     } else if (width < 1024) {
-  //       setImageSource(thumbnails.medium.url);
-  //     } else {
-  //       setImageSource(thumbnails.high.url);
-  //     }
-  //   }
-
-  //   window.addEventListener("resize", handleResize);
-
-  //   handleResize();
-
-  //   return () => {
-  //     window.removeEventListener("resize", handleResize);
-  //   };
-  // }, []);
-
+  const viewPercent = resume ? (resume.resumeTime / item.duration) * 100 : null;
   return (
     <StyledCardItem onClick={openModalWithVideo} className="card-item">
       <StyledItemImage src={thumbnails?.medium && thumbnails.medium.url} />
+      <StyledProgressBar viewPercent={viewPercent} ><div></div></StyledProgressBar>
       <StyledOverlayImg>
         <StyledTitle>{item?.title && unescapeHtml(item.title)}</StyledTitle>
       </StyledOverlayImg>

@@ -17,13 +17,20 @@ import CardItem from "../CardItem";
 // --------------
 import { VideoDataType } from "api/video.type";
 import { ChannelData } from "api/channel.type";
+import { ResumeType } from "api/resume.type";
 
 interface CardItems {
-  channel: ChannelData;
+  channel?: ChannelData;
+  resumes?: ResumeType[];
 }
 
 const StyledCarouselContainer = styled.div`
   margin-bottom: 90px;
+  .carouselCustom {
+    .slick-track {
+      margin-left: 0;
+    }
+  }
 `;
 
 const StyledArrow = styled.div`
@@ -78,16 +85,16 @@ function PrevArrow(props: any) {
   );
 }
 
-export default function Carousel({ channel }: CardItems) {
-
+export default function Carousel({ channel, resumes }: CardItems) {
   const settings = {
-    infinite: true,
+    infinite: resumes ? false : true,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
     swipe: false,
+    className: resumes ? "carouselCustom" : "",
     centerMode: true,
     responsive: [
       {
@@ -128,28 +135,57 @@ export default function Carousel({ channel }: CardItems) {
     ],
   };
 
+  console.log(resumes);
   return (
     <StyledCarouselContainer>
-      <StyledTitleLink to={"/channel/" + channel.customUrl}>
-        <Title
-          size="h2"
-          weight="600"
-          style={{ marginBottom: "15px", zIndex: 2, cursor: "pointer" }}
-        >
-          {channel && channel.title}
-        </Title>
-      </StyledTitleLink>
+      {channel && (
+        <>
+          <StyledTitleLink to={"/channel/" + channel.customUrl}>
+            <Title
+              size="h2"
+              weight="600"
+              style={{ marginBottom: "15px", zIndex: 2, cursor: "pointer" }}
+            >
+              {channel.title}
+            </Title>
+          </StyledTitleLink>
 
-      <Slider {...settings}>
-        {channel.videos &&
-          channel.videos.map((item: VideoDataType, key) => (
-            <CardItem
-              item={item}
-              key={key}
-              channel={(({ videos, ...channel }) => channel)(channel)}
-            />
-          ))}
-      </Slider>
+          <Slider {...settings}>
+            {channel.videos &&
+              channel.videos.map((item: VideoDataType, key) => (
+                <CardItem
+                  item={item}
+                  key={key}
+                  channel={(({ videos, ...channel }) => channel)(channel)}
+                />
+              ))}
+          </Slider>
+        </>
+      )}
+
+      {resumes && (
+        <>
+          <Title
+            size="h2"
+            weight="600"
+            style={{ marginBottom: "15px", zIndex: 2, cursor: "pointer" }}
+          >
+            Reprendre la lecture
+          </Title>
+
+          <Slider {...settings}>
+            {resumes &&
+              resumes.map((item: ResumeType, key) => (
+                <CardItem
+                  item={item.video}
+                  key={key}
+                  channel={item.video.channel}
+                  resume={item}
+                />
+              ))}
+          </Slider>
+        </>
+      )}
     </StyledCarouselContainer>
   );
 }

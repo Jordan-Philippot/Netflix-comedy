@@ -1,13 +1,13 @@
 import styled from "styled-components";
 import { useQuery } from "@tanstack/react-query";
 import { RefObject, useEffect, useRef, useState } from "react";
-import {
-  COLOR_BLUE,
-  COLOR_GREY,
-  COLOR_GREY_LIGHT,
-  COLOR_WHITE,
-} from "utils/colors";
+import { COLOR_GREY_LIGHT, COLOR_WHITE } from "utils/colors";
 import { device } from "utils/breakpoints";
+import { linkifyOptions } from "constant/linkifyOptions";
+import Linkify from "linkify-react";
+import { RootState } from "redux/store";
+import { useSelector } from "react-redux";
+import { addVideoEventListener, muteVideo } from "utils/controlVideo";
 
 // ----------
 // Component
@@ -17,27 +17,16 @@ import InfoCircle from "components/icon/InfoCircle";
 import CarouselsContainer from "components/carousel/CarouselsContainer";
 import LoaderPage from "components/ui/LoaderPage";
 import ButtonPlay from "components/ui/ButtonPlay";
-import CardItem from "components/CardItem";
-import Title from "components/ui/Title";
-import Text from "components/ui/Text";
 import SvgButton from "components/ui/SvgButton";
 import Mute from "components/icon/Mute";
 import UnMute from "components/icon/UnMute";
+import SearchHome from "components/search/SearchHome";
+import { useModal } from "components/context/ModalContext";
 
 // ----------
 // Api
 // ----------
 import { getVidéoById } from "api/video";
-import { RootState } from "redux/store";
-import { useSelector } from "react-redux";
-import {
-  StyledPageContainer,
-  StyledVideosContainer,
-} from "./UserSubscriptions";
-import { useModal } from "components/context/ModalContext";
-import { addVideoEventListener, muteVideo } from "utils/controlVideo";
-import { linkifyOptions } from "constant/linkifyOptions";
-import Linkify from "linkify-react";
 
 interface VideosProps {
   ref: RefObject<HTMLVideoElement>;
@@ -170,9 +159,10 @@ export default function Home() {
   const [playedVideo, setPlayedVideo] = useState<boolean>(false);
   const [isMuted, setIsMuted] = useState<boolean>(false);
 
-  const { searchResult, isLoading, search } = useSelector(
-    (state: RootState) => state.video
-  );
+  const {
+    isLoading: isSearchLoading,
+    search,
+  } = useSelector((state: RootState) => state.video);
 
   useEffect(() => {
     if (videoHomepage) {
@@ -190,42 +180,10 @@ export default function Home() {
   return (
     <>
       {(() => {
-        if (isLoading) {
+        if (isSearchLoading) {
           return <LoaderPage />;
         } else if (search.length > 0) {
-          return (
-            <StyledPageContainer>
-              <Title weight="800" style={{ marginTop: "120px" }}>
-                Les résultats de votre recherche :
-              </Title>
-              <Title
-                weight="800"
-                size="h2"
-                style={{
-                  textShadow: "1px 1px 30px" + COLOR_BLUE,
-                  color: COLOR_GREY,
-                }}
-              >
-                {search.toLocaleUpperCase()}
-              </Title>
-              {/* Search Results */}
-              <StyledVideosContainer>
-                {searchResult.length > 0 ? (
-                  searchResult?.map((result, key) => (
-                    <CardItem
-                      item={result}
-                      key={key}
-                      channel={(({ videos, ...channel }) => channel)(
-                        result.channel
-                      )}
-                    />
-                  ))
-                ) : (
-                  <Text>Aucun résultat n'est disponible</Text>
-                )}
-              </StyledVideosContainer>
-            </StyledPageContainer>
-          );
+          return <SearchHome />;
         } else if (videoHomepage) {
           return (
             <>
@@ -249,8 +207,10 @@ export default function Home() {
                   <StyledDescriptionVideo>
                     {videoHomepage.description && (
                       <Linkify options={linkifyOptions}>
-                        Le monstre du rire Dave Chappelle termine l'année en beauté avec deux spectacles bourrés de nouveautés, 
-                        d'introspection et de piques. Qui aime bien, châtie bien !
+                        Le monstre du rire Dave Chappelle termine l'année en
+                        beauté avec deux spectacles bourrés de nouveautés,
+                        d'introspection et de piques. Qui aime bien, châtie
+                        bien !
                         {/* {videoHomepage.description.substring(0, 100) + "..."} */}
                       </Linkify>
                     )}

@@ -44,7 +44,6 @@ const StyledModalVideo = styled.video<VideosProps>`
   display: block;
   opacity: 1;
   z-index:5:
-  background-color:red;
 `;
 
 const StyledModalHeader = styled.div`
@@ -87,7 +86,7 @@ const StyledDescriptionContainer = styled.div`
 `;
 
 export default function VideoModal() {
-  const { selectedVideo, isModalOpen, closeModal } = useModal();
+  const { selectedVideo, isModalOpen, closeModal, resume } = useModal();
   const { user } = useAuth();
   const { addLike, removeLike, userLikeList, findUserLike } = useLike();
   const { addFavorite, findUserFavorite, userFavorites, removeFavorite } =
@@ -125,8 +124,19 @@ export default function VideoModal() {
     }
   }, [videoRef, isModalOpen]);
 
+  const closeModalWithResumeTime = () => {
+    const currentRef = videoRef.current;
+    closeModal(currentRef?.currentTime);
+  };
+  useEffect(() => {
+    if (selectedVideo && resume) {
+      const currentRef = videoRef.current;
+      if (currentRef) currentRef.currentTime = resume.resumeTime;
+    }
+  }, [selectedVideo, resume, videoRef]);
+
   return (
-    <Modal opened={isModalOpen} onClose={closeModal}>
+    <Modal opened={isModalOpen} onClose={closeModalWithResumeTime}>
       <StyledModalHeader>
         {selectedVideo?.filePath && (
           <StyledModalVideo
