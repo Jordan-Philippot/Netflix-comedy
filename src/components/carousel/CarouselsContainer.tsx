@@ -2,14 +2,13 @@ import styled from "styled-components";
 import { useQuery } from "@tanstack/react-query";
 import { getChannelsVideos } from "api/channel";
 import { device } from "utils/breakpoints";
+import { useResume } from "hooks/useResume";
 
 // --------------
 // Components
 // --------------
 import Carousel from "./Carousel";
 import Loader from "components/ui/Loader";
-import { useResume } from "hooks/useResume";
-import { useCallback, useEffect } from "react";
 
 const StyledCarouselsContainer = styled.main`
   position: relavtive;
@@ -35,19 +34,6 @@ export default function CarouselsContainer() {
   const firstTwoChannels = channels?.slice(0, 2);
   const restOfChannels = channels?.slice(2);
 
-  const renderResumeReading = useCallback(() => {
-    if (isResumeLoading) {
-      return <Loader />;
-    }
-    if (userResumeList && userResumeList.length > 0) {
-     return <Carousel resumes={userResumeList} />;
-    }
-  }, [userResumeList, isResumeLoading]);
-
-  useEffect(() => {
-    renderResumeReading();
-  }, [renderResumeReading]);
-
   return (
     <StyledCarouselsContainer>
       {isChannelsLoading ? (
@@ -61,7 +47,23 @@ export default function CarouselsContainer() {
                   <Carousel channel={channel} key={key} />
                 )
             )}
-          <>{renderResumeReading()}</>
+
+          {isResumeLoading ? (
+            <Loader />
+          ) : (
+            userResumeList &&
+            userResumeList.resumes.length > 0 && (
+              <Carousel resumes={userResumeList?.resumes} />
+            )
+          )}
+          {isResumeLoading ? (
+            <Loader />
+          ) : (
+            userResumeList &&
+            userResumeList.watchAgain.length > 0 && (
+              <Carousel resumes={userResumeList?.watchAgain} />
+            )
+          )}
           {restOfChannels &&
             restOfChannels.map(
               (channel, key) =>

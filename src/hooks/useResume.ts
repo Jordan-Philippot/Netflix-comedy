@@ -4,7 +4,9 @@ import { addResume, getUserResumeList } from "api/resume";
 import { ResumeType } from "api/resume.type";
 
 interface ResumeHook {
-  userResumeList: ResumeType[] | undefined;
+  userResumeList:
+    | { resumes: ResumeType[]; watchAgain: ResumeType[] }
+    | undefined;
   addResume: (videoId: string, resumeTime: number) => void;
   isLoading: boolean;
 }

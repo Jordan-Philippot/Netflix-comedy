@@ -6,7 +6,6 @@ import Cross from "components/icon/Cross";
 import {
   COLOR_BLACK,
   COLOR_BLACK_LIGHT,
-  COLOR_RED,
   COLOR_WHITE,
 } from "utils/colors";
 import { device } from "utils/breakpoints";

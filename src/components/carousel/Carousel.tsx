@@ -169,7 +169,7 @@ export default function Carousel({ channel, resumes }: CardItems) {
             weight="600"
             style={{ marginBottom: "15px", zIndex: 2, cursor: "pointer" }}
           >
-            Reprendre la lecture
+            {resumes[0].finished ? "À revoir" : "Reprendre la lecture"}
           </Title>
 
           <Slider {...settings}>
