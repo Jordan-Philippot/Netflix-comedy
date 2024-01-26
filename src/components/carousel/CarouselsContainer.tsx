@@ -47,7 +47,13 @@ export default function CarouselsContainer() {
                   <Carousel channel={channel} key={key} />
                 )
             )}
-          {isResumeLoading ? <Loader /> : <Carousel resumes={userResumeList} />}
+          {isResumeLoading ? (
+            <Loader />
+          ) : userResumeList && userResumeList?.length > 0 ? (
+            <Carousel resumes={userResumeList} />
+          ) : (
+            <></>
+          )}
           {restOfChannels &&
             restOfChannels.map(
               (channel, key) =>
