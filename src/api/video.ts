@@ -13,7 +13,7 @@ export const getVidéoYoutubeById = async (
   );
   const data = await response.json();
   const videoData = data.items[0].snippet;
-  console.log(videoData)
+  // console.log(videoData)
   return videoData;
 };
 

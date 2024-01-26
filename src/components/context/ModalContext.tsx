@@ -33,7 +33,6 @@ export function ModalProvider({ children }: PropsWithChildren) {
 
   const closeModal = (resumeTimeVideo?: number) => {
     if (resumeTimeVideo && user && selectedVideo) {
-      console.log(selectedVideo.videoId, resumeTimeVideo);
       addResume(selectedVideo.videoId, resumeTimeVideo);
     }
     setIsModalOpen(false);

@@ -1,3 +1,10 @@
+# Deploy App
+
+- npm run build on .env (prod)
+- git add .
+- git commit - "my feature"
+- git push
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

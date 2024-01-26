@@ -9,6 +9,7 @@ import { device } from "utils/breakpoints";
 import Carousel from "./Carousel";
 import Loader from "components/ui/Loader";
 import { useResume } from "hooks/useResume";
+import { useCallback, useEffect } from "react";
 
 const StyledCarouselsContainer = styled.main`
   position: relavtive;
@@ -34,6 +35,19 @@ export default function CarouselsContainer() {
   const firstTwoChannels = channels?.slice(0, 2);
   const restOfChannels = channels?.slice(2);
 
+  const renderResumeReading = useCallback(() => {
+    if (isResumeLoading) {
+      return <Loader />;
+    }
+    if (userResumeList && userResumeList.length > 0) {
+     return <Carousel resumes={userResumeList} />;
+    }
+  }, [userResumeList, isResumeLoading]);
+
+  useEffect(() => {
+    renderResumeReading();
+  }, [renderResumeReading]);
+
   return (
     <StyledCarouselsContainer>
       {isChannelsLoading ? (
@@ -47,13 +61,7 @@ export default function CarouselsContainer() {
                   <Carousel channel={channel} key={key} />
                 )
             )}
-          {isResumeLoading ? (
-            <Loader />
-          ) : userResumeList && userResumeList?.length > 0 ? (
-            <Carousel resumes={userResumeList} />
-          ) : (
-            <></>
-          )}
+          <>{renderResumeReading()}</>
           {restOfChannels &&
             restOfChannels.map(
               (channel, key) =>

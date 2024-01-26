@@ -135,7 +135,6 @@ export default function Carousel({ channel, resumes }: CardItems) {
     ],
   };
 
-  console.log(resumes);
   return (
     <StyledCarouselContainer>
       {channel && (

@@ -16,13 +16,11 @@ export const addResume = async (
   videoId: string,
   resumeTime: number
 ): Promise<{ resumeAdded: boolean }> => {
-  console.log(JSON.stringify({ videoId, resumeTime }))
   const response = await fetch(`${BASE_URL}auth/resume/add`, {
     ...getAuthenticationConfig(),
     method: "POST",
     body: JSON.stringify({ videoId, resumeTime }),
   });
   const data = await response.json();
-  console.log(data)
   return data.resumeAdded;
 };
