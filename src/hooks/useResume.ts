@@ -13,13 +13,16 @@ interface ResumeHook {
 
 export function useResume(): ResumeHook {
   const queryClient = useQueryClient();
+  const { user } = useAuth();
+
+  const shouldFetchUserResume = user !== undefined;
 
   const { data, isLoading } = useQuery({
     queryKey: ["userResumeList"],
-    queryFn: () => getUserResumeList(),
+    queryFn: shouldFetchUserResume
+      ? getUserResumeList
+      : () => Promise.resolve(undefined),
   });
-
-  const { user } = useAuth();
 
   const mutationUserLike = useMutation({
     mutationFn: getUserResumeList,

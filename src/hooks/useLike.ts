@@ -16,12 +16,16 @@ export function useLike(): LikeHook {
   const queryClient = useQueryClient();
   const { sendInformation, sendError } = useMessage();
 
-  const { data, isLoading } = useQuery({
-    queryKey: ["userLikeList"],
-    queryFn: () => getUserLikeList(),
-  });
-
   const { user } = useAuth();
+
+  const shouldFetchUserResume = user !== undefined;
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["userSubscriptions"],
+    queryFn: shouldFetchUserResume
+      ? getUserLikeList
+      : () => Promise.resolve(undefined),
+  });
 
   const mutationUserLike = useMutation({
     mutationFn: getUserLikeList,

@@ -27,14 +27,15 @@ interface AuthHook {
 export function useAuth(): AuthHook {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { sendInformation, sendError } = useMessage();
-
-  const [errors, setErrors] = useState<FieldErrors | undefined>();
 
   const { data, isLoading } = useQuery({
     queryKey: ["user"],
     queryFn: () => getUser(),
   });
+
+  const { sendInformation, sendError } = useMessage();
+
+  const [errors, setErrors] = useState<FieldErrors | undefined>();
 
   const mutationUser = useMutation({
     mutationFn: getUser,
@@ -50,6 +51,7 @@ export function useAuth(): AuthHook {
       queryClient.removeQueries({ queryKey: ["userLikeList"] });
       queryClient.removeQueries({ queryKey: ["userSubscriptions"] });
       queryClient.removeQueries({ queryKey: ["userFavorites"] });
+      queryClient.removeQueries({ queryKey: ["userResumeList"] });
     },
   });
 

@@ -21,14 +21,18 @@ interface SubscriptionHook {
 
 export function useSubscription(): SubscriptionHook {
   const queryClient = useQueryClient();
-  const { sendInformation, sendError } = useMessage();
+  const { user } = useAuth();
+
+  const shouldFetchUserResume = user !== undefined;
 
   const { data, isLoading } = useQuery({
     queryKey: ["userSubscriptions"],
-    queryFn: () => getUserSubscriptions(),
+    queryFn: shouldFetchUserResume
+      ? getUserSubscriptions
+      : () => Promise.resolve(undefined),
   });
 
-  const { user } = useAuth();
+  const { sendInformation, sendError } = useMessage();
 
   const mutationUserSubscription = useMutation({
     mutationFn: getUserSubscriptions,

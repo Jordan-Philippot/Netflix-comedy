@@ -2,13 +2,14 @@ import styled from "styled-components";
 import { useQuery } from "@tanstack/react-query";
 import { getChannelsVideos } from "api/channel";
 import { device } from "utils/breakpoints";
-import { useResume } from "hooks/useResume";
 
 // --------------
 // Components
 // --------------
 import Carousel from "./Carousel";
 import Loader from "components/ui/Loader";
+import CarouselResume from "./CarouselResume";
+import { useAuth } from "hooks/useAuth";
 
 const StyledCarouselsContainer = styled.main`
   position: relavtive;
@@ -29,10 +30,10 @@ export default function CarouselsContainer() {
     queryKey: ["channels"],
     queryFn: () => getChannelsVideos(),
   });
-  const { userResumeList, isLoading: isResumeLoading } = useResume();
 
   const firstTwoChannels = channels?.slice(0, 2);
   const restOfChannels = channels?.slice(2);
+  const { user } = useAuth();
 
   return (
     <StyledCarouselsContainer>
@@ -48,22 +49,7 @@ export default function CarouselsContainer() {
                 )
             )}
 
-          {isResumeLoading ? (
-            <Loader />
-          ) : (
-            userResumeList &&
-            userResumeList.resumes.length > 0 && (
-              <Carousel resumes={userResumeList?.resumes} />
-            )
-          )}
-          {isResumeLoading ? (
-            <Loader />
-          ) : (
-            userResumeList &&
-            userResumeList.watchAgain.length > 0 && (
-              <Carousel resumes={userResumeList?.watchAgain} />
-            )
-          )}
+          {user && <CarouselResume />}
           {restOfChannels &&
             restOfChannels.map(
               (channel, key) =>
