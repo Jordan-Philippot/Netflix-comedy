@@ -4,6 +4,7 @@ import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useMessage from "hooks/useMessage";
+import { forgotPassword, resetPassword } from "api/resetPassword";
 
 export type FieldErrors = {
   [fieldName: string]: any;
@@ -20,6 +21,12 @@ interface AuthHook {
     firstname: string,
     lastname: string
   ) => void;
+  forgotPassword: (email: string) => Promise<void>;
+  resetPassword: (
+    newPassword: string,
+    confirmNewPassword: string,
+    token: string | null
+  ) => Promise<void>;
   errors: FieldErrors | undefined;
   isLoading: boolean;
 }
@@ -125,12 +132,54 @@ export function useAuth(): AuthHook {
     }
   };
 
+  const forgotPasswordHandler = async (email: string) => {
+    try {
+      const forgotPasswordResponse = await forgotPassword(email);
+      if (forgotPasswordResponse.forgotPassword) {
+        sendInformation("Un lien vous a été envoyé par mail");
+        navigate("/");
+      } else {
+        setErrors(forgotPasswordResponse.errors);
+      }
+    } catch (error) {
+      sendError("Aucun utilisateur trouvé");
+    }
+  };
+
+  const resetPasswordHandler = async (
+    newPassword: string,
+    confirmNewPassword: string,
+    token: string | null
+  ) => {
+    if (token === null) {
+      sendError("Le lien de réinitialisation est incorrecte");
+    } else {
+      try {
+        const resetPasswordResponse = await resetPassword(
+          newPassword,
+          confirmNewPassword,
+          token
+        );
+        if (resetPasswordResponse.resetPassword) {
+          sendInformation("Votre mot de passe à été réinitialisé");
+          navigate("/login");
+        } else {
+          setErrors(resetPasswordResponse.errors);
+        }
+      } catch (error) {
+        sendError("Aucun utilisateur trouvé");
+      }
+    }
+  };
+
   return {
     user: data,
     login: loginHandler,
     logout: logoutHandler,
     register: registerHandler,
     profile: profileHandler,
+    forgotPassword: forgotPasswordHandler,
+    resetPassword: resetPasswordHandler,
     errors,
     isLoading: isLoading,
   };

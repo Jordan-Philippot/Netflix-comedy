@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "hooks/useAuth";
+import {
+  btnRegistrationStyle,
+  inputRegistrationStyle,
+  titleRegistrationStyle,
+} from "constant/registrationStyle";
 
 // ----------
 // Components
@@ -34,20 +39,10 @@ export default function Profile() {
     }
   }, [user]);
 
-  
-  const inputStyle = {
-    marginTop: "20px",
-    marginBottom: "5px",
-  };
-  const btnStyle = {
-    width: "100%",
-    margin: "35px 0",
-  };
-
   return (
     <StyledMainContainer>
       <StyledFormContainer>
-        <Title weight="800" size="h1" style={{ letterSpacing: "1px" }}>
+        <Title weight="800" size="h1" style={titleRegistrationStyle}>
           Votre profil
         </Title>
         <Input
@@ -55,14 +50,14 @@ export default function Profile() {
           value={email}
           onChange={() => console.log("no change")}
           disabled
-          style={inputStyle}
+          style={inputRegistrationStyle}
           status={"default"}
         />
         <Input
           placeholder="Prénom"
           value={firstname}
           onChange={(e) => setFirstname(e.target.value)}
-          style={inputStyle}
+          style={inputRegistrationStyle}
           status={errors?.firstname ? "error" : "default"}
         />
         <Text color="dark">{errors?.firstname}</Text>
@@ -71,7 +66,7 @@ export default function Profile() {
           placeholder="Nom"
           value={lastname}
           onChange={(e) => setLastname(e.target.value)}
-          style={inputStyle}
+          style={inputRegistrationStyle}
           status={errors?.lastname ? "error" : "default"}
         />
         <Text color="dark">{errors?.lastname}</Text>
@@ -81,7 +76,7 @@ export default function Profile() {
           placeholder="Mot de passe"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          style={inputStyle}
+          style={inputRegistrationStyle}
           status={errors?.password ? "error" : "default"}
         />
         <Text color="dark">{errors?.password}</Text>
@@ -90,7 +85,7 @@ export default function Profile() {
           onClick={handleProfile}
           label="Enregistrer"
           color="red"
-          style={btnStyle}
+          style={btnRegistrationStyle}
         />
       </StyledFormContainer>
     </StyledMainContainer>

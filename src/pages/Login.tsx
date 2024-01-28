@@ -3,6 +3,10 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { COLOR_BLACK, COLOR_GREY_LIGHT, COLOR_WHITE } from "utils/colors";
 import { useAuth } from "hooks/useAuth";
+import {
+  btnRegistrationStyle,
+  titleRegistrationStyle,
+} from "constant/registrationStyle";
 
 // ----------
 // Components
@@ -52,15 +56,10 @@ export default function Login() {
 
   const { login } = useAuth();
 
-  const btnStyle = {
-    width: "100%",
-    margin: "35px 0 25px 0",
-  };
-
   return (
     <StyledMainContainer>
       <StyledFormContainer>
-        <Title weight="800" size="h1" style={{ letterSpacing: "1px" }}>
+        <Title weight="800" size="h1" style={titleRegistrationStyle}>
           S'identifier
         </Title>
         <Input
@@ -81,8 +80,20 @@ export default function Login() {
           onClick={() => login(email, password)}
           label="S'identifier"
           color="red"
-          style={btnStyle}
+          style={btnRegistrationStyle}
         />
+        <Link
+          to="/forgot-password"
+          style={{
+            textAlign: "left",
+            color: COLOR_GREY_LIGHT,
+            fontSize: "14px",
+            marginBottom: "10px",
+          }}
+        >
+          Mot de passe oublié ?
+        </Link>
+
         <Link
           to="/help"
           style={{
