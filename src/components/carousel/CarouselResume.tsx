@@ -5,7 +5,8 @@ import { useResume } from "hooks/useResume";
 // --------------
 import Loader from "components/ui/Loader";
 import Carousel from "./Carousel";
-import { startTransition, useDeferredValue } from "react";
+import { Suspense, useDeferredValue } from "react";
+import LoaderSuspense from "components/ui/LoaderSuspense";
 
 export default function CarouselResume() {
   const { userResumeList, isLoading: isResumeLoading } = useResume();
@@ -17,21 +18,21 @@ export default function CarouselResume() {
         <Loader />
       ) : (
         deferredUserResumeList?.resumes &&
-        startTransition(() => {
-          deferredUserResumeList.resumes.length > 0 && (
+        deferredUserResumeList.resumes.length > 0 && (
+          <Suspense fallback={<LoaderSuspense />}>
             <Carousel resumes={deferredUserResumeList.resumes} />
-          );
-        })
+          </Suspense>
+        )
       )}
       {isResumeLoading ? (
         <Loader />
       ) : (
         deferredUserResumeList?.watchAgain &&
-        startTransition(() => {
-          deferredUserResumeList.watchAgain.length > 0 && (
+        deferredUserResumeList.watchAgain.length > 0 && (
+          <Suspense fallback={<LoaderSuspense />}>
             <Carousel resumes={deferredUserResumeList.watchAgain} />
-          );
-        })
+          </Suspense>
+        )
       )}
     </>
   );

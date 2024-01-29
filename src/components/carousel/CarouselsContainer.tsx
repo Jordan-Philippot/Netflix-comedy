@@ -10,7 +10,7 @@ import Carousel from "./Carousel";
 import Loader from "components/ui/Loader";
 import CarouselResume from "./CarouselResume";
 import { useAuth } from "hooks/useAuth";
-import { Suspense, startTransition, useDeferredValue } from "react";
+import { Suspense, useDeferredValue } from "react";
 import LoaderSuspense from "components/ui/LoaderSuspense";
 
 const StyledCarouselsContainer = styled.main`
@@ -34,6 +34,7 @@ export default function CarouselsContainer() {
   });
 
   const firstTwoChannels = channels?.slice(0, 2);
+
   const restOfChannels = channels?.slice(2);
   const deferredRestOfChannels = useDeferredValue(restOfChannels);
 
@@ -59,16 +60,14 @@ export default function CarouselsContainer() {
             </Suspense>
           )}
           {deferredRestOfChannels &&
-            startTransition(() => {
-              deferredRestOfChannels.map(
-                (channel, key) =>
-                  !channel?.madeForKids && (
-                    <Suspense fallback={<LoaderSuspense />} key={key}>
-                      <Carousel channel={channel} key={key} />
-                    </Suspense>
-                  )
-              );
-            })}
+            deferredRestOfChannels.map(
+              (channel, key) =>
+                !channel?.madeForKids && (
+                  <Suspense fallback={<LoaderSuspense />}>
+                    <Carousel channel={channel} key={key} />
+                  </Suspense>
+                )
+            )}
         </>
       )}
     </StyledCarouselsContainer>

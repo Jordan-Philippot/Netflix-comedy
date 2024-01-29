@@ -6,7 +6,6 @@ import {
   useEffect,
   useRef,
   useState,
-  lazy,
   startTransition,
 } from "react";
 import { COLOR_GREY_LIGHT, COLOR_WHITE } from "utils/colors";
@@ -26,14 +25,12 @@ import { getVidéoById } from "api/video";
 import InfoCircle from "components/icon/InfoCircle";
 import CarouselsContainer from "components/carousel/CarouselsContainer";
 import LoaderPage from "components/ui/LoaderPage";
+import Button from "components/ui/Button";
+import ButtonPlay from "components/ui/ButtonPlay";
+import SvgButton from "components/ui/SvgButton";
+import SearchHome from "components/search/SearchHome";
 import Mute from "components/icon/Mute";
 import UnMute from "components/icon/UnMute";
-import LoaderSuspense from "components/ui/LoaderSuspense";
-
-const Button = lazy(() => import("components/ui/Button"));
-const ButtonPlay = lazy(() => import("components/ui/ButtonPlay"));
-const SvgButton = lazy(() => import("components/ui/SvgButton"));
-const SearchHome = lazy(() => import("components/search/SearchHome"));
 
 interface VideosProps {
   ref: RefObject<HTMLVideoElement>;
@@ -238,18 +235,16 @@ export default function Home() {
                   </StyledBtnContainer>
                 </StyledHomeInfos>
 
-                <Suspense fallback={<LoaderSuspense />}>
-                  <SvgButton
-                    onClick={() => muteVideo(videoRef)}
-                    style={{
-                      position: "absolute",
-                      top: "50px",
-                      right: "25px",
-                    }}
-                  >
-                    {isMuted ? <Mute /> : <UnMute />}
-                  </SvgButton>
-                </Suspense>
+                <SvgButton
+                  onClick={() => muteVideo(videoRef)}
+                  style={{
+                    position: "absolute",
+                    top: "50px",
+                    right: "25px",
+                  }}
+                >
+                  {isMuted ? <Mute /> : <UnMute />}
+                </SvgButton>
               </StyledContainerHome>
 
               <CarouselsContainer />
