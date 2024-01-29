@@ -249,6 +249,7 @@ export default function Home() {
 
                 <SvgButton
                   onClick={() => muteVideo(videoRef)}
+                  title="Mute video"
                   style={{
                     position: "absolute",
                     top: "50px",

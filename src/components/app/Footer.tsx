@@ -47,12 +47,13 @@ export default function Footer() {
     <StyledFooterContainer>
       <StyledHr />
       <StyledSocialMediaContainer>
-        <Link to={process.env.REACT_APP_GITHUB_LINK as string} target="_blank">
+        <Link to={process.env.REACT_APP_GITHUB_LINK as string} target="_blank" title="Profil Github">
           <Github />
         </Link>
         <Link
           to={process.env.REACT_APP_LINKEDIN_LINK as string}
           target="_blank"
+          title="Profil Linkedin"
         >
           <LinkedIn />
         </Link>

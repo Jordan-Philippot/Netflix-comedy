@@ -181,6 +181,7 @@ export default function VideoModal() {
                 label={
                   <SvgButton
                     disabled={!user}
+                    title="Ajouter à vos favoris"
                     onClick={() => {
                       isFavorite
                         ? removeFavorite(selectedVideo.videoId)
@@ -209,6 +210,7 @@ export default function VideoModal() {
                 label={
                   <SvgButton
                     disabled={!user}
+                    title="Ajouter un j'aime"
                     onClick={() =>
                       isLiked
                         ? removeLike(selectedVideo.videoId)
@@ -230,6 +232,7 @@ export default function VideoModal() {
               </Tooltip>
 
               <SvgButton
+                title="Mute video"
                 onClick={() => muteVideo(videoRef)}
                 style={{ marginLeft: "auto" }}
               >
