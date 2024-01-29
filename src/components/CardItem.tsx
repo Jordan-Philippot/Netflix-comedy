@@ -10,6 +10,8 @@ import { device } from "utils/breakpoints";
 import { VideoDataType } from "api/video.type";
 import { ChannelType } from "api/channel.type";
 import { ResumeType } from "api/resume.type";
+import { Suspense } from "react";
+import LoaderSuspense from "./ui/LoaderSuspense";
 
 interface CardItemProps {
   item: VideoDataType;
@@ -53,15 +55,15 @@ const StyledProgressBar = styled.div<{ viewPercent?: number | null }>`
   bottom: 0;
   border-bottom-left-radius: 2px;
   border-bottom-right-radius: 2px;
-  div{
-    width: ${(props) => (typeof props.viewPercent === "number" ? props.viewPercent + "%" : 0)};
+  div {
+    width: ${(props) =>
+      typeof props.viewPercent === "number" ? props.viewPercent + "%" : 0};
     height: 5px;
     position: absolute;
     bottom: 0;
     left: 0;
     background-color: ${COLOR_RED};
   }
-
 `;
 const StyledOverlayImg = styled.div`
   transition: 0.5s ease;
@@ -112,12 +114,20 @@ export default function CardItem({
 
   const viewPercent = resume ? (resume.resumeTime / item.duration) * 100 : null;
   return (
-    <StyledCardItem onClick={openModalWithVideo} className="card-item">
-      <StyledItemImage src={thumbnails?.medium && thumbnails.medium.url} />
-      <StyledProgressBar viewPercent={viewPercent} ><div></div></StyledProgressBar>
-      <StyledOverlayImg>
-        <StyledTitle>{item?.title && unescapeHtml(item.title)}</StyledTitle>
-      </StyledOverlayImg>
-    </StyledCardItem>
+    <Suspense fallback={<LoaderSuspense />}>
+      <StyledCardItem onClick={openModalWithVideo} className="card-item">
+        <StyledItemImage
+          src={thumbnails?.medium && thumbnails.medium.url}
+          alt={item.title}
+          loading="lazy"
+        />
+        <StyledProgressBar viewPercent={viewPercent}>
+          <div></div>
+        </StyledProgressBar>
+        <StyledOverlayImg>
+          <StyledTitle>{item?.title && unescapeHtml(item.title)}</StyledTitle>
+        </StyledOverlayImg>
+      </StyledCardItem>
+    </Suspense>
   );
 }

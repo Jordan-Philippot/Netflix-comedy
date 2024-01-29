@@ -95,6 +95,7 @@ export default function ChannelDescription() {
               color="red"
               disabled={!user}
               style={{ borderRadius: "35px", whiteSpace: "nowrap" }}
+              name={"subscribe"}
             />
           </StyledButtonContainer>
         </StyledChannelData>

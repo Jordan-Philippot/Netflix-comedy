@@ -74,6 +74,7 @@ export default function Register() {
         <Button
           onClick={handleRegister}
           label="S'inscrire"
+          name={"register"}
           color="red"
           style={btnRegistrationStyle}
         />

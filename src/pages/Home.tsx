@@ -1,6 +1,14 @@
 import styled from "styled-components";
 import { useQuery } from "@tanstack/react-query";
-import { RefObject, useEffect, useRef, useState } from "react";
+import {
+  RefObject,
+  Suspense,
+  useEffect,
+  useRef,
+  useState,
+  lazy,
+  startTransition,
+} from "react";
 import { COLOR_GREY_LIGHT, COLOR_WHITE } from "utils/colors";
 import { device } from "utils/breakpoints";
 import { linkifyOptions } from "constant/linkifyOptions";
@@ -9,24 +17,38 @@ import { RootState } from "redux/store";
 import { useSelector } from "react-redux";
 import { addVideoEventListener, muteVideo } from "utils/controlVideo";
 
-// ----------
-// Component
-// ----------
-import Button from "components/ui/Button";
-import InfoCircle from "components/icon/InfoCircle";
-import CarouselsContainer from "components/carousel/CarouselsContainer";
-import LoaderPage from "components/ui/LoaderPage";
-import ButtonPlay from "components/ui/ButtonPlay";
-import SvgButton from "components/ui/SvgButton";
-import Mute from "components/icon/Mute";
-import UnMute from "components/icon/UnMute";
-import SearchHome from "components/search/SearchHome";
 import { useModal } from "components/context/ModalContext";
-
 // ----------
 // Api
 // ----------
 import { getVidéoById } from "api/video";
+
+// ----------
+// Component
+// ----------
+// import Button from "components/ui/Button";
+import InfoCircle from "components/icon/InfoCircle";
+import CarouselsContainer from "components/carousel/CarouselsContainer";
+import LoaderPage from "components/ui/LoaderPage";
+// import ButtonPlay from "components/ui/ButtonPlay";
+// import SvgButton from "components/ui/SvgButton";
+import Mute from "components/icon/Mute";
+import UnMute from "components/icon/UnMute";
+// import SearchHome from "components/search/SearchHome";
+import LoaderSuspense from "components/ui/LoaderSuspense";
+
+const Button = lazy(() => import("components/ui/Button"));
+// const LoaderPage = lazy(() => import("components/ui/LoaderPage"));
+const ButtonPlay = lazy(() => import("components/ui/ButtonPlay"));
+const SvgButton = lazy(() => import("components/ui/SvgButton"));
+// const Mute = lazy(() => import("components/icon/Mute"));
+// const UnMute = lazy(() => import("components/icon/UnMute"));
+// const InfoCircle = lazy(() => import("components/icon/InfoCircle"));
+const SearchHome = lazy(() => import("components/search/SearchHome"));
+// const CarouselsContainer = lazy(
+//   () => import("components/carousel/CarouselsContainer")
+// );
+// const LoaderSuspense = lazy(() => import("components/ui/LoaderSuspense"));
 
 interface VideosProps {
   ref: RefObject<HTMLVideoElement>;
@@ -159,10 +181,9 @@ export default function Home() {
   const [playedVideo, setPlayedVideo] = useState<boolean>(false);
   const [isMuted, setIsMuted] = useState<boolean>(false);
 
-  const {
-    isLoading: isSearchLoading,
-    search,
-  } = useSelector((state: RootState) => state.video);
+  const { isLoading: isSearchLoading, search } = useSelector(
+    (state: RootState) => state.video
+  );
 
   useEffect(() => {
     if (videoHomepage) {
@@ -171,10 +192,12 @@ export default function Home() {
   }, [videoRef, videoHomepage]);
 
   useEffect(() => {
-    const currentVideo = videoRef.current;
-    if (isModalOpen && !currentVideo?.paused) {
-      currentVideo?.pause();
-    }
+    startTransition(() => {
+      const currentVideo = videoRef.current;
+      if (isModalOpen && !currentVideo?.paused) {
+        currentVideo?.pause();
+      }
+    });
   }, [isModalOpen]);
 
   return (
@@ -183,60 +206,71 @@ export default function Home() {
         if (isSearchLoading) {
           return <LoaderPage />;
         } else if (search.length > 0) {
-          return <SearchHome />;
+          return (
+            <Suspense fallback={<LoaderPage />}>
+              <SearchHome />
+            </Suspense>
+          );
         } else if (videoHomepage) {
           return (
             <>
               <StyledContainerHome>
-                <StyledVideoHome
-                  title={videoHomepage.title}
-                  ref={videoRef}
-                  id={videoHomepage?.videoId}
-                  controls
-                  poster={videoHomepage.thumbnails?.maxres?.url}
-                  muted={isMuted}
-                >
-                  <source
-                    src={`${process.env.REACT_APP_CLOUDFRONT_AWS_VIDEOS}${videoHomepage.filePath}`}
-                    type="video/mp4"
-                  />
-                </StyledVideoHome>
-
+                <Suspense fallback={<LoaderSuspense />}>
+                  <StyledVideoHome
+                    title={videoHomepage.title}
+                    ref={videoRef}
+                    id={videoHomepage?.videoId}
+                    controls
+                    poster={videoHomepage.thumbnails?.maxres?.url}
+                    muted={isMuted}
+                  >
+                    <source
+                      src={`${process.env.REACT_APP_CLOUDFRONT_AWS_VIDEOS}${videoHomepage.filePath}`}
+                      type="video/mp4"
+                    />
+                  </StyledVideoHome>
+                </Suspense>
                 <StyledHomeInfos>
                   <StyledTitleVideo>{videoHomepage.title}</StyledTitleVideo>
                   <StyledDescriptionVideo>
                     {videoHomepage.description && (
                       <Linkify options={linkifyOptions}>
-                        Le monstre du rire Dave Chappelle termine l'année en
-                        beauté avec deux spectacles bourrés de nouveautés,
-                        d'introspection et de piques. Qui aime bien, châtie
-                        bien !
-                        {/* {videoHomepage.description.substring(0, 100) + "..."} */}
+                        {videoHomepage.description}
                       </Linkify>
                     )}
                   </StyledDescriptionVideo>
                   <StyledBtnContainer>
-                    <ButtonPlay videoRef={videoRef} playedVideo={playedVideo} />
-                    <Button
-                      color="dark"
-                      label={"Informations"}
-                      icon={<InfoCircle />}
-                      onClick={() =>
-                        openModal(videoHomepage, videoHomepage?.channel)
-                      }
-                    />
+                    <Suspense fallback={<LoaderSuspense />}>
+                      <ButtonPlay
+                        videoRef={videoRef}
+                        playedVideo={playedVideo}
+                      />
+                    </Suspense>
+                    <Suspense fallback={<LoaderSuspense />}>
+                      <Button
+                        color="dark"
+                        label={"Informations"}
+                        name={"informations"}
+                        icon={<InfoCircle />}
+                        onClick={() =>
+                          openModal(videoHomepage, videoHomepage?.channel)
+                        }
+                      />
+                    </Suspense>
                   </StyledBtnContainer>
                 </StyledHomeInfos>
-                <SvgButton
-                  onClick={() => muteVideo(videoRef)}
-                  style={{
-                    position: "absolute",
-                    top: "50px",
-                    right: "25px",
-                  }}
-                >
-                  {isMuted ? <Mute /> : <UnMute />}
-                </SvgButton>
+                <Suspense fallback={<LoaderSuspense />}>
+                  <SvgButton
+                    onClick={() => muteVideo(videoRef)}
+                    style={{
+                      position: "absolute",
+                      top: "50px",
+                      right: "25px",
+                    }}
+                  >
+                    {isMuted ? <Mute /> : <UnMute />}
+                  </SvgButton>
+                </Suspense>
               </StyledContainerHome>
 
               <CarouselsContainer />

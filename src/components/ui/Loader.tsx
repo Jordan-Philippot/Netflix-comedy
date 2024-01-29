@@ -6,6 +6,7 @@ const StyledLoaderContainer = styled.div`
   display: flex;
   justify-content: center;
   margin: auto;
+  min-height: 300px;
 `;
 
 const StyledLoader = styled.span`
@@ -17,6 +18,15 @@ const StyledLoader = styled.span`
   border-right: 3px solid transparent;
   box-sizing: border-box;
   animation: rotation 1s linear infinite;
+  margin: auto;
+  @keyframes rotation {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  } 
 `;
 
 export default function LoaderPage() {

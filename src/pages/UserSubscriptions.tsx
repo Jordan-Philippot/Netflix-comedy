@@ -124,7 +124,7 @@ export default function UserSubscriptions() {
                       paddingBottom: 0,
                     }}
                   >
-                    {subscripion.channel && subscripion.channel.title}{" "}
+                    {subscripion.channel && subscripion.channel.title}
                     <StyledSpan>
                       Voir tout <Arrow />
                     </StyledSpan>

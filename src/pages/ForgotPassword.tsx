@@ -15,7 +15,10 @@ import Input from "components/ui/Input";
 // Assets
 // ----------
 import { StyledFormContainer, StyledMainContainer } from "./Login";
-import { btnRegistrationStyle, titleRegistrationStyle } from "constant/registrationStyle";
+import {
+  btnRegistrationStyle,
+  titleRegistrationStyle,
+} from "constant/registrationStyle";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState<string>("");
@@ -43,8 +46,9 @@ export default function ForgotPassword() {
           label="Envoyer"
           color="red"
           style={btnRegistrationStyle}
+          name={"forgotpassword"}
         />
-        
+
         <Link
           to="/help"
           style={{

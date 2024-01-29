@@ -21,10 +21,10 @@ export function useLike(): LikeHook {
   const shouldFetchUserResume = user !== undefined;
 
   const { data, isLoading } = useQuery({
-    queryKey: ["userSubscriptions"],
+    queryKey: ["userLikeList"],
     queryFn: shouldFetchUserResume
       ? getUserLikeList
-      : () => Promise.resolve(undefined),
+      : () => Promise.resolve([]),
   });
 
   const mutationUserLike = useMutation({

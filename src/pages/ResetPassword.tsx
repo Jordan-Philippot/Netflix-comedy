@@ -67,6 +67,7 @@ export default function ResetPassword() {
         <Button
           onClick={() => resetPassword(newPassword, confirmNewPassword, token)}
           label="Envoyer"
+          name={"resetpassword"}
           color="red"
           style={btnStyle}
         />

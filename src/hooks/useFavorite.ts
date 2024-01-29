@@ -24,10 +24,10 @@ export function useFavorite(): FavoriteHook {
   const shouldFetchUserResume = user !== undefined;
 
   const { data, isLoading } = useQuery({
-    queryKey: ["userSubscriptions"],
+    queryKey: ["userFavorites"],
     queryFn: shouldFetchUserResume
       ? getUserFavoriteList
-      : () => Promise.resolve(undefined),
+      : () => Promise.resolve([]),
   });
 
   const mutationUserFavorite = useMutation({

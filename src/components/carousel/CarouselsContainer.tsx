@@ -10,6 +10,8 @@ import Carousel from "./Carousel";
 import Loader from "components/ui/Loader";
 import CarouselResume from "./CarouselResume";
 import { useAuth } from "hooks/useAuth";
+import { Suspense } from "react";
+import LoaderSuspense from "components/ui/LoaderSuspense";
 
 const StyledCarouselsContainer = styled.main`
   position: relavtive;
@@ -45,16 +47,24 @@ export default function CarouselsContainer() {
             firstTwoChannels.map(
               (channel, key) =>
                 !channel?.madeForKids && (
-                  <Carousel channel={channel} key={key} />
+                  <Suspense fallback={<LoaderSuspense />} key={key}>
+                    <Carousel channel={channel} key={key} />
+                  </Suspense>
                 )
             )}
 
-          {user && <CarouselResume />}
+          {user && (
+            <Suspense fallback={<LoaderSuspense />}>
+              <CarouselResume />
+            </Suspense>
+          )}
           {restOfChannels &&
             restOfChannels.map(
               (channel, key) =>
                 !channel?.madeForKids && (
-                  <Carousel channel={channel} key={key} />
+                  <Suspense fallback={<LoaderSuspense />} key={key}>
+                    <Carousel channel={channel} key={key} />
+                  </Suspense>
                 )
             )}
         </>

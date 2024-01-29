@@ -79,6 +79,7 @@ export default function Login() {
         <Button
           onClick={() => login(email, password)}
           label="S'identifier"
+          name={"login"}
           color="red"
           style={btnRegistrationStyle}
         />

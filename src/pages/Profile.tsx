@@ -84,6 +84,7 @@ export default function Profile() {
         <Button
           onClick={handleProfile}
           label="Enregistrer"
+          name={"profile"}
           color="red"
           style={btnRegistrationStyle}
         />

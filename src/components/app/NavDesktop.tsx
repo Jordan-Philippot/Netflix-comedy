@@ -130,6 +130,7 @@ export default function NavDesktop() {
             label="S'identifier"
             link={"/login"}
             color="red"
+            name={"name"}
             style={{ fontSize: "16px", marginLeft: "20px" }}
           />
         )}

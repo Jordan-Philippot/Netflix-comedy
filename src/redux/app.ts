@@ -20,7 +20,8 @@ const appSlice = createSlice({
   initialState,
   reducers: {
     createMessage(state, action: PayloadAction<{ text: string; status: Status }>) {
-      state.messages.push({ ...action.payload, date: new Date().getTime() })
+      const date = new Date().getTime()
+      state.messages.push({ ...action.payload, date: date })
     },
   },
 })

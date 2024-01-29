@@ -17,7 +17,7 @@ import UserFavorites from "pages/UserFavorites";
 import UserSubscriptions from "pages/UserSubscriptions";
 import ForgotPassword from "pages/ForgotPassword";
 import ResetPassword from "pages/ResetPassword";
-
+import { Helmet, HelmetProvider } from "react-helmet-async";
 
 function App() {
   const { user, isLoading: isUserLoading } = useAuth();
@@ -47,19 +47,37 @@ function App() {
   }
 
   return (
-    <Routes>
-      <Route path="/" element={<MainLayout />}>
-        <Route index element={<Home />} />
-        <Route path="channel/:channelId" element={<Channel />} />
-        <Route path="login" element={<Login />} />
-        <Route path="register" element={<Register />} />
-        <Route path="forgot-password" element={<ForgotPassword />} />
-        <Route path="reset-password" element={<ResetPassword />} />
-        <Route path="user/profile" element={<Profile />} />
-        <Route path="user/list" element={<UserFavorites />} />
-        <Route path="user/subscriptions" element={<UserSubscriptions />} />
-      </Route>
-    </Routes>
+    <HelmetProvider>
+      <Helmet>
+        <meta
+          http-equiv="Content-Security-Policy"
+          content="
+          default-src 'self';
+          script-src 'self' 'unsafe-inline';
+          style-src *;
+          img-src 'self'  https://i.ytimg.com https://yt3.ggpht.com data:;
+          font-src 'self' https://fonts.gstatic.com;
+          connect-src 'self' https://netflux-back-789a2df4e080.herokuapp.com https://d1b2sa4lkqbk9q.cloudfront.net https://i.ytimg.com https://localhost:8000 ;
+          media-src https://d1b2sa4lkqbk9q.cloudfront.net https://i.ytimg.com;
+        "
+        />
+      </Helmet>
+      <Routes>
+        {/* Configuration de la CSP */}
+
+        <Route path="/" element={<MainLayout />}>
+          <Route index element={<Home />} />
+          <Route path="channel/:channelId" element={<Channel />} />
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
+          <Route path="forgot-password" element={<ForgotPassword />} />
+          <Route path="reset-password" element={<ResetPassword />} />
+          <Route path="user/profile" element={<Profile />} />
+          <Route path="user/list" element={<UserFavorites />} />
+          <Route path="user/subscriptions" element={<UserSubscriptions />} />
+        </Route>
+      </Routes>
+    </HelmetProvider>
   );
 }
 

@@ -20,7 +20,7 @@ interface AuthHook {
     password: string,
     firstname: string,
     lastname: string
-  ) => void;
+  ) => Promise<void>;
   forgotPassword: (email: string) => Promise<void>;
   resetPassword: (
     newPassword: string,
@@ -69,6 +69,7 @@ export function useAuth(): AuthHook {
       if (loginResponse.token) {
         localStorage.setItem("userToken", loginResponse.token);
         mutationUser.mutate();
+
         sendInformation("Bienvenue sur Netflix Comedy !");
       } else {
         sendError("Identifiants incorrects");

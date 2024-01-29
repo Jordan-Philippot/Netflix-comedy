@@ -12,13 +12,12 @@ import { RootState } from "redux/store";
 import CardItem from "components/CardItem";
 import Title from "components/ui/Title";
 import Text from "components/ui/Text";
+import LoaderSuspense from "components/ui/LoaderSuspense";
 
 export default function SearchHome() {
-  const {
-    searchResult,
-
-    search,
-  } = useSelector((state: RootState) => state.video);
+  const { searchResult, search, isLoading } = useSelector(
+    (state: RootState) => state.video
+  );
 
   return (
     <StyledPageContainer>
@@ -36,19 +35,23 @@ export default function SearchHome() {
         {search.toLocaleUpperCase()}
       </Title>
       {/* Search Results */}
-      <StyledVideosContainer>
-        {searchResult.length > 0 ? (
-          searchResult?.map((result, key) => (
-            <CardItem
-              item={result}
-              key={key}
-              channel={(({ videos, ...channel }) => channel)(result.channel)}
-            />
-          ))
-        ) : (
-          <Text>Aucun résultat n'est disponible</Text>
-        )}
-      </StyledVideosContainer>
+      {isLoading ? (
+        <LoaderSuspense />
+      ) : (
+        <StyledVideosContainer>
+          {searchResult.length > 0 ? (
+            searchResult?.map((result, key) => (
+              <CardItem
+                item={result}
+                key={key}
+                channel={(({ videos, ...channel }) => channel)(result.channel)}
+              />
+            ))
+          ) : (
+            <Text>Aucun résultat n'est disponible</Text>
+          )}
+        </StyledVideosContainer>
+      )}
     </StyledPageContainer>
   );
 }

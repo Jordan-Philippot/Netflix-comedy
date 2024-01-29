@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { getChannelVideos } from "api/channel";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useParams } from "react-router-dom";
@@ -20,6 +20,7 @@ import Text from "components/ui/Text";
 import Wifi from "components/icon/Wifi";
 import Title from "components/ui/Title";
 import LoaderPage from "components/ui/LoaderPage";
+import LoaderSuspense from "components/ui/LoaderSuspense";
 
 const StyledChannelData = styled.div`
   display: flex;
@@ -139,10 +140,12 @@ export default function Channel() {
 
           <StyledChannelData>
             <StyledChannelBannerContainer>
-              <StyledBanner
-                src={channelById.thumbnails?.medium?.url}
-                alt="Chaine youtube"
-              />
+              <Suspense fallback={<LoaderSuspense />}>
+                <StyledBanner
+                  src={channelById.thumbnails?.medium?.url}
+                  alt="Chaine youtube"
+                />
+              </Suspense>
               <StyledBannerInfos>
                 <Title size="h2" weight="800">
                   {channelById.title}
@@ -189,6 +192,7 @@ export default function Channel() {
                     : addSubscription(channelById.channelId);
                 }}
                 color="red"
+                name={"subscribe"}
               />
             </StyledButtonContainer>
           </StyledChannelData>

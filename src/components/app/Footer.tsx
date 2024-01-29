@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { COLOR_GREY, COLOR_GREY_DARK } from "utils/colors";
@@ -57,17 +56,16 @@ export default function Footer() {
         >
           <LinkedIn />
         </Link>
-        <Tooltip label={ <Phone />} position="top" isClickable>
+        <Tooltip label={<Phone />} position="top" isClickable>
           07 81 19 74 38
         </Tooltip>
-        <Tooltip label={ <Mail />} position="top" isClickable>
-         jordan.philippot.pro@gmail.com
+        <Tooltip label={<Mail />} position="top" isClickable>
+          jordan.philippot.pro@gmail.com
         </Tooltip>
       </StyledSocialMediaContainer>
 
       <StyledCguContainer>
-        <Link to="#">Nous contacter</Link>{" "}
-        <Link to="#">Mentions Légales</Link>{" "}
+        <Link to="#">Nous contacter</Link> <Link to="#">Mentions Légales</Link>{" "}
         <Link to="#">Conditions d'utilisation </Link>
         <Link to="#">Information légales </Link>
         <Link to="#">Centre d'aide </Link>

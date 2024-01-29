@@ -16,6 +16,7 @@ interface ButtonProps {
   link?: string;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   color: buttonColor;
+  name?: string;
 }
 
 type StyledButtonProps = Omit<ButtonProps, "label" | "icon">;
@@ -85,6 +86,7 @@ function Button({
   style,
   link,
   color = "light",
+  name
 }: ButtonProps) {
   return (
     <StyledButton
@@ -93,6 +95,7 @@ function Button({
       style={style}
       link={link}
       onClick={link ? () => (window.location.href = link) : onClick}
+      name={name}
     >
       {icon} {label}
     </StyledButton>
