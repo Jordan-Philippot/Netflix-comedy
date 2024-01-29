@@ -52,7 +52,7 @@ const StyledVideoHome = styled.video<VideosProps>`
   top: 20px;
   width: 100%;
   height: 100%;
-  min-height: 55vh;
+  min-height: 50vh;
   border: none;
   object-fit: cover;
   @media ${device.laptop} {
@@ -146,7 +146,8 @@ const StyledBtnContainer = styled.div`
 `;
 
 export default function Home() {
-  const videoHomepageId = process.env.REACT_APP_HOMEPAGE_VIDEO_ID as string;
+  const videoHomepageIdDesktop = process.env.REACT_APP_HOMEPAGE_VIDEO_ID_DESKTOP as string;
+  const videoHomepageIdobile = process.env.REACT_APP_HOMEPAGE_VIDEO_ID_MOBILE as string;
 
   const { openModal, isModalOpen } = useModal();
 
@@ -154,7 +155,7 @@ export default function Home() {
 
   const { data: videoHomepage } = useQuery({
     queryKey: ["videoHomepage"],
-    queryFn: () => getVidéoById(videoHomepageId),
+    queryFn: () => getVidéoById(window.innerWidth < 768 ? videoHomepageIdobile : videoHomepageIdDesktop),
   });
 
   // --------------------------
