@@ -26,29 +26,17 @@ import { getVidéoById } from "api/video";
 // ----------
 // Component
 // ----------
-// import Button from "components/ui/Button";
 import InfoCircle from "components/icon/InfoCircle";
 import CarouselsContainer from "components/carousel/CarouselsContainer";
 import LoaderPage from "components/ui/LoaderPage";
-// import ButtonPlay from "components/ui/ButtonPlay";
-// import SvgButton from "components/ui/SvgButton";
 import Mute from "components/icon/Mute";
 import UnMute from "components/icon/UnMute";
-// import SearchHome from "components/search/SearchHome";
 import LoaderSuspense from "components/ui/LoaderSuspense";
 
 const Button = lazy(() => import("components/ui/Button"));
-// const LoaderPage = lazy(() => import("components/ui/LoaderPage"));
 const ButtonPlay = lazy(() => import("components/ui/ButtonPlay"));
 const SvgButton = lazy(() => import("components/ui/SvgButton"));
-// const Mute = lazy(() => import("components/icon/Mute"));
-// const UnMute = lazy(() => import("components/icon/UnMute"));
-// const InfoCircle = lazy(() => import("components/icon/InfoCircle"));
 const SearchHome = lazy(() => import("components/search/SearchHome"));
-// const CarouselsContainer = lazy(
-//   () => import("components/carousel/CarouselsContainer")
-// );
-// const LoaderSuspense = lazy(() => import("components/ui/LoaderSuspense"));
 
 interface VideosProps {
   ref: RefObject<HTMLVideoElement>;
@@ -214,6 +202,13 @@ export default function Home() {
         } else if (videoHomepage) {
           return (
             <>
+              {/* Préchargement de la vidéo */}
+
+              <link
+                rel="preload"
+                href={videoHomepage.thumbnails?.maxres?.url}
+                as="image"
+              />
               <StyledContainerHome>
                 <Suspense fallback={<LoaderSuspense />}>
                   <StyledVideoHome

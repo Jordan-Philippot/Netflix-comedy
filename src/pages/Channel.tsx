@@ -137,7 +137,11 @@ export default function Channel() {
       {channelById && (
         <>
           {/* Banner informations */}
-
+          <link
+            rel="preload"
+            href={channelById.thumbnails?.medium?.url}
+            as="image"
+          />
           <StyledChannelData>
             <StyledChannelBannerContainer>
               <Suspense fallback={<LoaderSuspense />}>
