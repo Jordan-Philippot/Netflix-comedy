@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getChannelVideos } from "api/channel";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useParams } from "react-router-dom";
