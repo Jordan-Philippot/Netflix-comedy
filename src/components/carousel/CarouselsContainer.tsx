@@ -17,7 +17,7 @@ const StyledCarouselsContainer = styled.main`
   position: relavtive;
   z-index: 3;
   padding: 0 20px;
-
+  margin-top: 50px;
   @media ${device.laptop} {
     padding: 0 40px;
     margin-top: -160px;
@@ -33,9 +33,9 @@ export default function CarouselsContainer() {
     queryFn: () => getChannelsVideos(),
   });
 
-  const firstTwoChannels = channels?.slice(0, 2);
+  const firstChannel = channels?.slice(0, 1);
 
-  const restOfChannels = channels?.slice(2);
+  const restOfChannels = channels?.slice(1);
   const deferredRestOfChannels = useDeferredValue(restOfChannels);
 
   const { user } = useAuth();
@@ -46,8 +46,8 @@ export default function CarouselsContainer() {
         <Loader />
       ) : (
         <>
-          {firstTwoChannels &&
-            firstTwoChannels.map(
+          {firstChannel &&
+            firstChannel.map(
               (channel, key) =>
                 !channel?.madeForKids && (
                   <Carousel channel={channel} key={key} />
@@ -63,7 +63,7 @@ export default function CarouselsContainer() {
             deferredRestOfChannels.map(
               (channel, key) =>
                 !channel?.madeForKids && (
-                  <Suspense fallback={<LoaderSuspense />}>
+                  <Suspense fallback={<LoaderSuspense />} key={key}>
                     <Carousel channel={channel} key={key} />
                   </Suspense>
                 )
