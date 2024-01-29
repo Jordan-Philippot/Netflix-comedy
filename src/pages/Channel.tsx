@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { getChannelVideos } from "api/channel";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useParams } from "react-router-dom";
@@ -8,7 +8,7 @@ import { useSubscription } from "hooks/useSubscription";
 import { useAuth } from "hooks/useAuth";
 import { device } from "utils/breakpoints";
 import { linkifyOptions } from "constant/linkifyOptions";
-
+import Linkify from "linkify-react";
 // --------------
 // Components
 // --------------
@@ -19,9 +19,7 @@ import Text from "components/ui/Text";
 import Wifi from "components/icon/Wifi";
 import Title from "components/ui/Title";
 import LoaderPage from "components/ui/LoaderPage";
-import React from "react";
-
-const LazyLinkify = React.lazy(() => import("linkify-react"));
+import LoaderSuspense from "components/ui/LoaderSuspense";
 
 const StyledChannelData = styled.div`
   display: flex;
@@ -130,8 +128,7 @@ export default function Channel() {
     if (channelById)
       findUserSubscription(channelById.channelId, setIsSubscribed);
   }, [userSubscriptions, channelById, findUserSubscription]);
-
-  // console.log(channelById?.thumbnails);
+  console.log(channelById?.thumbnails);
   return (
     <>
       {isLoading && <LoaderPage />}
@@ -147,10 +144,10 @@ export default function Channel() {
           <StyledChannelData>
             <StyledChannelBannerContainer>
               <StyledBanner
-                src={channelById.thumbnails?.medium?.url}
-                // srcSet={"elva-fairy-320w.jpg, elva-fairy-480w.jpg 1.5x, elva-fairy-640w.jpg 2x"}
-                alt="Chaine youtube"
+              src={channelById.thumbnails?.medium?.url}
+              alt="Chaine youtube"
               />
+              
               <StyledBannerInfos>
                 <Title size="h2" weight="800">
                   {channelById.title}
@@ -205,9 +202,11 @@ export default function Channel() {
 
           <StyledDescription>
             <Text>
-              <LazyLinkify options={linkifyOptions}>
-                {channelById.description}
-              </LazyLinkify>
+              <Suspense fallback={<LoaderSuspense />}>
+                <Linkify options={linkifyOptions}>
+                  {channelById.description}
+                </Linkify>
+              </Suspense>
             </Text>
           </StyledDescription>
 

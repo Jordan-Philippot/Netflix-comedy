@@ -202,6 +202,15 @@ export default function Home() {
                 href={videoHomepage.thumbnails?.maxres?.url}
                 as="image"
               />
+              <link
+                rel="preload"
+                href={
+                  process.env.REACT_APP_CLOUDFRONT_AWS_VIDEOS +
+                  videoHomepage.filePath
+                }
+                as="video"
+                type="video/mp4"
+              />
               <StyledContainerHome>
                 <StyledVideoHome
                   title={videoHomepage.title}
@@ -212,7 +221,10 @@ export default function Home() {
                   muted={isMuted}
                 >
                   <source
-                    src={`${process.env.REACT_APP_CLOUDFRONT_AWS_VIDEOS}${videoHomepage.filePath}`}
+                    src={
+                      process.env.REACT_APP_CLOUDFRONT_AWS_VIDEOS +
+                      videoHomepage.filePath
+                    }
                     type="video/mp4"
                   />
                 </StyledVideoHome>

@@ -119,7 +119,6 @@ export default function CardItem({
         <StyledItemImage
           src={thumbnails?.medium && thumbnails.medium.url}
           alt={item.title}
-          loading="lazy"
         />
         <StyledProgressBar viewPercent={viewPercent}>
           <div></div>
