@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, RefObject } from "react";
+import { useEffect, useState, useRef, RefObject, Suspense } from "react";
 import styled from "styled-components";
 import { useModal } from "components/context/ModalContext";
 import {
@@ -31,6 +31,7 @@ import Comment from "components/icon/Comment";
 import Stats from "components/icon/Stats";
 import Calendar from "components/icon/Calendar";
 import { addVideoEventListener, muteVideo } from "utils/controlVideo";
+import LoaderSuspense from "components/ui/LoaderSuspense";
 
 interface VideosProps {
   ref: RefObject<HTMLVideoElement>;
@@ -83,6 +84,12 @@ const StyledDescriptionContainer = styled.div`
   border-radius: 6px;
   padding: 15px 15px 0 15px;
   margin-bottom: 25px;
+`;
+
+const StyledStatsContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 15px;
 `;
 
 export default function VideoModal() {
@@ -139,19 +146,26 @@ export default function VideoModal() {
     <Modal opened={isModalOpen} onClose={closeModalWithResumeTime}>
       <StyledModalHeader>
         {selectedVideo?.filePath && (
-          <StyledModalVideo
-            title="Netflux iframe video"
-            controls
-            id={selectedVideo?.videoId}
-            ref={videoRef}
-            muted={isMuted}
-            poster={selectedVideo.thumbnails?.maxres?.url}
-          >
-            <source
-              src={`${process.env.REACT_APP_CLOUDFRONT_AWS_VIDEOS}${selectedVideo.filePath}`}
-              type="video/mp4"
+          <>
+            <link
+              rel="preload"
+              href={selectedVideo.thumbnails?.maxres?.url}
+              as="image"
             />
-          </StyledModalVideo>
+            <StyledModalVideo
+              title="Netflux iframe video"
+              controls
+              id={selectedVideo?.videoId}
+              ref={videoRef}
+              muted={isMuted}
+              poster={selectedVideo.thumbnails?.maxres?.url}
+            >
+              <source
+                src={`${process.env.REACT_APP_CLOUDFRONT_AWS_VIDEOS}${selectedVideo.filePath}`}
+                type="video/mp4"
+              />
+            </StyledModalVideo>
+          </>
         )}
       </StyledModalHeader>
       {selectedVideo && (
@@ -238,7 +252,7 @@ export default function VideoModal() {
           </Title>
 
           <StyledDescriptionContainer>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "0 15px" }}>
+            <StyledStatsContainer>
               {selectedVideo.viewCount && (
                 <Text size="l" color="secondary" style={styledStatsContainer}>
                   <Stats /> {selectedVideo.viewCount} vues
@@ -253,7 +267,7 @@ export default function VideoModal() {
                   <Comment /> {selectedVideo.commentCount} commentaires
                 </Text>
               )}
-            </div>
+            </StyledStatsContainer>
             {selectedVideo.description && (
               <Text
                 style={{ color: COLOR_WHITE, paddingBottom: "15px" }}
@@ -264,17 +278,19 @@ export default function VideoModal() {
             )}
           </StyledDescriptionContainer>
 
-          {selectedVideo.tags && (
-            <StyledDescriptionContainer>
-              <Text
-                style={{ color: COLOR_WHITE, paddingBottom: "15px" }}
-                weight="800"
-                size="s"
-              >
-                {selectedVideo.tags?.map((tag: string) => "#" + tag + " - ")}
-              </Text>
-            </StyledDescriptionContainer>
-          )}
+          <Suspense fallback={<LoaderSuspense />}>
+            {selectedVideo.tags && (
+              <StyledDescriptionContainer>
+                <Text
+                  style={{ color: COLOR_WHITE, paddingBottom: "15px" }}
+                  weight="800"
+                  size="s"
+                >
+                  {selectedVideo.tags?.map((tag: string) => "#" + tag + " - ")}
+                </Text>
+              </StyledDescriptionContainer>
+            )}
+          </Suspense>
         </StyledModalBody>
       )}
     </Modal>

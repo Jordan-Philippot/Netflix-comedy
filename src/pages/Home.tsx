@@ -11,12 +11,9 @@ import {
 } from "react";
 import { COLOR_GREY_LIGHT, COLOR_WHITE } from "utils/colors";
 import { device } from "utils/breakpoints";
-import { linkifyOptions } from "constant/linkifyOptions";
-import Linkify from "linkify-react";
 import { RootState } from "redux/store";
 import { useSelector } from "react-redux";
 import { addVideoEventListener, muteVideo } from "utils/controlVideo";
-
 import { useModal } from "components/context/ModalContext";
 // ----------
 // Api
@@ -202,58 +199,45 @@ export default function Home() {
         } else if (videoHomepage) {
           return (
             <>
-              {/* Préchargement de la vidéo */}
-
+              {/* Preload poster for higesht priority */}
               <link
                 rel="preload"
                 href={videoHomepage.thumbnails?.maxres?.url}
                 as="image"
               />
               <StyledContainerHome>
-                <Suspense fallback={<LoaderSuspense />}>
-                  <StyledVideoHome
-                    title={videoHomepage.title}
-                    ref={videoRef}
-                    id={videoHomepage?.videoId}
-                    controls
-                    poster={videoHomepage.thumbnails?.maxres?.url}
-                    muted={isMuted}
-                  >
-                    <source
-                      src={`${process.env.REACT_APP_CLOUDFRONT_AWS_VIDEOS}${videoHomepage.filePath}`}
-                      type="video/mp4"
-                    />
-                  </StyledVideoHome>
-                </Suspense>
+                <StyledVideoHome
+                  title={videoHomepage.title}
+                  ref={videoRef}
+                  id={videoHomepage?.videoId}
+                  controls
+                  poster={videoHomepage.thumbnails?.maxres?.url}
+                  muted={isMuted}
+                >
+                  <source
+                    src={`${process.env.REACT_APP_CLOUDFRONT_AWS_VIDEOS}${videoHomepage.filePath}`}
+                    type="video/mp4"
+                  />
+                </StyledVideoHome>
                 <StyledHomeInfos>
                   <StyledTitleVideo>{videoHomepage.title}</StyledTitleVideo>
                   <StyledDescriptionVideo>
-                    {videoHomepage.description && (
-                      <Linkify options={linkifyOptions}>
-                        {videoHomepage.description}
-                      </Linkify>
-                    )}
+                    {videoHomepage.description && videoHomepage.description}
                   </StyledDescriptionVideo>
                   <StyledBtnContainer>
-                    <Suspense fallback={<LoaderSuspense />}>
-                      <ButtonPlay
-                        videoRef={videoRef}
-                        playedVideo={playedVideo}
-                      />
-                    </Suspense>
-                    <Suspense fallback={<LoaderSuspense />}>
-                      <Button
-                        color="dark"
-                        label={"Informations"}
-                        name={"informations"}
-                        icon={<InfoCircle />}
-                        onClick={() =>
-                          openModal(videoHomepage, videoHomepage?.channel)
-                        }
-                      />
-                    </Suspense>
+                    <ButtonPlay videoRef={videoRef} playedVideo={playedVideo} />
+                    <Button
+                      color="dark"
+                      label={"Informations"}
+                      name={"informations"}
+                      icon={<InfoCircle />}
+                      onClick={() =>
+                        openModal(videoHomepage, videoHomepage?.channel)
+                      }
+                    />
                   </StyledBtnContainer>
                 </StyledHomeInfos>
+
                 <Suspense fallback={<LoaderSuspense />}>
                   <SvgButton
                     onClick={() => muteVideo(videoRef)}

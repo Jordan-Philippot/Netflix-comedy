@@ -7,7 +7,6 @@ import { COLOR_BLACK, COLOR_BLUE, COLOR_WHITE } from "utils/colors";
 import { useSubscription } from "hooks/useSubscription";
 import { useAuth } from "hooks/useAuth";
 import { device } from "utils/breakpoints";
-import Linkify from "linkify-react";
 import { linkifyOptions } from "constant/linkifyOptions";
 
 // --------------
@@ -20,7 +19,9 @@ import Text from "components/ui/Text";
 import Wifi from "components/icon/Wifi";
 import Title from "components/ui/Title";
 import LoaderPage from "components/ui/LoaderPage";
-import LoaderSuspense from "components/ui/LoaderSuspense";
+import React from "react";
+
+const LazyLinkify = React.lazy(() => import("linkify-react"));
 
 const StyledChannelData = styled.div`
   display: flex;
@@ -130,6 +131,7 @@ export default function Channel() {
       findUserSubscription(channelById.channelId, setIsSubscribed);
   }, [userSubscriptions, channelById, findUserSubscription]);
 
+  // console.log(channelById?.thumbnails);
   return (
     <>
       {isLoading && <LoaderPage />}
@@ -144,12 +146,11 @@ export default function Channel() {
           />
           <StyledChannelData>
             <StyledChannelBannerContainer>
-              <Suspense fallback={<LoaderSuspense />}>
-                <StyledBanner
-                  src={channelById.thumbnails?.medium?.url}
-                  alt="Chaine youtube"
-                />
-              </Suspense>
+              <StyledBanner
+                src={channelById.thumbnails?.medium?.url}
+                // srcSet={"elva-fairy-320w.jpg, elva-fairy-480w.jpg 1.5x, elva-fairy-640w.jpg 2x"}
+                alt="Chaine youtube"
+              />
               <StyledBannerInfos>
                 <Title size="h2" weight="800">
                   {channelById.title}
@@ -204,9 +205,9 @@ export default function Channel() {
 
           <StyledDescription>
             <Text>
-              <Linkify options={linkifyOptions}>
+              <LazyLinkify options={linkifyOptions}>
                 {channelById.description}
-              </Linkify>
+              </LazyLinkify>
             </Text>
           </StyledDescription>
 

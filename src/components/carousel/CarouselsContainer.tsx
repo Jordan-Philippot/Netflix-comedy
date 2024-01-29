@@ -49,9 +49,7 @@ export default function CarouselsContainer() {
             firstTwoChannels.map(
               (channel, key) =>
                 !channel?.madeForKids && (
-                  <Suspense fallback={<LoaderSuspense />} key={key}>
-                    <Carousel channel={channel} key={key} />
-                  </Suspense>
+                  <Carousel channel={channel} key={key} />
                 )
             )}
 
