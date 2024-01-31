@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useSubscription } from "hooks/useSubscription";
 import { device } from "utils/breakpoints";
 import { COLOR_BLUE } from "utils/colors";
+import { Helmet } from "react-helmet-async";
 
 // --------------
 // Components
@@ -83,6 +84,9 @@ export default function UserSubscriptions() {
 
   return (
     <>
+      <Helmet>
+        <title>Vos abonnements</title>
+      </Helmet>
       <StyledPageContainer>
         <Title weight="800" style={{ margin: "120px 0 50px 0" }}>
           Vos abonnements

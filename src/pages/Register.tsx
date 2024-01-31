@@ -2,7 +2,12 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "hooks/useAuth";
 import { COLOR_GREY_LIGHT, COLOR_WHITE } from "utils/colors";
-import { btnRegistrationStyle, inputRegistrationStyle, titleRegistrationStyle } from "constant/registrationStyle";
+import {
+  btnRegistrationStyle,
+  inputRegistrationStyle,
+  titleRegistrationStyle,
+} from "constant/registrationStyle";
+import { Helmet } from "react-helmet-async";
 
 // ----------
 // Components
@@ -31,6 +36,9 @@ export default function Register() {
 
   return (
     <StyledMainContainer>
+      <Helmet>
+        <title>Inscription</title>
+      </Helmet>
       <StyledFormContainer>
         <Title weight="800" size="h1" style={titleRegistrationStyle}>
           S'inscrire

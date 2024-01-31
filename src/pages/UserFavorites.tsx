@@ -1,4 +1,5 @@
 import { useFavorite } from "hooks/useFavorite";
+import { Helmet } from "react-helmet-async";
 
 // --------------
 // Components
@@ -21,11 +22,14 @@ export default function UserFavorites() {
 
   return (
     <>
+      <Helmet>
+        <title>Vos favoris</title>
+      </Helmet>
       <StyledPageContainer>
         <Title weight="800" style={{ marginTop: "120px" }}>
           Ma liste
         </Title>
-        
+
         {/* Channel Informations */}
         {!isLoading ? (
           userFavorites && userFavorites.length > 0 ? (

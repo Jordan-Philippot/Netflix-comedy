@@ -21,7 +21,7 @@ export function useFavorite(): FavoriteHook {
 
   const { user } = useAuth();
 
-  const shouldFetchUserResume = user !== undefined;
+  const shouldFetchUserResume = user !== null;
 
   const { data, isLoading } = useQuery({
     queryKey: ["userFavorites"],

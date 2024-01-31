@@ -11,7 +11,7 @@ export type FieldErrors = {
 };
 
 interface AuthHook {
-  user: UserType | undefined;
+  user: UserType | null;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
   profile: (password: string, firstname: string, lastname: string) => void;
@@ -35,9 +35,12 @@ export function useAuth(): AuthHook {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading } = useQuery<UserType | null>({
     queryKey: ["user"],
-    queryFn: () => getUser(),
+    queryFn: () =>
+      localStorage.getItem("userToken")
+        ? getUser()
+        : Promise.resolve<UserType | null>(null),
   });
 
   const { sendInformation, sendError } = useMessage();
@@ -174,7 +177,7 @@ export function useAuth(): AuthHook {
   };
 
   return {
-    user: data,
+    user: data ?? null,
     login: loginHandler,
     logout: logoutHandler,
     register: registerHandler,

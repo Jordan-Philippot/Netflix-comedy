@@ -32,11 +32,12 @@ export const getUser = async (): Promise<UserType> => {
     getAuthenticationConfig()
   );
   const data = await response.json();
-  if (!data.hasOwnProperty("user")) {
-    throw new Error("User data not found in the response");
-  }
 
-  return data.user;
+  if (data.user) {
+    return data.user;
+  } else {
+    return {} as UserType;
+  }
 };
 
 export const setProfile = async (

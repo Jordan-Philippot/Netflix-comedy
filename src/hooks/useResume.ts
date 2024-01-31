@@ -6,7 +6,7 @@ import { ResumeType } from "api/resume.type";
 interface ResumeHook {
   userResumeList:
     | { resumes: ResumeType[]; watchAgain: ResumeType[] }
-    | undefined;
+    | null;
   addResume: (videoId: string, resumeTime: number) => void;
   isLoading: boolean;
 }
@@ -15,13 +15,13 @@ export function useResume(): ResumeHook {
   const queryClient = useQueryClient();
   const { user } = useAuth();
 
-  const shouldFetchUserResume = user !== undefined;
+  const shouldFetchUserResume = user !== null;
 
   const { data, isLoading } = useQuery({
     queryKey: ["userResumeList"],
     queryFn: shouldFetchUserResume
       ? getUserResumeList
-      : () => Promise.resolve(undefined),
+      : () => Promise.resolve(null),
   });
 
   const mutationUserLike = useMutation({
@@ -53,7 +53,7 @@ export function useResume(): ResumeHook {
   };
 
   return {
-    userResumeList: data,
+    userResumeList: data ?? null,
     addResume: handleAddResume,
     isLoading: isLoading,
   };

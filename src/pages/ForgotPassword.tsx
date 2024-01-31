@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { COLOR_GREY_LIGHT, COLOR_WHITE } from "utils/colors";
 import { useAuth } from "hooks/useAuth";
+import { Helmet } from "react-helmet-async";
 
 // ----------
 // Components
@@ -27,6 +28,9 @@ export default function ForgotPassword() {
 
   return (
     <StyledMainContainer>
+      <Helmet>
+        <title>Mot de passe oublié</title>
+      </Helmet>
       <StyledFormContainer>
         <Title weight="800" size="h1" style={titleRegistrationStyle}>
           Mot de passe oublié

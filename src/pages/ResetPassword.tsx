@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { COLOR_GREY_LIGHT, COLOR_WHITE } from "utils/colors";
 import { useAuth } from "hooks/useAuth";
+import { Helmet } from "react-helmet-async";
 
 // ----------
 // Components
@@ -43,6 +44,9 @@ export default function ResetPassword() {
 
   return (
     <StyledMainContainer>
+        <Helmet>
+        <title>Modification de votre mot de passe</title>
+      </Helmet>
       <StyledFormContainer>
         <Title weight="800" size="h1" style={titleRegistrationStyle}>
           Modifier mot de passe

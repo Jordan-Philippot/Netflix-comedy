@@ -18,7 +18,7 @@ export function useLike(): LikeHook {
 
   const { user } = useAuth();
 
-  const shouldFetchUserResume = user !== undefined;
+  const shouldFetchUserResume = user !== null;
 
   const { data, isLoading } = useQuery({
     queryKey: ["userLikeList"],

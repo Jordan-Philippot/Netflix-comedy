@@ -23,7 +23,7 @@ export function useSubscription(): SubscriptionHook {
   const queryClient = useQueryClient();
   const { user } = useAuth();
 
-  const shouldFetchUserResume = user !== undefined;
+  const shouldFetchUserResume = user !== null;
 
   const { data, isLoading } = useQuery({
     queryKey: ["userSubscriptions"],

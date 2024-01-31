@@ -14,6 +14,8 @@ import { RootState } from "redux/store";
 import { useSelector } from "react-redux";
 import { addVideoEventListener, muteVideo } from "utils/controlVideo";
 import { useModal } from "components/context/ModalContext";
+import { Helmet } from "react-helmet-async";
+
 // ----------
 // Api
 // ----------
@@ -185,6 +187,9 @@ export default function Home() {
 
   return (
     <>
+      <Helmet>
+        <title>Netflux Comedy</title>
+      </Helmet>
       {(() => {
         if (isSearchLoading) {
           return <LoaderPage />;

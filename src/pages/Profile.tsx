@@ -5,6 +5,7 @@ import {
   inputRegistrationStyle,
   titleRegistrationStyle,
 } from "constant/registrationStyle";
+import { Helmet } from "react-helmet-async";
 
 // ----------
 // Components
@@ -41,6 +42,9 @@ export default function Profile() {
 
   return (
     <StyledMainContainer>
+       <Helmet>
+        <title>Profil</title>
+      </Helmet>
       <StyledFormContainer>
         <Title weight="800" size="h1" style={titleRegistrationStyle}>
           Votre profil

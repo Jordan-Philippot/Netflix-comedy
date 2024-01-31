@@ -9,6 +9,8 @@ import { useAuth } from "hooks/useAuth";
 import { device } from "utils/breakpoints";
 import { linkifyOptions } from "constant/linkifyOptions";
 import Linkify from "linkify-react";
+import { Helmet } from "react-helmet-async";
+
 // --------------
 // Components
 // --------------
@@ -135,6 +137,9 @@ export default function Channel() {
       {/* Channel Informations */}
       {channelById && (
         <>
+          <Helmet>
+            <title>{channelById.title}</title>
+          </Helmet>
           {/* Banner informations */}
           <link
             rel="preload"
@@ -144,10 +149,10 @@ export default function Channel() {
           <StyledChannelData>
             <StyledChannelBannerContainer>
               <StyledBanner
-              src={channelById.thumbnails?.medium?.url}
-              alt="Chaine youtube"
+                src={channelById.thumbnails?.medium?.url}
+                alt="Chaine youtube"
               />
-              
+
               <StyledBannerInfos>
                 <Title size="h2" weight="800">
                   {channelById.title}
